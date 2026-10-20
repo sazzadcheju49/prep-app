@@ -1,5 +1,5 @@
 /* Service Worker for Prep App */
-const CACHE_NAME = 'prep-cache-v1';
+const CACHE_NAME = 'prep-cache-v2';
 const PRECACHE_ASSETS = [
   './',
   './index.html',
