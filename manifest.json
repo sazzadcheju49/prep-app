@@ -1,0 +1,26 @@
+{
+  "name": "Prep",
+  "short_name": "Prep",
+  "id": "prep",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#000000",
+  "theme_color": "#0a84ff",
+  "description": "Competitive exam preparation PWA for BCS, Bank Recruitment, and DU IBA MBA.",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
