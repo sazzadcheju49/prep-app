@@ -1,66 +1,62 @@
 /**
  * ============================================================================
- * PREP APP — MODULAR QUESTION BANK ARCHITECTURE (source.js)
+ * PREP APP — MODULAR QUESTION BANK (source.js)
  * ============================================================================
  * 
- * TAXONOMY & CLASSIFICATION GUIDE:
- * 1. examCategory:
- *    - "government" : BCS, PSC, Primary, Non-Cadre, Judicial, etc.
- *    - "bank"       : Bangladesh Bank, Combined 8/10 Banks, Private Banks.
- *    - "iba_mba"    : DU IBA MBA, JU IBA, BUP MBA.
- *    - "private"    : Telecom, MNCs, NGOs, Private Enterprises.
+ * TO ADD A NEW QUESTION EVERY DAY:
+ * 1. Copy the blank template below.
+ * 2. Fill in your question details.
+ * 3. Paste it inside its corresponding track array:
+ *    - GOVERNMENT_QUESTIONS       (for BCS, PSC, Primary Teacher, etc.)
+ *    - BANK_QUESTIONS             (for Bangladesh Bank, Combined Banks, etc.)
+ *    - IBA_MBA_QUESTIONS          (for DU IBA MBA, BUP MBA, etc.)
+ *    - PRIVATE_OTHER_QUESTIONS    (for Telecom, MNC, NGO, IT, etc.)
  * 
- * 2. sourceType (Strict authenticity tags):
- *    - "verified_pyq"          : Verified authentic historical examination question.
- *    - "unverified_historical" : Claimed historical question awaiting paper confirmation.
- *    - "practice"              : Newly authored practice/model question.
- * 
- * 3. Question Schema Template:
- *    {
- *      id: "UNIQUE-STABLE-ID",        // e.g. "BANK-BB-MATH-2024-001"
- *      examCategory: "bank",
- *      examName: "Bangladesh Bank AD",
- *      year: 2024,
- *      subject: "Mathematics",
- *      topic: "Percentage & Profit",
- *      subtopic: "Markup & Discount",
- *      difficulty: "medium",          // "easy" | "medium" | "hard"
- *      sourceType: "verified_pyq",    // "verified_pyq" | "unverified_historical" | "practice"
- *      sourceReference: "BB AD Exam 2024 (Official Paper)",
- *      language: "en",                // "en" | "bn"
- *      questionType: "mcq",
- *      question: "Question text goes here...",
- *      options: [
- *        { id: "A", text: "First option" },
- *        { id: "B", text: "Second option" },
- *        { id: "C", text: "Third option" },
- *        { id: "D", text: "Fourth option" }
- *      ],
- *      correctAnswer: "B",
- *      explanation: "Detailed reason why B is correct...",
- *      optionExplanations: {
- *        A: "Why A is incorrect.",
- *        B: "Why B is correct.",
- *        C: "Why C is incorrect.",
- *        D: "Why D is incorrect."
- *      },
- *      solutionSteps: [               // Optional: For Math & Analytical calculations
- *        "Step 1: Write formula",
- *        "Step 2: Solve"
- *      ],
- *      marksCorrect: 1,
- *      marksIncorrect: 0.25,
- *      tags: ["bank", "math", "percentage"]
- *    }
+ * ----------------------------------------------------------------------------
+ * BLANK TEMPLATE (Copy & Paste this):
+ * ----------------------------------------------------------------------------
+    {
+      id: "UNIQUE-ID-HERE",            // e.g. "GOV-BCS-ENG-2024-001"
+      examCategory: "government",      // "government" | "bank" | "iba_mba" | "private"
+      examName: "46th BCS Preliminary",// Exact job/exam name
+      year: 2024,                      // Exam year (number or string)
+      subject: "English",              // Subject name (English, Bangla, Math, etc.)
+      topic: "Grammar",                // Specific topic
+      subtopic: "Prepositions",        // Specific subtopic
+      difficulty: "medium",            // "easy" | "medium" | "hard"
+      sourceType: "verified_pyq",      // "verified_pyq" | "unverified_historical" | "practice"
+      sourceReference: "Official 46th BCS Exam Paper",
+      language: "en",                  // "en" | "bn"
+      questionType: "mcq",
+      question: "Type question text here...",
+      options: [
+        { id: "A", text: "First option" },
+        { id: "B", text: "Second option" },
+        { id: "C", text: "Third option" },
+        { id: "D", text: "Fourth option" }
+      ],
+      correctAnswer: "A",              // Must match one option ID
+      explanation: "Detailed explanation of why this answer is correct...",
+      optionExplanations: {
+        A: "Why option A is correct.",
+        B: "Why option B is incorrect.",
+        C: "Why option C is incorrect.",
+        D: "Why option D is incorrect."
+      },
+      solutionSteps: [],               // Optional: Array of calculation steps for Math
+      marksCorrect: 1,
+      marksIncorrect: 0.5,
+      tags: ["bcs", "english"]
+    },
  * ============================================================================
  */
 
 (function () {
   "use strict";
 
-  // --------------------------------------------------------------------------
-  // TRACK 1: GOVERNMENT RECRUITMENT (BCS, PSC, Primary, Judicial, Non-Cadre)
-  // --------------------------------------------------------------------------
+  // ==========================================================================
+  // TRACK 1: GOVERNMENT RECRUITMENT (BCS, PSC, Primary, Non-Cadre, Judicial)
+  // ==========================================================================
   var GOVERNMENT_QUESTIONS = [
     {
       id: "GOV-BCS-ENG-2023-001",
@@ -102,7 +98,7 @@
       year: 2022,
       subject: "Bangla",
       topic: "Literature",
-      subtopic: "Rabindra Literature",
+      subtopic: "Modern Drama",
       difficulty: "medium",
       sourceType: "verified_pyq",
       sourceReference: "44th BCS Preliminary Official Question Paper",
@@ -127,13 +123,46 @@
       marksCorrect: 1,
       marksIncorrect: 0.5,
       tags: ["bcs", "bangla", "literature"]
+    },
+    {
+      id: "GOV-BCS-GK-2021-001",
+      examCategory: "government",
+      examName: "43rd BCS Preliminary",
+      year: 2021,
+      subject: "General Knowledge",
+      topic: "Bangladesh Affairs",
+      subtopic: "Constitutional History",
+      difficulty: "medium",
+      sourceType: "verified_pyq",
+      sourceReference: "43rd BCS Preliminary Official Question Paper",
+      language: "bn",
+      questionType: "mcq",
+      question: "বাংলাদেশের সংবিধানের অভিভাবক কে?",
+      options: [
+        { id: "A", text: "সংসদ" },
+        { id: "B", text: "রাষ্ট্রপতি" },
+        { id: "C", text: "সুপ্রিম কোর্ট" },
+        { id: "D", text: "প্রধান নির্বাচন কমিশনার" }
+      ],
+      correctAnswer: "C",
+      explanation: "গণপ্রজাতন্ত্রী বাংলাদেশের সংবিধানের অভিভাবক ও ব্যাখ্যাকারক হলো সুপ্রিম কোর্ট।",
+      optionExplanations: {
+        A: "ভুল। সংসদ আইন প্রণয়নকারী সংস্থা।",
+        B: "ভুল। রাষ্ট্রপতি রাষ্ট্রের সাংবিধানিক প্রধান।",
+        C: "সঠিক উত্তর। সংবিধানের অভিভাবক সুপ্রিম কোর্ট।",
+        D: "ভুল।"
+      },
+      solutionSteps: [],
+      marksCorrect: 1,
+      marksIncorrect: 0.5,
+      tags: ["bcs", "gk", "constitution"]
     }
     // Paste additional Government Job questions here
   ];
 
-  // --------------------------------------------------------------------------
-  // TRACK 2: BANK RECRUITMENT (Bangladesh Bank, Combined, Sonali, Agrani)
-  // --------------------------------------------------------------------------
+  // ==========================================================================
+  // TRACK 2: BANK RECRUITMENT (Bangladesh Bank, Combined Banks, Sonali, etc.)
+  // ==========================================================================
   var BANK_QUESTIONS = [
     {
       id: "BANK-BB-MATH-2022-001",
@@ -173,13 +202,46 @@
       marksCorrect: 1,
       marksIncorrect: 0.25,
       tags: ["bb", "math", "percentage"]
+    },
+    {
+      id: "BANK-COMB-ENG-2023-001",
+      examCategory: "bank",
+      examName: "Combined 8 Banks Officer",
+      year: 2023,
+      subject: "English",
+      topic: "Vocabulary",
+      subtopic: "Synonyms",
+      difficulty: "medium",
+      sourceType: "verified_pyq",
+      sourceReference: "Combined 8 Banks Officer Exam 2023",
+      language: "en",
+      questionType: "mcq",
+      question: "What is the synonym of 'CANDID'?",
+      options: [
+        { id: "A", text: "Secretive" },
+        { id: "B", text: "Frank" },
+        { id: "C", text: "Dishonest" },
+        { id: "D", text: "Arrogant" }
+      ],
+      correctAnswer: "B",
+      explanation: "'Candid' means truthful and straightforward; frank.",
+      optionExplanations: {
+        A: "Incorrect. Antonym.",
+        B: "Correct. 'Frank' means honest and direct.",
+        C: "Incorrect. Antonym.",
+        D: "Incorrect."
+      },
+      solutionSteps: [],
+      marksCorrect: 1,
+      marksIncorrect: 0.25,
+      tags: ["bank", "english", "synonym"]
     }
     // Paste additional Bank Recruitment questions here
   ];
 
-  // --------------------------------------------------------------------------
+  // ==========================================================================
   // TRACK 3: DU IBA MBA ADMISSION (English, Math, Analytical)
-  // --------------------------------------------------------------------------
+  // ==========================================================================
   var IBA_MBA_QUESTIONS = [
     {
       id: "IBA-MBA-ANA-2023-001",
@@ -202,12 +264,12 @@
         { id: "D", text: "Metro operational costs have declined." }
       ],
       correctAnswer: "A",
-      explanation: "The argument assumes the fare difference will narrow. If bus fares also increase by 15% or more, the relative economic advantage remains unchanged.",
+      explanation: "The conclusion holds only if bus fares do not also rise to keep the metro comparatively cheaper.",
       optionExplanations: {
         A: "Correct. If bus fares rise equally, metro will remain relatively cheaper.",
         B: "Incorrect. The premise explicitly focuses on price sensitivity.",
-        C: "Incorrect. Irrelevant to comparative transit choice.",
-        D: "Incorrect. Cost of operation does not dictate rider behavior directly."
+        C: "Incorrect. Irrelevant to comparative transit choices.",
+        D: "Incorrect. Operational cost does not affect rider pricing assumptions directly."
       },
       solutionSteps: [],
       marksCorrect: 1,
@@ -217,62 +279,61 @@
     // Paste additional IBA MBA questions here
   ];
 
-  // --------------------------------------------------------------------------
+  // ==========================================================================
   // TRACK 4: PRIVATE SECTOR & OTHER RECRUITMENTS
-  // --------------------------------------------------------------------------
-  var PRIVATE_AND_OTHER_QUESTIONS = [
-    // Paste Private Company, IT, NGO, or specialized questions here
+  // ==========================================================================
+  var PRIVATE_OTHER_QUESTIONS = [
+    // Paste Private Company, IT, NGO, or specialized exam questions here
   ];
 
-  // --------------------------------------------------------------------------
+  // ==========================================================================
   // COMPILED QUESTION BANK & INTEGRITY VALIDATOR
-  // --------------------------------------------------------------------------
-  var ALL_QUESTIONS = [].concat(
+  // ==========================================================================
+  var ALL_ENTRIES = [].concat(
     GOVERNMENT_QUESTIONS,
     BANK_QUESTIONS,
     IBA_MBA_QUESTIONS,
-    PRIVATE_AND_OTHER_QUESTIONS
+    PRIVATE_OTHER_QUESTIONS
   );
 
-  // Runtime Schema & ID Uniqueness Validator
   var seenIds = Object.create(null);
-  var validQuestions = [];
+  var verifiedBank = [];
 
-  ALL_QUESTIONS.forEach(function (q, index) {
+  ALL_ENTRIES.forEach(function (q, index) {
     if (!q || typeof q !== "object") {
-      console.warn("Invalid question record at index " + index);
+      console.warn("Invalid record format at index " + index);
       return;
     }
 
     if (!q.id || typeof q.id !== "string") {
-      console.warn("Missing unique ID for question at index " + index);
+      console.warn("Question at index " + index + " is missing a unique string ID.");
       return;
     }
 
     if (seenIds[q.id]) {
-      console.warn("Duplicate question ID detected: '" + q.id + "'. Skipping duplicate.");
+      console.warn("Duplicate question ID '" + q.id + "' detected. Skipping duplicate entry.");
       return;
     }
 
     if (!q.question || !Array.isArray(q.options) || q.options.length < 2) {
-      console.warn("Question '" + q.id + "' is missing text or has insufficient options.");
+      console.warn("Question '" + q.id + "' is missing question text or has less than 2 options.");
       return;
     }
 
-    var hasValidAnswer = q.options.some(function (opt) {
+    var validAnswerExists = q.options.some(function (opt) {
       return opt && opt.id === q.correctAnswer;
     });
 
-    if (!hasValidAnswer) {
+    if (!validAnswerExists) {
       console.warn("Question '" + q.id + "' has an invalid correctAnswer '" + q.correctAnswer + "'.");
       return;
     }
 
     seenIds[q.id] = true;
-    validQuestions.push(q);
+    verifiedBank.push(q);
   });
 
-  // Expose global registry for index.html
-  window.QUESTION_BANK = Object.freeze(validQuestions);
+  // Expose globally for index.html
+  window.QUESTION_BANK = Object.freeze(verifiedBank);
 
 })();
