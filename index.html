@@ -4,11 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#0d1117">
+  <meta name="theme-color" content="#007aff">
   <title>Prep</title>
-  <link rel="manifest" href="./manifest.json">
-  <link rel="icon" type="image/svg+xml" href="./icon.svg">
-  <link rel="apple-touch-icon" href="./icon.svg">
 
   <!-- Portal Ecosystem Shared Scripts -->
   <script src="https://sazzadcheju49.github.io/portal-app/portalBridge.js?v=1"></script>
@@ -17,39 +14,53 @@
 
   <style>
     /* ==========================================================================
-       Apple Glassmorphic Design System & Variables
+       iOS Design System & Custom Accent Engine
        ========================================================================== */
     :root {
-      --accent: #0a84ff;
-      --accent-rgb: 10, 132, 255;
+      --accent: #007aff;
+      --accent-rgb: 0, 122, 255;
       --bg: #f2f2f7;
-      --surface: rgba(255, 255, 255, 0.72);
-      --surface-elevated: rgba(255, 255, 255, 0.88);
+      --surface: rgba(255, 255, 255, 0.78);
+      --surface-elevated: rgba(255, 255, 255, 0.92);
       --border: rgba(0, 0, 0, 0.08);
       --border-strong: rgba(0, 0, 0, 0.16);
-      --text: #1c1c1e;
+      --text: #000000;
       --text-secondary: #8e8e93;
-      --text-tertiary: #aeaeb2;
-      --glass-blur: blur(24px) saturate(180%);
-      --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.06);
+      --text-tertiary: #c7c7cc;
+      --glass-blur: blur(24px) saturate(190%);
+      --glass-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
       --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
       --safe-top: env(safe-area-inset-top, 0px);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
 
+    /* Dark Mode (supports system preference or explicit user toggle) */
+    [data-theme="dark"],
+    body.theme-dark {
+      --bg: #000000;
+      --surface: rgba(28, 28, 30, 0.75);
+      --surface-elevated: rgba(44, 44, 46, 0.88);
+      --border: rgba(255, 255, 255, 0.12);
+      --border-strong: rgba(255, 255, 255, 0.22);
+      --text: #ffffff;
+      --text-secondary: #98989d;
+      --text-tertiary: #48484a;
+      --glass-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+    }
+
     @media (prefers-color-scheme: dark) {
-      :root {
+      :root:not([data-theme="light"]) {
         --bg: #000000;
-        --surface: rgba(28, 28, 30, 0.72);
-        --surface-elevated: rgba(44, 44, 46, 0.82);
+        --surface: rgba(28, 28, 30, 0.75);
+        --surface-elevated: rgba(44, 44, 46, 0.88);
         --border: rgba(255, 255, 255, 0.12);
         --border-strong: rgba(255, 255, 255, 0.22);
         --text: #ffffff;
         --text-secondary: #98989d;
-        --text-tertiary: #636366;
-        --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+        --text-tertiary: #48484a;
+        --glass-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
       }
     }
 
@@ -73,31 +84,31 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Rule 4: Top Safe Area Gradient in App Theme Color */
+    /* Top Safe-Area Gradient Header in App Accent Color */
     #safe-area-header {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      height: calc(var(--safe-top) + 12px);
-      background: linear-gradient(to bottom, rgba(10, 132, 255, 0.35), rgba(10, 132, 255, 0) 100%);
+      height: calc(var(--safe-top) + 14px);
+      background: linear-gradient(to bottom, rgba(var(--accent-rgb), 0.35), rgba(var(--accent-rgb), 0) 100%);
       z-index: 999;
       pointer-events: none;
     }
 
-    /* Main Container (starts strictly below the notch) */
+    /* Main Container (Content starts strictly below the notch) */
     #app-viewport {
       flex: 1;
       display: flex;
       flex-direction: column;
-      padding-top: max(var(--safe-top), 16px);
+      padding-top: max(var(--safe-top), 14px);
       padding-bottom: calc(72px + var(--safe-bottom));
-      max-width: 820px;
+      max-width: 760px;
       margin: 0 auto;
       width: 100%;
     }
 
-    /* Header Bar */
+    /* Navigation Bar */
     .app-nav-bar {
       display: flex;
       align-items: center;
@@ -126,14 +137,13 @@
       font-weight: 600;
       padding: 3px 8px;
       border-radius: 999px;
-      background: rgba(var(--accent-rgb), 0.15);
+      background: rgba(var(--accent-rgb), 0.12);
       color: var(--accent);
-      border: 1px solid rgba(var(--accent-rgb), 0.3);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      border: 1px solid rgba(var(--accent-rgb), 0.25);
+      letter-spacing: 0.3px;
     }
 
-    /* Glass Panels */
+    /* iOS Glass Panels */
     .glass-card {
       background: var(--surface);
       backdrop-filter: var(--glass-blur);
@@ -155,7 +165,7 @@
       color: var(--text);
     }
 
-    /* Native-like Dropdown Selects (No standard slide options) */
+    /* Native Custom Dropdowns (Zero Browser Default Pickers) */
     .dropdown-group {
       display: flex;
       flex-direction: column;
@@ -164,11 +174,11 @@
     }
 
     .dropdown-label {
-      font-size: 12px;
-      font-weight: 500;
+      font-size: 11px;
+      font-weight: 600;
       color: var(--text-secondary);
       text-transform: uppercase;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.4px;
     }
 
     .custom-dropdown {
@@ -198,14 +208,15 @@
       top: calc(100% + 6px);
       left: 0;
       right: 0;
+      max-height: 240px;
+      overflow-y: auto;
       background: var(--surface-elevated);
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
       border: 1px solid var(--border-strong);
       border-radius: var(--radius-md);
       box-shadow: var(--glass-shadow);
-      z-index: 100;
-      overflow: hidden;
+      z-index: 200;
     }
 
     .dropdown-menu.open {
@@ -213,8 +224,8 @@
     }
 
     .dropdown-option {
-      padding: 12px 14px;
-      font-size: 14px;
+      padding: 11px 14px;
+      font-size: 13px;
       font-weight: 500;
       color: var(--text);
       cursor: pointer;
@@ -231,9 +242,10 @@
     .dropdown-option:active, .dropdown-option.selected {
       background: rgba(var(--accent-rgb), 0.12);
       color: var(--accent);
+      font-weight: 600;
     }
 
-    /* Glass Buttons */
+    /* Buttons */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -266,14 +278,6 @@
       border-color: var(--border-strong);
     }
 
-    /* Views Switching */
-    .view-container {
-      display: none;
-    }
-    .view-container.active {
-      display: block;
-    }
-
     /* Placeholder Stubs */
     .feature-placeholder {
       padding: 24px 16px;
@@ -282,17 +286,24 @@
       border-radius: var(--radius-md);
       color: var(--text-secondary);
       font-size: 13px;
-      margin-top: 8px;
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
-    /* Bottom Glass Tab Bar */
+    /* View Management */
+    .view-container {
+      display: none;
+    }
+    .view-container.active {
+      display: block;
+    }
+
+    /* iOS Bottom Tab Bar */
     #bottom-tab-bar {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      height: calc(60px + var(--safe-bottom));
+      height: calc(58px + var(--safe-bottom));
       padding-bottom: var(--safe-bottom);
       background: var(--surface);
       backdrop-filter: var(--glass-blur);
@@ -309,7 +320,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 4px;
+      gap: 3px;
       flex: 1;
       height: 100%;
       background: none;
@@ -329,37 +340,36 @@
       height: 22px;
       stroke-width: 2;
     }
-    
-    /* Metrics & Dashboard Cards */
-    .metrics-grid {
+    /* Analytics Grid & Cards */
+    .analytics-grid-2 {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 10px;
-      margin-top: 12px;
+      margin-bottom: 12px;
     }
 
-    .metric-card {
+    .analytics-stat-card {
       background: var(--surface-elevated);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 12px 14px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
 
-    .metric-val {
-      font-size: 22px;
+    .stat-val {
+      font-size: 24px;
       font-weight: 700;
       letter-spacing: -0.5px;
       color: var(--text);
     }
 
-    .metric-val.highlight {
+    .stat-val.accent-txt {
       color: var(--accent);
     }
 
-    .metric-label {
+    .stat-label {
       font-size: 11px;
       font-weight: 600;
       color: var(--text-secondary);
@@ -367,96 +377,132 @@
       letter-spacing: 0.4px;
     }
 
-    .topic-list {
+    .readiness-banner {
+      background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.16), rgba(var(--accent-rgb), 0.04));
+      border: 1px solid rgba(var(--accent-rgb), 0.25);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .readiness-score {
+      font-size: 38px;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .bar-row {
+      margin-bottom: 12px;
+    }
+
+    .bar-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 5px;
+    }
+
+    .bar-track {
+      width: 100%;
+      height: 8px;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    .sector-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    .sector-row:last-child {
+      border-bottom: none;
+    }
+
+    .chip-collection {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-top: 8px;
+      margin-top: 6px;
     }
 
-    .topic-chip {
+    .weak-chip {
+      background: rgba(255, 69, 58, 0.12);
+      border: 1px solid rgba(255, 69, 58, 0.25);
+      color: #ff453a;
       font-size: 12px;
-      font-weight: 500;
-      padding: 6px 10px;
+      font-weight: 600;
+      padding: 5px 10px;
       border-radius: var(--radius-sm);
+    }
+    /* Q.Bank Question Sets */
+    .filter-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    @media (max-width: 580px) {
+      .filter-grid-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .qset-card {
       background: var(--surface-elevated);
-      border: 1px solid var(--border-strong);
-      color: var(--text);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .topic-chip.empty-notice {
-      color: var(--text-tertiary);
-      border-style: dashed;
-      background: transparent;
-    }
-
-    /* Search Bar */
-    .search-input-box {
-      position: relative;
-      margin-bottom: 12px;
-      width: 100%;
-    }
-
-    .search-input-box input {
-      width: 100%;
-      background: var(--surface-elevated);
-      border: 1px solid var(--border-strong);
+      border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 11px 14px 11px 38px;
-      font-size: 14px;
-      color: var(--text);
-      outline: none;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: transform 0.1s ease, border-color 0.15s ease;
     }
 
-    .search-input-box input:focus {
+    .qset-card:active {
+      transform: scale(0.99);
       border-color: var(--accent);
     }
 
-    .search-input-box svg {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
+    .qset-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .qset-subtitle {
+      font-size: 12px;
       color: var(--text-secondary);
-      pointer-events: none;
-    }
-
-    /* Source Badges */
-    .source-badge {
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 999px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      display: inline-flex;
+      display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
+      flex-wrap: wrap;
     }
 
-    .badge-pyq {
-      background: rgba(52, 199, 89, 0.15);
-      color: #34c759;
-      border: 1px solid rgba(52, 199, 89, 0.3);
-    }
-
-    .badge-unverified {
-      background: rgba(255, 159, 10, 0.15);
-      color: #ff9f0a;
-      border: 1px solid rgba(255, 159, 10, 0.3);
-    }
-
-    .badge-practice {
-      background: rgba(10, 132, 255, 0.15);
-      color: #0a84ff;
-      border: 1px solid rgba(10, 132, 255, 0.3);
-    }
-
-    /* Study Cards */
-    .study-card {
+    /* Study Cards inside Selected Set */
+    .study-q-card {
       background: var(--surface-elevated);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
@@ -464,32 +510,16 @@
       margin-bottom: 12px;
     }
 
-    .study-card-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .study-question-text {
-      font-size: 15px;
+    .study-q-title {
+      font-size: 14px;
       font-weight: 600;
-      line-height: 1.45;
       color: var(--text);
-      margin-bottom: 14px;
+      line-height: 1.45;
+      margin-bottom: 12px;
     }
 
-    .study-options {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 14px;
-    }
-
-    .study-option-item {
-      padding: 10px 14px;
+    .study-opt-row {
+      padding: 10px 12px;
       border-radius: var(--radius-sm);
       background: var(--surface);
       border: 1px solid var(--border);
@@ -499,16 +529,17 @@
       align-items: center;
       gap: 10px;
       color: var(--text);
+      margin-bottom: 6px;
     }
 
-    .study-option-item.correct-reveal {
+    .study-opt-row.correct-reveal {
       background: rgba(52, 199, 89, 0.15);
       border-color: #34c759;
       color: #34c759;
       font-weight: 600;
     }
 
-    .opt-letter {
+    .opt-badge {
       width: 22px;
       height: 22px;
       border-radius: 50%;
@@ -521,54 +552,21 @@
       flex-shrink: 0;
     }
 
-    .study-card-actions {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      margin-top: 10px;
-    }
-
-    .btn-icon-action {
-      background: var(--surface);
-      border: 1px solid var(--border-strong);
-      color: var(--text-secondary);
-      border-radius: var(--radius-sm);
-      padding: 7px 12px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .btn-icon-action.active-bookmark {
-      color: #ff9f0a;
-      border-color: #ff9f0a;
-      background: rgba(255, 159, 10, 0.12);
-    }
-
-    .btn-icon-action.active-revision {
-      color: #ff453a;
-      border-color: #ff453a;
-      background: rgba(255, 69, 58, 0.12);
-    }
-
-    .study-explanation-panel {
+    .study-exp-box {
       display: none;
-      margin-top: 12px;
+      margin-top: 10px;
       padding: 12px;
       border-radius: var(--radius-sm);
       background: rgba(var(--accent-rgb), 0.08);
       border: 1px solid rgba(var(--accent-rgb), 0.25);
-      font-size: 13px;
+      font-size: 12px;
       line-height: 1.5;
     }
 
-    .study-explanation-panel.visible {
+    .study-exp-box.visible {
       display: block;
     }
-    /* Test Engine & Question Palette */
+    /* Test Engine & Results */
     .test-timer-bar {
       display: flex;
       justify-content: space-between;
@@ -580,8 +578,8 @@
       margin-bottom: 14px;
     }
 
-    .timer-display {
-      font-size: 16px;
+    .timer-pill {
+      font-size: 15px;
       font-weight: 700;
       color: var(--accent);
       font-variant-numeric: tabular-nums;
@@ -590,11 +588,25 @@
       gap: 6px;
     }
 
-    .timer-display.timer-warning {
+    .timer-pill.timer-urgent {
       color: #ff453a;
     }
 
-    .q-palette-grid {
+    .q-meta-subtitle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(var(--accent-rgb), 0.1);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: 0.3px;
+    }
+
+    .palette-grid {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
@@ -628,12 +640,12 @@
     }
 
     .palette-btn.flagged {
-      background: #ff9f0a;
+      background: #ff9500;
       color: #ffffff;
-      border-color: #ff9f0a;
+      border-color: #ff9500;
     }
 
-    .exam-opt-row {
+    .test-opt-row {
       padding: 12px 14px;
       border-radius: var(--radius-md);
       background: var(--surface-elevated);
@@ -643,29 +655,68 @@
       align-items: center;
       gap: 12px;
       cursor: pointer;
-      transition: border-color 0.15s ease;
+      transition: border-color 0.15s ease, background 0.15s ease;
     }
 
-    .exam-opt-row.selected {
+    .test-opt-row.selected {
       border-color: var(--accent);
       background: rgba(var(--accent-rgb), 0.12);
     }
 
-    .exam-nav-actions {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      margin-top: 16px;
+    /* Post-Exam Result Scorecard */
+    .result-scorecard {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 14px;
     }
 
-    /* Native Modal Overlay */
+    .result-big-score {
+      font-size: 40px;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 8px 0;
+    }
+
+    .review-card {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .review-opt-line {
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      margin-top: 6px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid transparent;
+    }
+
+    .review-opt-line.wrong-pick {
+      background: rgba(255, 69, 58, 0.12);
+      border-color: #ff453a;
+      color: #ff453a;
+    }
+
+    .review-opt-line.right-pick {
+      background: rgba(52, 199, 89, 0.12);
+      border-color: #34c759;
+      color: #34c759;
+      font-weight: 600;
+    }
+
+    /* Modal Sheet */
     .native-modal-overlay {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(0, 0, 0, 0.6);
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
@@ -686,197 +737,49 @@
       padding: 20px;
       max-width: 360px;
       width: 100%;
-      box-shadow: var(--glass-shadow);
       text-align: center;
     }
-    /* Results & Review Screen */
-    .scorecard-banner {
-      background: var(--surface-elevated);
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-lg);
-      padding: 18px;
-      text-align: center;
-      margin-bottom: 14px;
-    }
-
-    .score-headline {
-      font-size: 34px;
-      font-weight: 800;
-      color: var(--accent);
-      letter-spacing: -1px;
-      margin: 6px 0;
-    }
-
-    .result-chips-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 12px;
-    }
-
-    .filter-chip-btn {
-      background: var(--surface-elevated);
-      border: 1px solid var(--border-strong);
-      color: var(--text-secondary);
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .filter-chip-btn.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #ffffff;
-    }
-
-    .review-item-card {
+    /* Mistakes Notebook */
+    .mistake-only-card {
       background: var(--surface-elevated);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 14px;
+      padding: 16px;
       margin-bottom: 12px;
     }
 
-    .status-badge {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: var(--radius-sm);
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-    }
-
-    .status-badge.correct {
-      background: rgba(52, 199, 89, 0.15);
-      color: #34c759;
-    }
-
-    .status-badge.incorrect {
-      background: rgba(255, 69, 58, 0.15);
-      color: #ff453a;
-    }
-
-    .status-badge.unanswered {
-      background: rgba(142, 142, 147, 0.15);
-      color: var(--text-secondary);
-    }
-
-    .opt-review-row {
-      padding: 8px 12px;
-      border-radius: var(--radius-sm);
-      margin-top: 6px;
-      font-size: 13px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid transparent;
-    }
-
-    .opt-review-row.opt-user-wrong {
-      background: rgba(255, 69, 58, 0.12);
-      border-color: #ff453a;
-      color: #ff453a;
-    }
-
-    .opt-review-row.opt-correct-target {
-      background: rgba(52, 199, 89, 0.12);
-      border-color: #34c759;
-      color: #34c759;
-      font-weight: 600;
-    }
-
-    .solution-step-box {
-      margin-top: 8px;
-      padding: 10px;
-      border-radius: var(--radius-sm);
-      background: var(--surface);
-      border: 1px solid var(--border);
-      font-size: 12px;
-      line-height: 1.5;
-    }
-    /* Progress & Mistake Notebook */
-    .segmented-control {
-      display: flex;
-      background: var(--surface-elevated);
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-md);
-      padding: 3px;
-      margin-bottom: 14px;
-      gap: 4px;
-    }
-
-    .segment-btn {
-      flex: 1;
-      padding: 8px 6px;
-      border: none;
-      background: none;
-      border-radius: var(--radius-sm);
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-
-    .segment-btn.active {
-      background: var(--surface);
-      color: var(--accent);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    }
-
-    .progress-bar-track {
-      width: 100%;
-      height: 8px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      overflow: hidden;
-      margin: 6px 0 10px;
-    }
-
-    .progress-bar-fill {
-      height: 100%;
-      background: var(--accent);
-      border-radius: 999px;
-      transition: width 0.3s ease;
-    }
-
-    .progress-meta-row {
+    .mistake-header-row {
       display: flex;
       justify-content: space-between;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .mistake-card {
-      background: var(--surface-elevated);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 14px;
+      align-items: center;
       margin-bottom: 10px;
     }
 
-    .history-card {
-      background: var(--surface-elevated);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 12px 14px;
-      margin-bottom: 8px;
+    .mistake-correct-badge {
+      background: rgba(52, 199, 89, 0.14);
+      border: 1px solid rgba(52, 199, 89, 0.3);
+      color: #34c759;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      margin: 10px 0;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      gap: 8px;
     }
-    /* Settings List Rows */
-    .settings-row {
+
+    .mistake-exp-box {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.5;
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+    /* Settings & Color Swatches */
+    .settings-list-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -884,23 +787,51 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .settings-row:last-child {
+    .settings-list-row:last-child {
       border-bottom: none;
     }
 
-    .settings-label {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text);
+    .accent-palette-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
     }
 
-    .settings-sublabel {
-      font-size: 11px;
-      color: var(--text-secondary);
-      margin-top: 2px;
+    .accent-circle-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s ease, border-color 0.15s ease;
     }
 
-    /* SVG Icon Helpers */
+    .accent-circle-btn:active {
+      transform: scale(0.92);
+    }
+
+    .accent-circle-btn.selected {
+      border-color: var(--text);
+      box-shadow: 0 0 0 2px var(--bg), 0 2px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    .accent-circle-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: #ffffff;
+      stroke-width: 3;
+      display: none;
+    }
+
+    .accent-circle-btn.selected svg {
+      display: block;
+    }
+
+    /* SVG Icon Utility */
     .icon {
       width: 18px;
       height: 18px;
@@ -915,462 +846,492 @@
 </head>
 <body>
 
-  <!-- Safe Area Gradient at the top -->
+  <!-- Top Safe Area Gradient -->
   <div id="safe-area-header" aria-hidden="true"></div>
 
   <!-- Main Viewport -->
   <main id="app-viewport">
-    
-    <!-- Top Glass Header Bar -->
+
+    <!-- Top Navigation Header -->
     <header class="app-nav-bar">
       <div class="brand-title">
         <svg class="icon" viewBox="0 0 24 24">
           <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
           <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
         </svg>
-        <span>Prep</span>
+        <span id="nav-screen-title">Prep</span>
       </div>
-      <div id="status-pill" class="badge-capsule">Ready</div>
+      <div id="status-pill" class="badge-capsule">Analytics</div>
     </header>
 
-    <!-- VIEW 1: DASHBOARD -->
-    <section id="view-dashboard" class="view-container active">
+    <!-- TAB 1: HOME (Only Result Analytics) -->
+    <section id="view-home" class="view-container active">
       <div class="glass-card">
         <h2 class="card-title">
           <svg class="icon" viewBox="0 0 24 24">
-            <rect x="3" y="3" width="7" height="9"></rect>
-            <rect x="14" y="3" width="7" height="5"></rect>
-            <rect x="14" y="12" width="7" height="9"></rect>
-            <rect x="3" y="16" width="7" height="5"></rect>
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
           </svg>
-          Exam Categories
+          Result Analytics
         </h2>
-        <div class="dropdown-group">
-          <span class="dropdown-label">Selected Syllabus</span>
-          <div class="custom-dropdown" id="category-dropdown" data-value="government">
-            <button class="dropdown-trigger" type="button">
-              <span class="trigger-label">BCS &amp; Government Jobs</span>
-              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </button>
-            <div class="dropdown-menu">
-              <div class="dropdown-option selected" data-value="government">BCS &amp; Government Jobs</div>
-              <div class="dropdown-option" data-value="bank">Bank Recruitment (BB &amp; Combined)</div>
-              <div class="dropdown-option" data-value="iba_mba">DU IBA MBA Admission</div>
-            </div>
+        <!-- Metric 1: Overall Readiness Score -->
+        <div class="readiness-banner">
+          <div>
+            <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--accent);">Exam Readiness Index</div>
+            <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Based on syllabus coverage &amp; accuracy</div>
           </div>
+          <div class="readiness-score" id="ana-readiness">0%</div>
         </div>
-        <!-- Live Metrics Grid -->
-        <div class="metrics-grid">
-          <div class="metric-card">
-            <span class="metric-val highlight" id="metric-total">0</span>
-            <span class="metric-label">Available Questions</span>
+
+        <!-- Metric 2: Global Accuracy & Volume -->
+        <div class="analytics-grid-2">
+          <div class="analytics-stat-card">
+            <span class="stat-val accent-txt" id="ana-questions-solved">0</span>
+            <span class="stat-label">Questions Solved</span>
           </div>
-          <div class="metric-card">
-            <span class="metric-val" id="metric-attempted">0</span>
-            <span class="metric-label">Attempted</span>
-          </div>
-          <div class="metric-card">
-            <span class="metric-val" id="metric-tests">0</span>
-            <span class="metric-label">Tests Completed</span>
-          </div>
-          <div class="metric-card">
-            <span class="metric-val" id="metric-accuracy">0%</span>
-            <span class="metric-label">Overall Accuracy</span>
+          <div class="analytics-stat-card">
+            <span class="stat-val" id="ana-global-accuracy">0%</span>
+            <span class="stat-label">Global Accuracy</span>
           </div>
         </div>
 
-        <!-- Revision Queue Counter -->
-        <div class="metrics-grid" style="grid-template-columns: 1fr; margin-top: 10px;">
-          <div class="metric-card" style="flex-direction: row; justify-content: space-between; align-items: center;">
-            <span class="metric-label">Marked For Revision</span>
-            <span class="metric-val" id="metric-revision" style="font-size: 16px;">0</span>
+        <!-- Metric 5 & 6: Time Efficiency & Negative Marking Penalty -->
+        <div class="analytics-grid-2">
+          <div class="analytics-stat-card">
+            <span class="stat-val" id="ana-avg-time">0s</span>
+            <span class="stat-label">Avg Pace / Question</span>
+          </div>
+          <div class="analytics-stat-card">
+            <span class="stat-val" id="ana-penalty-loss" style="color: #ff453a;">-0.00</span>
+            <span class="stat-label">Penalty Marks Lost</span>
+          </div>
+        </div>
+
+        <!-- Metric 7 & 9: Score Trajectory & Mistake Resolution Rate -->
+        <div class="analytics-grid-2">
+          <div class="analytics-stat-card">
+            <span class="stat-val" id="ana-trajectory">0%</span>
+            <span class="stat-label">Recent Trend (5 Tests)</span>
+          </div>
+          <div class="analytics-stat-card">
+            <span class="stat-val" id="ana-resolution-rate" style="color: #34c759;">0%</span>
+            <span class="stat-label">Mistake Resolution</span>
           </div>
         </div>
       </div>
 
-      <!-- Recommended Weak Focus Areas -->
+      <!-- Metric 3: Subject-Wise Mastery -->
+      <div class="glass-card">
+        <h2 class="card-title">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          Subject-Wise Mastery
+        </h2>
+        <div id="ana-subject-bars">
+          <div class="feature-placeholder">Take tests to generate subject mastery bars.</div>
+        </div>
+      </div>
+
+      <!-- Metric 4: Sector Performance (Govt vs Bank vs IBA) -->
       <div class="glass-card">
         <h2 class="card-title">
           <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-          Recommended Focus Areas
+          Sector Performance
         </h2>
-        <div class="topic-list" id="dashboard-weak-topics">
-          <span class="topic-chip empty-notice">No practice data recorded yet</span>
+        <div id="ana-sector-list">
+          <div class="sector-row">
+            <span>BCS &amp; Government Jobs</span>
+            <span id="ana-sector-govt" class="badge-capsule">0%</span>
+          </div>
+          <div class="sector-row">
+            <span>Bank Recruitment</span>
+            <span id="ana-sector-bank" class="badge-capsule">0%</span>
+          </div>
+          <div class="sector-row">
+            <span>DU IBA MBA Admission</span>
+            <span id="ana-sector-iba" class="badge-capsule">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metric 8: Critical Weak Spots -->
+      <div class="glass-card">
+        <h2 class="card-title">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          Critical Weak Spots
+        </h2>
+        <div id="ana-weak-spots" class="chip-collection">
+          <div class="feature-placeholder" style="width: 100%;">No weak spots identified yet (error rate &gt; 40%).</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: Q.BANK (Dynamic Filters & Question Sets) -->
+    <section id="view-qbank" class="view-container">
+      <div class="glass-card">
+        <h2 class="card-title">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+          </svg>
+          Question Sets
+        </h2>
+        <!-- Dynamic Filter Bar (Populated on the fly from source.js) -->
+        <div class="filter-grid-3">
+          <!-- Filter 1: Exam / Job -->
+          <div class="dropdown-group" style="margin-bottom: 0;">
+            <span class="dropdown-label">Job / Exam</span>
+            <div class="custom-dropdown" id="qbank-exam-filter" data-value="all">
+              <button class="dropdown-trigger" type="button">
+                <span class="trigger-label">All Exams</span>
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+              <div class="dropdown-menu" id="qbank-exam-menu">
+                <div class="dropdown-option selected" data-value="all">All Exams</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filter 2: Subject -->
+          <div class="dropdown-group" style="margin-bottom: 0;">
+            <span class="dropdown-label">Subject</span>
+            <div class="custom-dropdown" id="qbank-subject-filter" data-value="all">
+              <button class="dropdown-trigger" type="button">
+                <span class="trigger-label">All Subjects</span>
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+              <div class="dropdown-menu" id="qbank-subject-menu">
+                <div class="dropdown-option selected" data-value="all">All Subjects</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filter 3: Year -->
+          <div class="dropdown-group" style="margin-bottom: 0;">
+            <span class="dropdown-label">Year</span>
+            <div class="custom-dropdown" id="qbank-year-filter" data-value="all">
+              <button class="dropdown-trigger" type="button">
+                <span class="trigger-label">All Years</span>
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+              <div class="dropdown-menu" id="qbank-year-menu">
+                <div class="dropdown-option selected" data-value="all">All Years</div>
+              </div>
+            </div>
+          </div>
         </div>
 
+        <!-- Section Status Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <span id="qbank-status-label" style="font-size: 12px; font-weight: 600; color: var(--text-secondary);">10 Last Added Sets</span>
+          <button id="btn-qbank-reset-filters" class="btn btn-secondary" style="width: auto; padding: 4px 10px; font-size: 11px;" type="button">
+            Reset Filters
+          </button>
+        </div>
+
+        <!-- Sets List View -->
+        <div id="qbank-sets-container"></div>
+
+        <!-- Single Set Detail View (Opens when a set is tapped) -->
+        <div id="qbank-detail-view" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+            <button id="btn-back-to-sets" class="btn btn-secondary" style="width: auto; padding: 6px 12px; font-size: 12px;" type="button">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+              Back to Sets
+            </button>
+            <span id="qbank-active-set-title" style="font-size: 13px; font-weight: 600; color: var(--text);"></span>
+          </div>
+          <div id="qbank-set-questions-container"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: TEST (Randomized Questions with Job/Subject/Year Subtitles) -->
+    <section id="view-test" class="view-container">
       <div class="glass-card">
         <h2 class="card-title">
           <svg class="icon" viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="10"></circle>
             <polyline points="12 6 12 12 16 14"></polyline>
           </svg>
-          Quick Action
+          Examination
         </h2>
-        <button id="btn-quick-test" class="btn btn-primary" type="button">
-          <svg class="icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-          Start Daily Practice
-        </button>
-      </div>
-    </section>
-
-    <!-- VIEW 2: QUESTION BANK / STUDY MODE -->
-    <section id="view-bank" class="view-container">
-      <div class="glass-card">
-        <h2 class="card-title">
-          <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          Filter Questions
-        </h2>
-        <!-- Live Search Box -->
-        <div class="search-input-box">
-          <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <input type="text" id="bank-search-input" placeholder="Search questions, topics, or keywords..." autocomplete="off">
-        </div>
-
-        <!-- Filter Row -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
-          <div class="dropdown-group" style="margin-bottom: 0;">
-            <span class="dropdown-label">Subject</span>
-            <div class="custom-dropdown" id="bank-subject-dropdown" data-value="all">
+        <!-- SUB-PANEL 1: TEST CONFIGURATION (Only shown before starting a test) -->
+        <div id="test-config-view">
+          <div class="dropdown-group">
+            <span class="dropdown-label">Question Count</span>
+            <div class="custom-dropdown" id="test-count-dropdown" data-value="10">
               <button class="dropdown-trigger" type="button">
-                <span class="trigger-label">All Subjects</span>
-                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              </button>
-              <div class="dropdown-menu" id="bank-subject-menu">
-                <div class="dropdown-option selected" data-value="all">All Subjects</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="dropdown-group" style="margin-bottom: 0;">
-            <span class="dropdown-label">Source</span>
-            <div class="custom-dropdown" id="bank-source-dropdown" data-value="all">
-              <button class="dropdown-trigger" type="button">
-                <span class="trigger-label">All Sources</span>
+                <span class="trigger-label">10 Random Questions</span>
                 <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
               </button>
               <div class="dropdown-menu">
-                <div class="dropdown-option selected" data-value="all">All Sources</div>
-                <div class="dropdown-option" data-value="verified_pyq">Verified PYQ</div>
-                <div class="dropdown-option" data-value="practice">Practice</div>
-                <div class="dropdown-option" data-value="unverified_historical">Historical</div>
+                <div class="dropdown-option" data-value="5">5 Random Questions</div>
+                <div class="dropdown-option selected" data-value="10">10 Random Questions</div>
+                <div class="dropdown-option" data-value="20">20 Random Questions</div>
+                <div class="dropdown-option" data-value="all">All Available Questions</div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div style="display: flex; justify-content: space-between; align-items: center; margin: 12px 0;">
-          <span id="bank-results-count" style="font-size: 12px; font-weight: 600; color: var(--text-secondary);">Showing 0 Questions</span>
-          <button id="btn-start-filtered-test" class="btn btn-secondary" style="width: auto; padding: 6px 12px; font-size: 12px;" type="button">
-            <svg class="icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-            Test From Filtered
-          </button>
-        </div>
-
-        <!-- Question List Container -->
-        <div id="bank-questions-list"></div>
-      </div>
-    </section>
-
-    <!-- VIEW 3: TEST RUNNER -->
-    <!-- SUBVIEW A: TEST CONFIGURATION -->
-      <div id="test-config-panel" class="glass-card">
-        <h2 class="card-title">
-          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-          Configure Test Session
-        </h2>
-
-        <div class="dropdown-group">
-          <span class="dropdown-label">Question Count</span>
-          <div class="custom-dropdown" id="test-count-dropdown" data-value="10">
-            <button class="dropdown-trigger" type="button">
-              <span class="trigger-label">10 Questions</span>
-              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </button>
-            <div class="dropdown-menu">
-              <div class="dropdown-option" data-value="5">5 Questions</div>
-              <div class="dropdown-option selected" data-value="10">10 Questions</div>
-              <div class="dropdown-option" data-value="20">20 Questions</div>
-              <div class="dropdown-option" data-value="all">All Available</div>
+          <div class="dropdown-group">
+            <span class="dropdown-label">Time Limit</span>
+            <div class="custom-dropdown" id="test-time-dropdown" data-value="10">
+              <button class="dropdown-trigger" type="button">
+                <span class="trigger-label">10 Minutes</span>
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+              <div class="dropdown-menu">
+                <div class="dropdown-option" data-value="5">5 Minutes</div>
+                <div class="dropdown-option selected" data-value="10">10 Minutes</div>
+                <div class="dropdown-option" data-value="15">15 Minutes</div>
+                <div class="dropdown-option" data-value="30">30 Minutes</div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="dropdown-group">
-          <span class="dropdown-label">Time Limit</span>
-          <div class="custom-dropdown" id="test-time-dropdown" data-value="10">
-            <button class="dropdown-trigger" type="button">
-              <span class="trigger-label">10 Minutes</span>
-              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </button>
-            <div class="dropdown-menu">
-              <div class="dropdown-option" data-value="5">5 Minutes</div>
-              <div class="dropdown-option selected" data-value="10">10 Minutes</div>
-              <div class="dropdown-option" data-value="20">20 Minutes</div>
-              <div class="dropdown-option" data-value="30">30 Minutes</div>
+          <div class="dropdown-group">
+            <span class="dropdown-label">Negative Marking Rule</span>
+            <div class="custom-dropdown" id="test-penalty-dropdown" data-value="0.5">
+              <button class="dropdown-trigger" type="button">
+                <span class="trigger-label">BCS Standard (-0.50 per wrong)</span>
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+              <div class="dropdown-menu">
+                <div class="dropdown-option selected" data-value="0.5">BCS Standard (-0.50 per wrong)</div>
+                <div class="dropdown-option" data-value="0.25">Bank Standard (-0.25 per wrong)</div>
+                <div class="dropdown-option" data-value="0.0">No Penalty (0.00)</div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="dropdown-group">
-          <span class="dropdown-label">Negative Marking Rule</span>
-          <div class="custom-dropdown" id="test-penalty-dropdown" data-value="0.5">
-            <button class="dropdown-trigger" type="button">
-              <span class="trigger-label">Standard BCS (-0.50 per wrong)</span>
-              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </button>
-            <div class="dropdown-menu">
-              <div class="dropdown-option selected" data-value="0.5">Standard BCS (-0.50 per wrong)</div>
-              <div class="dropdown-option" data-value="0.25">Bank Recruitment (-0.25 per wrong)</div>
-              <div class="dropdown-option" data-value="0.0">No Penalty (0.00)</div>
-            </div>
-          </div>
-        </div>
-
-        <div id="test-config-notice" style="font-size: 12px; color: var(--text-secondary); margin: 12px 0;"></div>
-
-        <button id="btn-start-exam-now" class="btn btn-primary" type="button">
-          <svg class="icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-          Begin Test
-        </button>
-      </div>
-
-      <!-- SUBVIEW B: ACTIVE EXAMINATION RUNNER -->
-      <div id="test-active-panel" class="glass-card" style="display: none;">
-        <!-- Top Status & Timer -->
-        <div class="test-timer-bar">
-          <span id="exam-progress-counter" style="font-size: 13px; font-weight: 600;">Question 1 of 1</span>
-          <div class="timer-display" id="exam-clock">
-            <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-            <span id="exam-timer-text">00:00</span>
-          </div>
-        </div>
-
-        <!-- Question Palette Navigator -->
-        <div class="q-palette-grid" id="exam-palette"></div>
-
-        <!-- Question Content -->
-        <div id="exam-question-text" class="study-question-text" style="font-size: 16px; margin: 14px 0;"></div>
-        <div id="exam-options-list"></div>
-
-        <!-- Action Controls -->
-        <div class="exam-nav-actions">
-          <button id="btn-exam-prev" class="btn btn-secondary" style="width: auto;" type="button">
-            <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
-            Prev
-          </button>
-          <button id="btn-exam-flag" class="btn btn-secondary" style="width: auto;" type="button">
-            <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-            Review
-          </button>
-          <button id="btn-exam-next" class="btn btn-secondary" style="width: auto;" type="button">
-            Next
-            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
-          </button>
-        </div>
-
-        <button id="btn-exam-submit" class="btn btn-primary" style="margin-top: 14px;" type="button">
-          Submit Examination
-        </button>
-      </div>
-
-      <!-- Submit Confirmation Modal -->
-      <div id="exam-confirm-modal" class="native-modal-overlay">
-        <div class="native-modal-box">
-          <h3 style="font-size: 17px; margin-bottom: 8px;">Submit Exam?</h3>
-          <p id="exam-confirm-summary" style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px;">
-            You have answered 0 of 0 questions.
+          <p id="test-bank-summary" style="font-size: 12px; color: var(--text-secondary); margin: 14px 0 16px;">
+            Questions are randomly picked across all job categories, subjects, and years.
           </p>
-          <div style="display: flex; gap: 10px;">
-            <button id="btn-confirm-cancel" class="btn btn-secondary" type="button">Continue</button>
-            <button id="btn-confirm-yes" class="btn btn-primary" type="button">Submit</button>
-          </div>
-        </div>
-      </div>
-      
-    <!-- VIEW 4: PROGRESS & MISTAKES -->
-    <section id="view-progress" class="view-container">
-      <div class="glass-card">
-        <h2 class="card-title">
-          <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-          Analytics &amp; Mistake Notebook
-        </h2>
-        <!-- Segmented Tab Switcher -->
-        <div class="segmented-control" id="progress-tabs">
-          <button class="segment-btn active" data-subview="mistakes" type="button">
-            <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-            Mistakes
-          </button>
-          <button class="segment-btn" data-subview="subjects" type="button">
-            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-            Subjects
-          </button>
-          <button class="segment-btn" data-subview="history" type="button">
-            <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-            History
+
+          <button id="btn-start-random-test" class="btn btn-primary" type="button">
+            <svg class="icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            Start Randomized Test
           </button>
         </div>
 
-        <!-- SUB-PANEL 1: MISTAKE NOTEBOOK & REVISION -->
-        <div id="subview-mistakes">
-          <div id="mistakes-list-container"></div>
-        </div>
-
-        <!-- SUB-PANEL 2: SUBJECT & TOPIC ACCURACY -->
-        <div id="subview-subjects" style="display: none;">
-          <div id="subjects-analytics-container"></div>
-        </div>
-
-        <!-- SUB-PANEL 3: TEST HISTORY -->
-        <div id="subview-history" style="display: none;">
-          <div id="history-list-container"></div>
-        </div>
-      </div>
-    </section>
-    <!-- VIEW: RESULTS & REVIEW -->
-    <section id="view-results" class="view-container">
-      <div class="scorecard-banner">
-        <div style="font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase;">Examination Score</div>
-        <div class="score-headline" id="res-score">0.00</div>
-        <div style="font-size: 13px; color: var(--text-secondary);" id="res-time-meta">Time Taken: 0s</div>
-      </div>
-
-      <div class="glass-card">
-        <div class="metrics-grid" style="margin-top: 0;">
-          <div class="metric-card">
-            <span class="metric-val" id="res-correct" style="color: #34c759;">0</span>
-            <span class="metric-label">Correct</span>
+        <!-- SUB-PANEL 2: ACTIVE EXAMINATION RUNNER -->
+        <div id="test-runner-view" style="display: none;">
+          <div class="test-timer-bar">
+            <span id="test-q-progress" style="font-size: 13px; font-weight: 600;">Question 1 of 10</span>
+            <div class="timer-pill" id="test-clock">
+              <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span id="test-timer-text">00:00</span>
+            </div>
           </div>
-          <div class="metric-card">
-            <span class="metric-val" id="res-incorrect" style="color: #ff453a;">0</span>
-            <span class="metric-label">Incorrect</span>
-          </div>
-          <div class="metric-card">
-            <span class="metric-val" id="res-unanswered">0</span>
-            <span class="metric-label">Unanswered</span>
-          </div>
-          <div class="metric-card">
-            <span class="metric-val" id="res-accuracy">0%</span>
-            <span class="metric-label">Accuracy</span>
-          </div>
-        </div>
-      </div>
 
-      <!-- Review Questions List -->
-      <div class="glass-card">
-        <h2 class="card-title">
-          <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-          Question Review
-        </h2>
+          <!-- Question Palette Grid -->
+          <div class="palette-grid" id="test-palette-grid"></div>
 
-        <!-- Filter Chips -->
-        <div class="result-chips-row">
-          <button class="filter-chip-btn active" data-filter="all" type="button">All (<span id="chip-cnt-all">0</span>)</button>
-          <button class="filter-chip-btn" data-filter="incorrect" type="button">Incorrect (<span id="chip-cnt-wrong">0</span>)</button>
-          <button class="filter-chip-btn" data-filter="correct" type="button">Correct (<span id="chip-cnt-right">0</span>)</button>
-          <button class="filter-chip-btn" data-filter="unanswered" type="button">Unanswered (<span id="chip-cnt-skipped">0</span>)</button>
+          <!-- Question Subtitle: Job • Subject • Year -->
+          <div id="test-question-subtitle" class="q-meta-subtitle">General • Subject • Year</div>
+
+          <!-- Question Text & Options -->
+          <div id="test-question-text" style="font-size: 15px; font-weight: 600; line-height: 1.45; margin-bottom: 14px;"></div>
+          <div id="test-options-list"></div>
+
+          <!-- Navigation Controls -->
+          <div style="display: flex; justify-content: space-between; gap: 8px; margin-top: 16px;">
+            <button id="btn-test-prev" class="btn btn-secondary" style="width: auto; padding: 10px 16px;" type="button">Prev</button>
+            <button id="btn-test-flag" class="btn btn-secondary" style="width: auto; padding: 10px 16px;" type="button">Review</button>
+            <button id="btn-test-next" class="btn btn-secondary" style="width: auto; padding: 10px 16px;" type="button">Next</button>
+          </div>
+
+          <button id="btn-trigger-test-submit" class="btn btn-primary" style="margin-top: 14px;" type="button">
+            Submit Examination
+          </button>
         </div>
 
-        <div id="results-questions-list"></div>
+        <!-- SUB-PANEL 3: POST-EXAM RESULTS SCREEN -->
+        <div id="test-result-view" style="display: none;">
+          <div class="result-scorecard">
+            <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--text-secondary);">Examination Score</div>
+            <div class="result-big-score" id="res-score-display">0.00</div>
+            <div style="font-size: 13px; color: var(--text-secondary);" id="res-meta-text">Completed in 0s</div>
+          </div>
 
-        <div style="display: flex; gap: 8px; margin-top: 14px;">
-          <button id="btn-retry-incorrect" class="btn btn-secondary" type="button">Retry Incorrect</button>
-          <button id="btn-results-done" class="btn btn-primary" type="button">Back to Home</button>
+          <div class="analytics-grid-2">
+            <div class="analytics-stat-card">
+              <span class="stat-val" id="res-correct-cnt" style="color: #34c759;">0</span>
+              <span class="stat-label">Correct</span>
+            </div>
+            <div class="analytics-stat-card">
+              <span class="stat-val" id="res-wrong-cnt" style="color: #ff453a;">0</span>
+              <span class="stat-label">Incorrect</span>
+            </div>
+          </div>
+
+          <h3 style="font-size: 15px; font-weight: 600; margin: 16px 0 10px;">Detailed Answers &amp; Explanations</h3>
+          <div id="test-result-review-list"></div>
+
+          <button id="btn-test-finish-done" class="btn btn-primary" style="margin-top: 14px;" type="button">
+            Done (Return to Analytics)
+          </button>
+        </div>
+
+        <!-- Confirmation Modal -->
+        <div id="test-confirm-modal" class="native-modal-overlay">
+          <div class="native-modal-box">
+            <h3 style="font-size: 17px; margin-bottom: 8px;">Submit Exam?</h3>
+            <p id="test-modal-summary" style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px;">
+              You have answered 0 questions.
+            </p>
+            <div style="display: flex; gap: 10px;">
+              <button id="btn-test-modal-cancel" class="btn btn-secondary" type="button">Continue</button>
+              <button id="btn-test-modal-confirm" class="btn btn-primary" type="button">Submit</button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- VIEW 5: SETTINGS -->
+    <!-- TAB 4: MISTAKES (Mistake Question + Right Answer + Explanation Only) -->
+    <section id="view-mistakes" class="view-container">
+      <div class="glass-card">
+        <h2 class="card-title">
+          <svg class="icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+          </svg>
+          Mistake Notebook
+        </h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+          <span style="font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase;">Incorrect Questions Queue</span>
+          <span id="mistakes-count-badge" class="badge-capsule">0 Items</span>
+        </div>
+
+        <!-- Strictly Question + Right Answer + Explanation -->
+        <div id="mistakes-items-container"></div>
+      </div>
+    </section>
+
+    <!-- TAB 5: SETTINGS (Redesigned with Gear Icon, Custom Accents & Data) -->
     <section id="view-settings" class="view-container">
       <div class="glass-card">
         <h2 class="card-title">
-          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-          System &amp; Data
+          <svg class="icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          Settings
         </h2>
-        <!-- Storage & Sync Info -->
-        <div class="settings-row">
-          <div>
-            <div class="settings-label">Local Data Status</div>
-            <div class="settings-sublabel" id="settings-last-saved">Last modified: Just now</div>
+        <!-- Section 1: Appearance & Accents -->
+        <div class="dropdown-group">
+          <span class="dropdown-label">Theme Mode</span>
+          <div class="custom-dropdown" id="settings-theme-dropdown" data-value="auto">
+            <button class="dropdown-trigger" type="button">
+              <span class="trigger-label">Automatic (System)</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="dropdown-menu">
+              <div class="dropdown-option selected" data-value="auto">Automatic (System)</div>
+              <div class="dropdown-option" data-value="light">Light Mode</div>
+              <div class="dropdown-option" data-value="dark">Dark Mode</div>
+            </div>
           </div>
-          <span class="badge-capsule" id="settings-storage-size">0 KB</span>
         </div>
 
-        <div class="settings-row">
-          <div>
-            <div class="settings-label">Schema Version</div>
-            <div class="settings-sublabel">Local database version</div>
+        <div style="margin-top: 14px;">
+          <span class="dropdown-label">Custom Accent Color</span>
+          <div class="accent-palette-row" id="accent-swatches-box">
+            <button class="accent-circle-btn selected" data-color="blue" style="background: #007aff;" type="button" aria-label="Blue">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </button>
+            <button class="accent-circle-btn" data-color="purple" style="background: #af52de;" type="button" aria-label="Purple">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </button>
+            <button class="accent-circle-btn" data-color="indigo" style="background: #5856d6;" type="button" aria-label="Indigo">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </button>
+            <button class="accent-circle-btn" data-color="pink" style="background: #ff2d55;" type="button" aria-label="Pink">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </button>
+            <button class="accent-circle-btn" data-color="orange" style="background: #ff9500;" type="button" aria-label="Orange">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </button>
+            <button class="accent-circle-btn" data-color="green" style="background: #34c759;" type="button" aria-label="Green">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </button>
+            <button class="accent-circle-btn" data-color="teal" style="background: #00c7be;" type="button" aria-label="Teal">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </button>
           </div>
-          <span style="font-size: 13px; font-weight: 600; color: var(--text-secondary);">v1</span>
         </div>
       </div>
 
-      <!-- Backup & Restore Panel -->
+      <!-- Section 2: Data Portability -->
       <div class="glass-card">
         <h2 class="card-title">
           <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-          Data Portability
+          Data Portability &amp; Backups
         </h2>
-        <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 14px;">
-          Export your entire preparation history, bookmarks, and mistake notebook as a portable JSON file, or restore on another device.
-        </p>
+        <div class="settings-list-row">
+          <div>
+            <div style="font-size: 14px; font-weight: 500;">Storage Footprint</div>
+            <div style="font-size: 11px; color: var(--text-secondary);" id="set-last-modified-label">Last Saved: Just now</div>
+          </div>
+          <span class="badge-capsule" id="set-storage-size">0 KB</span>
+        </div>
 
-        <div style="display: flex; flex-direction: column; gap: 10px;">
-          <button id="btn-export-backup" class="btn btn-secondary" type="button">
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px;">
+          <button id="btn-export-json" class="btn btn-secondary" type="button">
             <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
             Download Backup (.json)
           </button>
-
-          <input type="file" id="backup-file-input" accept=".json" style="display: none;">
-          <button id="btn-trigger-import" class="btn btn-secondary" type="button">
+          <input type="file" id="import-json-file" accept=".json" style="display: none;">
+          <button id="btn-import-trigger" class="btn btn-secondary" type="button">
             <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
             Restore Backup (.json)
           </button>
         </div>
       </div>
 
-      <!-- Native Shell Capabilities Panel -->
-      <div class="glass-card" id="native-capabilities-card" style="display: none;">
+      <!-- Section 3: Native Shell Capabilities -->
+      <div class="glass-card" id="settings-native-card" style="display: none;">
         <h2 class="card-title">
           <svg class="icon" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
-          Native Shell Capabilities
+          Portal Native Capabilities
         </h2>
-        <div class="settings-row" id="row-cap-haptics" style="display: none;">
+        <div class="settings-list-row" id="row-cap-haptics" style="display: none;">
           <div>
-            <div class="settings-label">Haptic Feedback</div>
-            <div class="settings-sublabel">Tactile response on button taps and selections</div>
+            <div style="font-size: 14px; font-weight: 500;">Haptic Feedback</div>
+            <div style="font-size: 11px; color: var(--text-secondary);">Tactile clicks on answer selection</div>
           </div>
           <span class="badge-capsule">Active</span>
         </div>
-        <div class="settings-row" id="row-cap-notifications" style="display: none;">
+        <div class="settings-list-row" id="row-cap-notif" style="display: none;">
           <div>
-            <div class="settings-label">Native Notifications</div>
-            <div class="settings-sublabel">Exam completion and revision alerts</div>
+            <div style="font-size: 14px; font-weight: 500;">Exam Notifications</div>
+            <div style="font-size: 11px; color: var(--text-secondary);">Test completion notifications</div>
           </div>
-          <button id="btn-test-notification" class="btn btn-secondary" style="width: auto; padding: 6px 12px; font-size: 12px;" type="button">
-            Test Alert
-          </button>
+          <button id="btn-test-shell-notif" class="btn btn-secondary" style="width: auto; padding: 4px 10px; font-size: 11px;" type="button">Test Alert</button>
         </div>
       </div>
 
-      <!-- Danger Zone Panel -->
+      <!-- Section 4: Clear Data -->
       <div class="glass-card">
         <h2 class="card-title" style="color: #ff453a;">
           <svg class="icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
           Reset Application Data
         </h2>
-        <button id="btn-reset-data" class="btn btn-secondary" style="color: #ff453a; border-color: rgba(255, 69, 58, 0.3);" type="button">
-          Clear All Local Progress
+        <button id="btn-clear-all-progress" class="btn btn-secondary" style="color: #ff453a; border-color: rgba(255, 69, 58, 0.3);" type="button">
+          Clear All History &amp; Mistakes
         </button>
       </div>
 
-      <!-- Settings Confirmation Modal -->
-      <div id="settings-confirm-modal" class="native-modal-overlay">
+      <!-- Settings Action Modal -->
+      <div id="settings-action-modal" class="native-modal-overlay">
         <div class="native-modal-box">
-          <h3 style="font-size: 17px; margin-bottom: 8px;" id="settings-modal-title">Confirm Action</h3>
-          <p id="settings-modal-msg" style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px;">Are you sure?</p>
+          <h3 id="settings-action-title" style="font-size: 17px; margin-bottom: 8px;">Confirm Action</h3>
+          <p id="settings-action-msg" style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px;">Are you sure?</p>
           <div style="display: flex; gap: 10px;">
-            <button id="btn-settings-cancel" class="btn btn-secondary" type="button">Cancel</button>
-            <button id="btn-settings-confirm" class="btn btn-primary" type="button">Confirm</button>
+            <button id="btn-action-cancel" class="btn btn-secondary" type="button">Cancel</button>
+            <button id="btn-action-confirm" class="btn btn-primary" type="button">Confirm</button>
           </div>
         </div>
       </div>
@@ -1378,56 +1339,81 @@
 
   </main>
 
-  <!-- Bottom Glass Navigation Bar -->
+  <!-- iOS Bottom Tab Bar (Home, Q.Bank, Test, Mistakes, Settings) -->
   <nav id="bottom-tab-bar" aria-label="Main Navigation">
-    <button class="tab-item active" data-view="dashboard" type="button">
-      <svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+    <button class="tab-item active" data-view="home" type="button">
+      <svg class="icon" viewBox="0 0 24 24">
+        <line x1="18" y1="20" x2="18" y2="10"></line>
+        <line x1="12" y1="20" x2="12" y2="4"></line>
+        <line x1="6" y1="20" x2="6" y2="14"></line>
+      </svg>
       <span>Home</span>
     </button>
-    <button class="tab-item" data-view="bank" type="button">
-      <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-      <span>Bank</span>
+    <button class="tab-item" data-view="qbank" type="button">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+      </svg>
+      <span>Q.Bank</span>
     </button>
     <button class="tab-item" data-view="test" type="button">
-      <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+      <svg class="icon" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10"></circle>
+        <polyline points="12 6 12 12 16 14"></polyline>
+      </svg>
       <span>Test</span>
     </button>
-    <button class="tab-item" data-view="progress" type="button">
-      <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+    <button class="tab-item" data-view="mistakes" type="button">
+      <svg class="icon" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="15" y1="9" x2="9" y2="15"></line>
+        <line x1="9" y1="9" x2="15" y2="15"></line>
+      </svg>
       <span>Mistakes</span>
     </button>
     <button class="tab-item" data-view="settings" type="button">
-      <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="3" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="21" r="1"></circle></svg>
-      <span>More</span>
+      <!-- iOS Redesigned Gear Icon -->
+      <svg class="icon" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+      <span>Settings</span>
     </button>
   </nav>
 
-  <!-- Application Logic -->
+  <!-- Application Controller -->
   <script>
     (function () {
       "use strict";
 
-      // Rule 6: Handle autosync mode immediately before any rendering
+      // Rule 6: Handle Portal Autosync mode immediately
       var urlParams = new URLSearchParams(window.location.search);
       var isAutoSync = urlParams.get("autosync") === "1";
       if (isAutoSync) {
         document.body.style.display = "none";
       }
 
-      // App Navigation Engine
+      // App Tab Navigation
       var tabs = document.querySelectorAll(".tab-item");
       var views = {
-        dashboard: document.getElementById("view-dashboard"),
-        bank: document.getElementById("view-bank"),
+        home: document.getElementById("view-home"),
+        qbank: document.getElementById("view-qbank"),
         test: document.getElementById("view-test"),
-        results: document.getElementById("view-results"),
-        progress: document.getElementById("view-progress"),
+        mistakes: document.getElementById("view-mistakes"),
         settings: document.getElementById("view-settings")
       };
 
-      function switchView(targetName) {
+      var titleEl = document.getElementById("nav-screen-title");
+      var titles = {
+        home: "Analytics",
+        qbank: "Q.Bank",
+        test: "Test",
+        mistakes: "Mistakes",
+        settings: "Settings"
+      };
+
+      function switchView(target) {
         tabs.forEach(function (tab) {
-          if (tab.getAttribute("data-view") === targetName) {
+          if (tab.getAttribute("data-view") === target) {
             tab.classList.add("active");
           } else {
             tab.classList.remove("active");
@@ -1436,7 +1422,7 @@
 
         Object.keys(views).forEach(function (name) {
           if (views[name]) {
-            if (name === targetName) {
+            if (name === target) {
               views[name].classList.add("active");
             } else {
               views[name].classList.remove("active");
@@ -1444,18 +1430,23 @@
           }
         });
 
-        // Refresh dynamic view contents on navigation
-        if (targetName === "bank" && typeof renderQuestionBank === "function") {
-          renderQuestionBank();
+        if (titleEl && titles[target]) {
+          titleEl.textContent = titles[target];
         }
-        if (targetName === "test" && typeof updateConfigNotice === "function") {
-          updateConfigNotice();
+        if (target === "home" && typeof renderAnalyticsDashboard === "function") {
+          renderAnalyticsDashboard();
         }
-        if (targetName === "progress" && typeof renderProgressView === "function") {
-          renderProgressView();
+        if (target === "qbank" && typeof renderQuestionBankView === "function") {
+          renderQuestionBankView();
         }
-        if (targetName === "dashboard" && typeof renderDashboard === "function") {
-          renderDashboard();
+        if (target === "test" && typeof renderTestTab === "function") {
+          renderTestTab();
+        }
+        if (target === "mistakes" && typeof renderMistakesNotebook === "function") {
+          renderMistakesNotebook();
+        }
+        if (target === "settings" && typeof renderSettingsView === "function") {
+          renderSettingsView();
         }
       }
 
@@ -1466,7 +1457,7 @@
         });
       });
 
-      // Global Event-Delegated Custom Dropdown Engine
+      // Global Event-Delegated Native Dropdown Handler
       document.addEventListener("click", function (e) {
         var trigger = e.target.closest(".dropdown-trigger");
         if (trigger) {
@@ -1491,7 +1482,6 @@
             if (label) label.textContent = option.textContent;
             dd.setAttribute("data-value", option.getAttribute("data-value"));
             menu.classList.remove("open");
-            // Trigger change event for listeners
             dd.dispatchEvent(new CustomEvent("change", { detail: { value: option.getAttribute("data-value") } }));
           }
           return;
@@ -1500,1065 +1490,259 @@
         document.querySelectorAll(".dropdown-menu").forEach(function (m) { m.classList.remove("open"); });
       });
 
-      // Question Bank registry loaded safely from window.QUESTION_BANK (defined in source.js)
+      // === FEATURE: data-layer ===
+      var STORAGE_KEY = "prep_app_rebuild_v2";
+
+      // Supported iOS Accent Colors
+      var ACCENT_PALETTE = {
+        blue:   { hex: "#007aff", rgb: "0, 122, 255" },
+        purple: { hex: "#af52de", rgb: "175, 82, 222" },
+        indigo: { hex: "#5856d6", rgb: "88, 86, 214" },
+        pink:   { hex: "#ff2d55", rgb: "255, 45, 85" },
+        orange: { hex: "#ff9500", rgb: "255, 149, 0" },
+        green:  { hex: "#34c759", rgb: "52, 199, 89" },
+        teal:   { hex: "#00c7be", rgb: "0, 199, 190" }
+      };
+
+      // Default State
+      function getInitialData() {
+        return {
+          schemaVersion: 2,
+          lastModified: Date.now(),
+          theme: "auto",          // "auto" | "light" | "dark"
+          accent: "blue",         // key in ACCENT_PALETTE
+          attempts: {},           // questionId -> { attempts, correct, incorrect, lastAttempt, flagged }
+          testHistory: [],        // array of completed exam records
+          activeSession: null     // in-progress exam recovery checkpoint
+        };
+      }
+
+      var appData = null;
+      var dataReadyResolve = null;
+      var dataReady = new Promise(function (resolve) {
+        dataReadyResolve = resolve;
+      });
+
+      // Synchronous getter for Portal sync contract
+      window.getLocalData = function () {
+        return appData;
+      };
+
+      // Debounced LocalStorage Saver
+      var saveDebounceTimer = null;
+      function saveLocalData(immediate) {
+        if (!appData) return;
+        appData.lastModified = Date.now();
+
+        var commit = function () {
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+          } catch (e) {
+            console.error("Storage write error:", e);
+          }
+        };
+
+        if (immediate) {
+          clearTimeout(saveDebounceTimer);
+          commit();
+        } else {
+          clearTimeout(saveDebounceTimer);
+          saveDebounceTimer = setTimeout(commit, 1200);
+        }
+      }
+
+      // Remote Data Applicator (Used by Portal Sync and Settings Import)
+      window.applyRemoteData = function (remote) {
+        if (!remote || typeof remote !== "object") return;
+        appData = remote;
+        if (!appData.attempts) appData.attempts = {};
+        if (!appData.testHistory) appData.testHistory = [];
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+        } catch (e) {}
+
+        applyThemeAndAccent();
+        renderAll();
+      };
+
+      // Apply Theme & Custom Accent to the DOM
+      function applyThemeAndAccent() {
+        if (!appData) return;
+        var theme = appData.theme || "auto";
+        var accentKey = appData.accent || "blue";
+        var palette = ACCENT_PALETTE[accentKey] || ACCENT_PALETTE.blue;
+
+        // Apply Accent CSS Variables
+        document.documentElement.style.setProperty("--accent", palette.hex);
+        document.documentElement.style.setProperty("--accent-rgb", palette.rgb);
+
+        // Update Theme Color Meta tag
+        var metaTheme = document.querySelector('meta[name="theme-color"]');
+        if (metaTheme) metaTheme.setAttribute("content", palette.hex);
+
+        // Apply Light / Dark Theme Attribute
+        if (theme === "auto") {
+          document.documentElement.removeAttribute("data-theme");
+          document.body.classList.remove("theme-dark", "theme-light");
+        } else if (theme === "dark") {
+          document.documentElement.setAttribute("data-theme", "dark");
+          document.body.classList.add("theme-dark");
+          document.body.classList.remove("theme-light");
+        } else {
+          document.documentElement.setAttribute("data-theme", "light");
+          document.body.classList.add("theme-light");
+          document.body.classList.remove("theme-dark");
+        }
+      }
+
+      // Safe Accessor for Questions from source.js
       function getQuestions() {
         return (window.QUESTION_BANK && Array.isArray(window.QUESTION_BANK)) ? window.QUESTION_BANK : [];
       }
-      // Centralized Re-render Hook
+
+      // Centralized Render Dispatcher
       function renderAll() {
-        var statusPill = document.getElementById("status-pill");
-        if (statusPill && appData) {
-          var attemptedCount = Object.keys(appData.attempts).length;
-          statusPill.textContent = attemptedCount > 0 ? (attemptedCount + " Done") : "Ready";
+        if (typeof renderAnalyticsDashboard === "function") {
+          renderAnalyticsDashboard();
         }
-        renderDashboard();
-        if (typeof renderQuestionBank === "function") {
-          renderQuestionBank();
+        if (typeof renderQuestionBankView === "function") {
+          renderQuestionBankView();
         }
-        if (typeof renderProgressView === "function") {
-          renderProgressView();
+        if (typeof renderMistakesNotebook === "function") {
+          renderMistakesNotebook();
         }
-        if (typeof updateSettingsInfo === "function") {
-          updateSettingsInfo();
+        if (typeof renderSettingsView === "function") {
+          renderSettingsView();
         }
       }
 
-      // Feature: Dashboard Metrics and Weak Topic Analytics
-      function renderDashboard() {
-        if (!appData) return;
-        var allQuestions = getQuestions();
-        var selectedCat = appData.selectedCategory || "government";
-
-        // Filter questions belonging to active exam category
-        var catQuestions = allQuestions.filter(function (q) {
-          return q.examCategory === selectedCat;
-        });
-
-        // Compute metrics
-        var totalAvailable = catQuestions.length;
-        var attemptsMap = appData.attempts || {};
-        var attemptedCount = 0;
-        var totalCorrect = 0;
-        var totalAnswered = 0;
-        var revisionCount = 0;
-
-        catQuestions.forEach(function (q) {
-          var att = attemptsMap[q.id];
-          if (att && att.attempts > 0) {
-            attemptedCount++;
-            totalCorrect += (att.correct || 0);
-            totalAnswered += att.attempts;
-            if (att.flagged) revisionCount++;
-          }
-        });
-
-        var accuracy = totalAnswered > 0 ? Math.round((totalCorrect / totalAnswered) * 100) : 0;
-        var completedTests = (appData.testHistory || []).filter(function (t) {
-          return t.category === selectedCat;
-        }).length;
-
-        // Render counters
-        var elTotal = document.getElementById("metric-total");
-        var elAttempted = document.getElementById("metric-attempted");
-        var elTests = document.getElementById("metric-tests");
-        var elAccuracy = document.getElementById("metric-accuracy");
-        var elRevision = document.getElementById("metric-revision");
-
-        if (elTotal) elTotal.textContent = totalAvailable;
-        if (elAttempted) elAttempted.textContent = attemptedCount;
-        if (elTests) elTests.textContent = completedTests;
-        if (elAccuracy) elAccuracy.textContent = accuracy + "%";
-        if (elRevision) elRevision.textContent = revisionCount;
-
-        // Compute weak topics (accuracy < 60% with attempts)
-        var topicStats = {};
-        catQuestions.forEach(function (q) {
-          var att = attemptsMap[q.id];
-          if (att && att.attempts > 0) {
-            var top = q.topic || "General";
-            if (!topicStats[top]) topicStats[top] = { correct: 0, total: 0 };
-            topicStats[top].correct += (att.correct || 0);
-            topicStats[top].total += att.attempts;
-          }
-        });
-
-        var weakTopicsContainer = document.getElementById("dashboard-weak-topics");
-        if (weakTopicsContainer) {
-          while (weakTopicsContainer.firstChild) {
-            weakTopicsContainer.removeChild(weakTopicsContainer.firstChild);
-          }
-
-          var weakList = [];
-          Object.keys(topicStats).forEach(function (top) {
-            var st = topicStats[top];
-            var pct = (st.correct / st.total) * 100;
-            if (pct < 60) {
-              weakList.push({ name: top, pct: Math.round(pct) });
-            }
-          });
-
-          if (weakList.length === 0) {
-            var notice = document.createElement("span");
-            notice.className = "topic-chip empty-notice";
-            notice.textContent = attemptedCount === 0 ? "No practice data recorded yet" : "No weak topics identified yet (Acc >= 60%)";
-            weakTopicsContainer.appendChild(notice);
-          } else {
-            weakList.forEach(function (w) {
-              var chip = document.createElement("span");
-              chip.className = "topic-chip";
-              chip.textContent = w.name + " (" + w.pct + "%)";
-              weakTopicsContainer.appendChild(chip);
-            });
-          }
-        }
-      }
-      // === FEATURE: question-bank-browser ===
-      var bankSearchQuery = "";
-      var bankSelectedSubject = "all";
-      var bankSelectedSource = "all";
-
-      function getSourceBadgeHtml(type) {
-        if (type === "verified_pyq") return '<span class="source-badge badge-pyq">Verified PYQ</span>';
-        if (type === "unverified_historical") return '<span class="source-badge badge-unverified">Unverified</span>';
-        return '<span class="source-badge badge-practice">Practice</span>';
-      }
-
-      function populateSubjectFilter(questions) {
-        var menu = document.getElementById("bank-subject-menu");
-        if (!menu) return;
-        var subjects = {};
-        questions.forEach(function (q) {
-          if (q.subject) subjects[q.subject] = true;
-        });
-
-        while (menu.children.length > 1) {
-          menu.removeChild(menu.lastChild);
-        }
-
-        Object.keys(subjects).sort().forEach(function (sub) {
-          var opt = document.createElement("div");
-          opt.className = "dropdown-option" + (bankSelectedSubject === sub ? " selected" : "");
-          opt.setAttribute("data-value", sub);
-          opt.textContent = sub;
-          menu.appendChild(opt);
-        });
-      }
-
-      function renderQuestionBank() {
-        var container = document.getElementById("bank-questions-list");
-        var countLabel = document.getElementById("bank-results-count");
-        if (!container) return;
-
-        var allQuestions = getQuestions();
-        var selectedCat = (appData && appData.selectedCategory) ? appData.selectedCategory : "government";
-
-        var catQuestions = allQuestions.filter(function (q) {
-          return q.examCategory === selectedCat;
-        });
-
-        populateSubjectFilter(catQuestions);
-
-        var filtered = catQuestions.filter(function (q) {
-          if (bankSelectedSubject !== "all" && q.subject !== bankSelectedSubject) return false;
-          if (bankSelectedSource !== "all" && q.sourceType !== bankSelectedSource) return false;
-          if (bankSearchQuery) {
-            var qText = (q.question + " " + (q.topic || "") + " " + (q.subtopic || "")).toLowerCase();
-            if (qText.indexOf(bankSearchQuery) === -1) return false;
-          }
-          return true;
-        });
-
-        if (countLabel) {
-          countLabel.textContent = "Showing " + filtered.length + " of " + catQuestions.length + " Questions";
-        }
-
-        while (container.firstChild) {
-          container.removeChild(container.firstChild);
-        }
-
-        if (filtered.length === 0) {
-          var empty = document.createElement("div");
-          empty.className = "feature-placeholder";
-          empty.textContent = "No questions found matching your filter criteria.";
-          container.appendChild(empty);
-          return;
-        }
-
-        filtered.forEach(function (q) {
-          var att = (appData && appData.attempts && appData.attempts[q.id]) ? appData.attempts[q.id] : {};
-          var isBookmarked = !!att.bookmarked;
-          var isFlagged = !!att.flagged;
-
-          var card = document.createElement("div");
-          card.className = "study-card";
-          card.setAttribute("data-id", q.id);
-
-          var metaRow = document.createElement("div");
-          metaRow.className = "study-card-meta";
-          metaRow.innerHTML = getSourceBadgeHtml(q.sourceType) +
-            '<span style="font-size: 11px; color: var(--text-secondary);">' + (q.examName || "") + ' (' + (q.year || "") + ')</span>';
-
-          var qTitle = document.createElement("div");
-          qTitle.className = "study-question-text";
-          qTitle.textContent = q.question;
-
-          var optsContainer = document.createElement("div");
-          optsContainer.className = "study-options";
-
-          (q.options || []).forEach(function (opt) {
-            var optDiv = document.createElement("div");
-            optDiv.className = "study-option-item";
-            optDiv.setAttribute("data-opt-id", opt.id);
-
-            var letterSpan = document.createElement("span");
-            letterSpan.className = "opt-letter";
-            letterSpan.textContent = opt.id;
-
-            var txtSpan = document.createElement("span");
-            txtSpan.textContent = opt.text;
-
-            optDiv.appendChild(letterSpan);
-            optDiv.appendChild(txtSpan);
-            optsContainer.appendChild(optDiv);
-          });
-
-          var expPanel = document.createElement("div");
-          expPanel.className = "study-explanation-panel";
-          var expContent = document.createElement("div");
-          expContent.textContent = q.explanation || "No explanation provided.";
-          expPanel.appendChild(expContent);
-
-          var actionsRow = document.createElement("div");
-          actionsRow.className = "study-card-actions";
-
-          var btnReveal = document.createElement("button");
-          btnReveal.type = "button";
-          btnReveal.className = "btn-icon-action";
-          btnReveal.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg><span>Answer</span>';
-          btnReveal.addEventListener("click", function () {
-            var isShown = expPanel.classList.toggle("visible");
-            optsContainer.querySelectorAll(".study-option-item").forEach(function (item) {
-              if (item.getAttribute("data-opt-id") === q.correctAnswer) {
-                if (isShown) item.classList.add("correct-reveal");
-                else item.classList.remove("correct-reveal");
-              }
-            });
-          });
-
-          var btnBookmark = document.createElement("button");
-          btnBookmark.type = "button";
-          btnBookmark.className = "btn-icon-action" + (isBookmarked ? " active-bookmark" : "");
-          btnBookmark.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg><span>Save</span>';
-          btnBookmark.addEventListener("click", function () {
-            if (!appData.attempts[q.id]) {
-              appData.attempts[q.id] = { attempts: 0, correct: 0, incorrect: 0, lastAttempt: 0, flagged: false, bookmarked: false };
-            }
-            appData.attempts[q.id].bookmarked = !appData.attempts[q.id].bookmarked;
-            btnBookmark.classList.toggle("active-bookmark", appData.attempts[q.id].bookmarked);
-            saveLocalData();
-          });
-
-          var btnRevision = document.createElement("button");
-          btnRevision.type = "button";
-          btnRevision.className = "btn-icon-action" + (isFlagged ? " active-revision" : "");
-          btnRevision.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg><span>Revise</span>';
-          btnRevision.addEventListener("click", function () {
-            if (!appData.attempts[q.id]) {
-              appData.attempts[q.id] = { attempts: 0, correct: 0, incorrect: 0, lastAttempt: 0, flagged: false, bookmarked: false };
-            }
-            appData.attempts[q.id].flagged = !appData.attempts[q.id].flagged;
-            btnRevision.classList.toggle("active-revision", appData.attempts[q.id].flagged);
-            saveLocalData();
-            renderDashboard();
-          });
-
-          actionsRow.appendChild(btnReveal);
-          actionsRow.appendChild(btnBookmark);
-          actionsRow.appendChild(btnRevision);
-
-          card.appendChild(metaRow);
-          card.appendChild(qTitle);
-          card.appendChild(optsContainer);
-          card.appendChild(expPanel);
-          card.appendChild(actionsRow);
-
-          container.appendChild(card);
-        });
-      }
-
-      // Attach search & filter listeners
-      var bankSearchEl = document.getElementById("bank-search-input");
-      if (bankSearchEl) {
-        bankSearchEl.addEventListener("input", function (e) {
-          bankSearchQuery = e.target.value.trim().toLowerCase();
-          renderQuestionBank();
-        });
-      }
-
-      var subDropdown = document.getElementById("bank-subject-dropdown");
-      if (subDropdown) {
-        subDropdown.querySelector(".dropdown-menu").addEventListener("click", function (e) {
-          var opt = e.target.closest(".dropdown-option");
-          if (opt) {
-            bankSelectedSubject = opt.getAttribute("data-value");
-            renderQuestionBank();
-          }
-        });
-      }
-
-      var srcDropdown = document.getElementById("bank-source-dropdown");
-      if (srcDropdown) {
-        srcDropdown.querySelector(".dropdown-menu").addEventListener("click", function (e) {
-          var opt = e.target.closest(".dropdown-option");
-          if (opt) {
-            bankSelectedSource = opt.getAttribute("data-value");
-            renderQuestionBank();
-          }
-        });
-      }
-
-      var btnTestFiltered = document.getElementById("btn-start-filtered-test");
-      if (btnTestFiltered) {
-        btnTestFiltered.addEventListener("click", function () {
-          switchView("test");
-        });
-      }
-      // === FEATURE: test-runner-engine ===
-      var activeExamTimerInterval = null;
-
-      function updateConfigNotice() {
-        var noticeEl = document.getElementById("test-config-notice");
-        if (!noticeEl) return;
-        var allQuestions = getQuestions();
-        var selectedCat = (appData && appData.selectedCategory) ? appData.selectedCategory : "government";
-        var catQuestions = allQuestions.filter(function (q) { return q.examCategory === selectedCat; });
-        noticeEl.textContent = "Available in this category: " + catQuestions.length + " questions.";
-      }
-
-      function startExamSession() {
-        var allQuestions = getQuestions();
-        var selectedCat = (appData && appData.selectedCategory) ? appData.selectedCategory : "government";
-        var pool = allQuestions.filter(function (q) { return q.examCategory === selectedCat; });
-
-        if (pool.length === 0) {
-          alert("No questions available in this category yet. Add questions to source.js.");
-          return;
-        }
-
-        var countVal = document.getElementById("test-count-dropdown").getAttribute("data-value");
-        var timeVal = parseInt(document.getElementById("test-time-dropdown").getAttribute("data-value"), 10) || 10;
-        var penaltyVal = parseFloat(document.getElementById("test-penalty-dropdown").getAttribute("data-value")) || 0;
-
-        // Shuffle questions
-        var shuffled = pool.slice().sort(function () { return 0.5 - Math.random(); });
-        var targetCount = countVal === "all" ? shuffled.length : Math.min(parseInt(countVal, 10), shuffled.length);
-        var chosenQuestions = shuffled.slice(0, targetCount);
-
-        var durationMs = timeVal * 60 * 1000;
-        appData.activeSession = {
-          category: selectedCat,
-          questions: chosenQuestions,
-          currentIndex: 0,
-          answers: {},     // qId -> selectedOptionId
-          flagged: {},     // qId -> boolean
-          startTime: Date.now(),
-          targetEndTime: Date.now() + durationMs,
-          penaltyPerWrong: penaltyVal
-        };
-
-        saveLocalData(true);
-        renderActiveExam();
-      }
-
-      function renderActiveExam() {
-        var session = appData ? appData.activeSession : null;
-        var configPanel = document.getElementById("test-config-panel");
-        var activePanel = document.getElementById("test-active-panel");
-
-        if (!session) {
-          if (configPanel) configPanel.style.display = "block";
-          if (activePanel) activePanel.style.display = "none";
-          clearInterval(activeExamTimerInterval);
-          updateConfigNotice();
-          return;
-        }
-
-        if (configPanel) configPanel.style.display = "none";
-        if (activePanel) activePanel.style.display = "block";
-
-        // Setup Timer using wall-clock differential
-        clearInterval(activeExamTimerInterval);
-        function tickTimer() {
-          var remainingMs = session.targetEndTime - Date.now();
-          if (remainingMs <= 0) {
-            clearInterval(activeExamTimerInterval);
-            finishExam(true);
-            return;
-          }
-          var totalSeconds = Math.floor(remainingMs / 1000);
-          var m = Math.floor(totalSeconds / 60);
-          var s = totalSeconds % 60;
-          var timeStr = (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s;
-          var clockEl = document.getElementById("exam-timer-text");
-          if (clockEl) clockEl.textContent = timeStr;
-
-          var clockBox = document.getElementById("exam-clock");
-          if (clockBox) {
-            clockBox.classList.toggle("timer-warning", remainingMs < 60000);
-          }
-        }
-        tickTimer();
-        activeExamTimerInterval = setInterval(tickTimer, 1000);
-
-        renderCurrentQuestion();
-      }
-
-      function renderCurrentQuestion() {
-        var session = appData ? appData.activeSession : null;
-        if (!session) return;
-
-        var q = session.questions[session.currentIndex];
-        var total = session.questions.length;
-
-        // Counter & Palette
-        var progressCounter = document.getElementById("exam-progress-counter");
-        if (progressCounter) {
-          progressCounter.textContent = "Question " + (session.currentIndex + 1) + " of " + total;
-        }
-
-        var palette = document.getElementById("exam-palette");
-        if (palette) {
-          while (palette.firstChild) palette.removeChild(palette.firstChild);
-          session.questions.forEach(function (ques, idx) {
-            var pBtn = document.createElement("button");
-            pBtn.type = "button";
-            pBtn.className = "palette-btn";
-            pBtn.textContent = idx + 1;
-            if (idx === session.currentIndex) pBtn.classList.add("current");
-            if (session.answers[ques.id]) pBtn.classList.add("answered");
-            if (session.flagged[ques.id]) pBtn.classList.add("flagged");
-            pBtn.addEventListener("click", function () {
-              session.currentIndex = idx;
-              renderCurrentQuestion();
-            });
-            palette.appendChild(pBtn);
-          });
-        }
-
-        // Question text
-        var qTextEl = document.getElementById("exam-question-text");
-        if (qTextEl) qTextEl.textContent = q.question;
-
-        // Options
-        var optsList = document.getElementById("exam-options-list");
-        if (optsList) {
-          while (optsList.firstChild) optsList.removeChild(optsList.firstChild);
-          (q.options || []).forEach(function (opt) {
-            var row = document.createElement("div");
-            row.className = "exam-opt-row" + (session.answers[q.id] === opt.id ? " selected" : "");
-            
-            var letter = document.createElement("span");
-            letter.className = "opt-letter";
-            letter.textContent = opt.id;
-
-            var txt = document.createElement("span");
-            txt.textContent = opt.text;
-
-            row.appendChild(letter);
-            row.appendChild(txt);
-
-            row.addEventListener("click", function () {
-              triggerHaptic("selection");
-              if (session.answers[q.id] === opt.id) {
-                delete session.answers[q.id];
-              } else {
-                session.answers[q.id] = opt.id;
-              }
-              saveLocalData();
-              renderCurrentQuestion();
-            });
-
-            optsList.appendChild(row);
-          });
-        }
-
-        // Flag button state
-        var flagBtn = document.getElementById("btn-exam-flag");
-        if (flagBtn) {
-          flagBtn.classList.toggle("btn-primary", !!session.flagged[q.id]);
-        }
-      }
-
-      function finishExam(isTimeUp) {
-        clearInterval(activeExamTimerInterval);
-        var session = appData ? appData.activeSession : null;
-        if (!session) return;
-
-        var total = session.questions.length;
-        var correctCount = 0;
-        var incorrectCount = 0;
-        var unansweredCount = 0;
-
-        session.questions.forEach(function (q) {
-          var userAns = session.answers[q.id];
-          if (!userAns) {
-            unansweredCount++;
-          } else if (userAns === q.correctAnswer) {
-            correctCount++;
-          } else {
-            incorrectCount++;
-          }
-
-          // Update question-level analytics
-          if (!appData.attempts[q.id]) {
-            appData.attempts[q.id] = { attempts: 0, correct: 0, incorrect: 0, lastAttempt: 0, flagged: false, bookmarked: false };
-          }
-          if (userAns) {
-            appData.attempts[q.id].attempts++;
-            if (userAns === q.correctAnswer) {
-              appData.attempts[q.id].correct++;
-            } else {
-              appData.attempts[q.id].incorrect++;
-            }
-            appData.attempts[q.id].lastAttempt = Date.now();
-          }
-          if (session.flagged[q.id]) {
-            appData.attempts[q.id].flagged = true;
-          }
-        });
-
-        var penalty = session.penaltyPerWrong || 0;
-        var score = (correctCount * 1) - (incorrectCount * penalty);
-        var timeTakenSeconds = Math.max(1, Math.floor((Date.now() - session.startTime) / 1000));
-
-        var testRecord = {
-          id: "test_" + Date.now(),
-          date: Date.now(),
-          category: session.category,
-          total: total,
-          correct: correctCount,
-          incorrect: incorrectCount,
-          unanswered: unansweredCount,
-          penalty: penalty,
-          score: Math.max(0, parseFloat(score.toFixed(2))),
-          timeTakenSeconds: timeTakenSeconds,
-          answers: session.answers,
-          questions: session.questions
-        };
-
-        if (!appData.testHistory) appData.testHistory = [];
-        appData.testHistory.unshift(testRecord);
-        appData.activeSession = null;
-        saveLocalData(true);
-
-        triggerHaptic("impact_heavy");
-        triggerNativeNotification("Examination Completed", "Score: " + testRecord.score.toFixed(2) + " (" + correctCount + " Correct)");
-
-        renderAll();
-        showExamResults(testRecord);
-      }
-
-      // Exam UI Listeners
-      var btnStartExam = document.getElementById("btn-start-exam-now");
-      if (btnStartExam) {
-        btnStartExam.addEventListener("click", startExamSession);
-      }
-
-      var btnExamPrev = document.getElementById("btn-exam-prev");
-      if (btnExamPrev) {
-        btnExamPrev.addEventListener("click", function () {
-          if (appData && appData.activeSession && appData.activeSession.currentIndex > 0) {
-            appData.activeSession.currentIndex--;
-            renderCurrentQuestion();
-          }
-        });
-      }
-
-      var btnExamNext = document.getElementById("btn-exam-next");
-      if (btnExamNext) {
-        btnExamNext.addEventListener("click", function () {
-          if (appData && appData.activeSession && appData.activeSession.currentIndex < appData.activeSession.questions.length - 1) {
-            appData.activeSession.currentIndex++;
-            renderCurrentQuestion();
-          }
-        });
-      }
-
-      var btnExamFlag = document.getElementById("btn-exam-flag");
-      if (btnExamFlag) {
-        btnExamFlag.addEventListener("click", function () {
-          if (appData && appData.activeSession) {
-            var q = appData.activeSession.questions[appData.activeSession.currentIndex];
-            appData.activeSession.flagged[q.id] = !appData.activeSession.flagged[q.id];
-            saveLocalData();
-            renderCurrentQuestion();
-          }
-        });
-      }
-
-      // Modal Confirmation
-      var modal = document.getElementById("exam-confirm-modal");
-      var btnExamSubmit = document.getElementById("btn-exam-submit");
-      if (btnExamSubmit && modal) {
-        btnExamSubmit.addEventListener("click", function () {
-          if (!appData || !appData.activeSession) return;
-          var answeredCount = Object.keys(appData.activeSession.answers).length;
-          var total = appData.activeSession.questions.length;
-          var summary = document.getElementById("exam-confirm-summary");
-          if (summary) {
-            summary.textContent = "You have answered " + answeredCount + " of " + total + " questions.";
-          }
-          modal.classList.add("open");
-        });
-      }
-
-      var btnCancelModal = document.getElementById("btn-confirm-cancel");
-      if (btnCancelModal && modal) {
-        btnCancelModal.addEventListener("click", function () {
-          modal.classList.remove("open");
-        });
-      }
-
-      var btnYesModal = document.getElementById("btn-confirm-yes");
-      if (btnYesModal && modal) {
-        btnYesModal.addEventListener("click", function () {
-          modal.classList.remove("open");
-          finishExam(false);
-        });
-      }
-
-      // Restore active exam on reload if in-progress
-      if (appData && appData.activeSession) {
-        renderActiveExam();
-      }
-      // === FEATURE: results-review ===
-      var currentReviewRecord = null;
-      var activeReviewFilter = "all";
-
-      function showExamResults(record) {
-        currentReviewRecord = record;
-        activeReviewFilter = "all";
-
-        var elScore = document.getElementById("res-score");
-        var elTime = document.getElementById("res-time-meta");
-        var elCorrect = document.getElementById("res-correct");
-        var elIncorrect = document.getElementById("res-incorrect");
-        var elUnanswered = document.getElementById("res-unanswered");
-        var elAccuracy = document.getElementById("res-accuracy");
-
-        if (elScore) elScore.textContent = record.score.toFixed(2);
-        if (elTime) elTime.textContent = "Time Taken: " + Math.floor(record.timeTakenSeconds / 60) + "m " + (record.timeTakenSeconds % 60) + "s";
-        if (elCorrect) elCorrect.textContent = record.correct;
-        if (elIncorrect) elIncorrect.textContent = record.incorrect;
-        if (elUnanswered) elUnanswered.textContent = record.unanswered;
-
-        var attempted = record.correct + record.incorrect;
-        var acc = attempted > 0 ? Math.round((record.correct / attempted) * 100) : 0;
-        if (elAccuracy) elAccuracy.textContent = acc + "%";
-
-        // Update badge counts
-        var cntAll = document.getElementById("chip-cnt-all");
-        var cntWrong = document.getElementById("chip-cnt-wrong");
-        var cntRight = document.getElementById("chip-cnt-right");
-        var cntSkipped = document.getElementById("chip-cnt-skipped");
-
-        if (cntAll) cntAll.textContent = record.questions.length;
-        if (cntWrong) cntWrong.textContent = record.incorrect;
-        if (cntRight) cntRight.textContent = record.correct;
-        if (cntSkipped) cntSkipped.textContent = record.unanswered;
-
-        renderResultsList();
-        switchView("results");
-      }
-
-      function renderResultsList() {
-        if (!currentReviewRecord) return;
-        var container = document.getElementById("results-questions-list");
-        if (!container) return;
-
-        while (container.firstChild) container.removeChild(container.firstChild);
-
-        var record = currentReviewRecord;
-        var filteredList = record.questions.filter(function (q) {
-          var userAns = record.answers[q.id];
-          if (activeReviewFilter === "correct") return userAns === q.correctAnswer;
-          if (activeReviewFilter === "incorrect") return userAns && userAns !== q.correctAnswer;
-          if (activeReviewFilter === "unanswered") return !userAns;
-          return true;
-        });
-
-        filteredList.forEach(function (q, index) {
-          var userAns = record.answers[q.id];
-          var card = document.createElement("div");
-          card.className = "review-item-card";
-
-          var statusBadge = document.createElement("span");
-          if (!userAns) {
-            statusBadge.className = "status-badge unanswered";
-            statusBadge.textContent = "Unanswered";
-          } else if (userAns === q.correctAnswer) {
-            statusBadge.className = "status-badge correct";
-            statusBadge.textContent = "Correct";
-          } else {
-            statusBadge.className = "status-badge incorrect";
-            statusBadge.textContent = "Incorrect";
-          }
-
-          var headerRow = document.createElement("div");
-          headerRow.style.cssText = "display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;";
-          headerRow.appendChild(statusBadge);
-
-          var sourceInfo = document.createElement("span");
-          sourceInfo.style.cssText = "font-size: 11px; color: var(--text-secondary);";
-          sourceInfo.textContent = (q.examName || "") + " (" + (q.year || "") + ")";
-          headerRow.appendChild(sourceInfo);
-
-          var qTitle = document.createElement("div");
-          qTitle.className = "study-question-text";
-          qTitle.style.marginBottom = "8px";
-          qTitle.textContent = (index + 1) + ". " + q.question;
-
-          card.appendChild(headerRow);
-          card.appendChild(qTitle);
-
-          // Options breakdown
-          (q.options || []).forEach(function (opt) {
-            var row = document.createElement("div");
-            row.className = "opt-review-row";
-
-            if (opt.id === q.correctAnswer) {
-              row.classList.add("opt-correct-target");
-            } else if (opt.id === userAns) {
-              row.classList.add("opt-user-wrong");
-            }
-
-            var marker = document.createElement("span");
-            marker.className = "opt-letter";
-            marker.textContent = opt.id;
-
-            var txt = document.createElement("span");
-            txt.textContent = opt.text;
-
-            row.appendChild(marker);
-            row.appendChild(txt);
-            card.appendChild(row);
-          });
-
-          // Detailed Explanation Box
-          var expBox = document.createElement("div");
-          expBox.className = "solution-step-box";
-          expBox.textContent = q.explanation || "No explanation recorded.";
-
-          // Step-by-step solutions if available
-          if (q.solutionSteps && q.solutionSteps.length > 0) {
-            var stepsTitle = document.createElement("div");
-            stepsTitle.style.fontWeight = "700";
-            stepsTitle.style.marginTop = "6px";
-            stepsTitle.textContent = "Step-by-step Solution:";
-            expBox.appendChild(stepsTitle);
-
-            q.solutionSteps.forEach(function (s) {
-              var sLine = document.createElement("div");
-              sLine.textContent = "• " + s;
-              expBox.appendChild(sLine);
-            });
-          }
-
-          card.appendChild(expBox);
-          container.appendChild(card);
-        });
-      }
-
-      // Filter chips click handling
-      document.querySelectorAll(".filter-chip-btn").forEach(function (btn) {
-        btn.addEventListener("click", function () {
-          document.querySelectorAll(".filter-chip-btn").forEach(function (b) { b.classList.remove("active"); });
-          btn.classList.add("active");
-          activeReviewFilter = btn.getAttribute("data-filter");
-          renderResultsList();
-        });
-      });
-
-      // Actions
-      var btnResultsDone = document.getElementById("btn-results-done");
-      if (btnResultsDone) {
-        btnResultsDone.addEventListener("click", function () {
-          switchView("dashboard");
-        });
-      }
-
-      var btnRetryWrong = document.getElementById("btn-retry-incorrect");
-      if (btnRetryWrong) {
-        btnRetryWrong.addEventListener("click", function () {
-          if (!currentReviewRecord) return;
-          var wrongQuestions = currentReviewRecord.questions.filter(function (q) {
-            return currentReviewRecord.answers[q.id] && currentReviewRecord.answers[q.id] !== q.correctAnswer;
-          });
-
-          if (wrongQuestions.length === 0) {
-            alert("No incorrect questions in this test.");
-            return;
-          }
-
-          appData.activeSession = {
-            category: currentReviewRecord.category,
-            questions: wrongQuestions,
-            currentIndex: 0,
-            answers: {},
-            flagged: {},
-            startTime: Date.now(),
-            targetEndTime: Date.now() + (wrongQuestions.length * 60 * 1000),
-            penaltyPerWrong: currentReviewRecord.penalty
-          };
+      // Boot Data Layer
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          appData = JSON.parse(raw);
+          if (!appData.attempts) appData.attempts = {};
+          if (!appData.testHistory) appData.testHistory = [];
+        } else {
+          appData = getInitialData();
           saveLocalData(true);
-          switchView("test");
-          renderActiveExam();
-        });
+        }
+      } catch (e) {
+        appData = getInitialData();
       }
-      // === FEATURE: analytics-notebook ===
-      var activeProgressSubview = "mistakes";
 
-      // Segmented control switcher
-      document.querySelectorAll("#progress-tabs .segment-btn").forEach(function (btn) {
-        btn.addEventListener("click", function () {
-          document.querySelectorAll("#progress-tabs .segment-btn").forEach(function (b) { b.classList.remove("active"); });
-          btn.classList.add("active");
-          activeProgressSubview = btn.getAttribute("data-subview");
+      applyThemeAndAccent();
+      dataReadyResolve(appData);
 
-          var pMistakes = document.getElementById("subview-mistakes");
-          var pSubjects = document.getElementById("subview-subjects");
-          var pHistory = document.getElementById("subview-history");
+      // === FEATURE: settings-theme-accent ===
+      var pendingModalAction = null;
 
-          if (pMistakes) pMistakes.style.display = activeProgressSubview === "mistakes" ? "block" : "none";
-          if (pSubjects) pSubjects.style.display = activeProgressSubview === "subjects" ? "block" : "none";
-          if (pHistory) pHistory.style.display = activeProgressSubview === "history" ? "block" : "none";
-
-          renderProgressView();
-        });
-      });
-
-      function renderProgressView() {
+      function renderSettingsView() {
         if (!appData) return;
-        var allQuestions = getQuestions();
-        var selectedCat = appData.selectedCategory || "government";
-        var catQuestions = allQuestions.filter(function (q) { return q.examCategory === selectedCat; });
-        var attemptsMap = appData.attempts || {};
 
-        // 1. Render Mistake Notebook
-        var mistakeContainer = document.getElementById("mistakes-list-container");
-        if (mistakeContainer) {
-          while (mistakeContainer.firstChild) mistakeContainer.removeChild(mistakeContainer.firstChild);
-
-          var mistakeQuestions = catQuestions.filter(function (q) {
-            var att = attemptsMap[q.id];
-            return att && (att.incorrect > 0 || att.flagged);
-          });
-
-          if (mistakeQuestions.length === 0) {
-            var emptyNotice = document.createElement("div");
-            emptyNotice.className = "feature-placeholder";
-            emptyNotice.textContent = "Your notebook is clear! No incorrect or flagged questions in this category.";
-            mistakeContainer.appendChild(emptyNotice);
-          } else {
-            mistakeQuestions.forEach(function (q) {
-              var att = attemptsMap[q.id];
-              var card = document.createElement("div");
-              card.className = "mistake-card";
-
-              var header = document.createElement("div");
-              header.style.cssText = "display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;";
-
-              var statBadge = document.createElement("span");
-              statBadge.className = "status-badge incorrect";
-              statBadge.textContent = "Errors: " + (att.incorrect || 0) + " | Total: " + att.attempts;
-              header.appendChild(statBadge);
-
-              var btnRemove = document.createElement("button");
-              btnRemove.type = "button";
-              btnRemove.className = "btn-icon-action";
-              btnRemove.textContent = "Clear Flag";
-              btnRemove.addEventListener("click", function () {
-                if (appData.attempts[q.id]) {
-                  appData.attempts[q.id].flagged = false;
-                  appData.attempts[q.id].incorrect = 0;
-                  saveLocalData();
-                  renderAll();
-                  renderProgressView();
-                }
-              });
-              header.appendChild(btnRemove);
-
-              var qText = document.createElement("div");
-              qText.className = "study-question-text";
-              qText.style.marginBottom = "6px";
-              qText.textContent = q.question;
-
-              var expText = document.createElement("div");
-              expText.style.cssText = "font-size: 12px; color: var(--text-secondary); line-height: 1.4;";
-              expText.textContent = "Correct: " + q.correctAnswer + " — " + (q.explanation || "");
-
-              card.appendChild(header);
-              card.appendChild(qText);
-              card.appendChild(expText);
-              mistakeContainer.appendChild(card);
-            });
+        // Sync theme dropdown state
+        var themeDd = document.getElementById("settings-theme-dropdown");
+        if (themeDd) {
+          var tVal = appData.theme || "auto";
+          themeDd.setAttribute("data-value", tVal);
+          var opt = themeDd.querySelector('.dropdown-option[data-value="' + tVal + '"]');
+          var lbl = themeDd.querySelector('.trigger-label');
+          if (opt && lbl) {
+            themeDd.querySelectorAll(".dropdown-option").forEach(function (o) { o.classList.remove("selected"); });
+            opt.classList.add("selected");
+            lbl.textContent = opt.textContent;
           }
         }
 
-        // 2. Render Subject & Topic Accuracy Bars
-        var subjectsContainer = document.getElementById("subjects-analytics-container");
-        if (subjectsContainer) {
-          while (subjectsContainer.firstChild) subjectsContainer.removeChild(subjectsContainer.firstChild);
+        // Sync accent color swatches
+        var currentAccent = appData.accent || "blue";
+        document.querySelectorAll(".accent-circle-btn").forEach(function (btn) {
+          btn.classList.toggle("selected", btn.getAttribute("data-color") === currentAccent);
+        });
 
-          var subjectStats = {};
-          catQuestions.forEach(function (q) {
-            var att = attemptsMap[q.id];
-            var sub = q.subject || "General";
-            if (!subjectStats[sub]) subjectStats[sub] = { correct: 0, attempts: 0 };
-            if (att && att.attempts > 0) {
-              subjectStats[sub].correct += (att.correct || 0);
-              subjectStats[sub].attempts += att.attempts;
-            }
-          });
-
-          var subKeys = Object.keys(subjectStats);
-          if (subKeys.length === 0) {
-            var subEmpty = document.createElement("div");
-            subEmpty.className = "feature-placeholder";
-            subEmpty.textContent = "No practice attempts logged for subjects in this category.";
-            subjectsContainer.appendChild(subEmpty);
-          } else {
-            subKeys.sort().forEach(function (sub) {
-              var stat = subjectStats[sub];
-              var pct = stat.attempts > 0 ? Math.round((stat.correct / stat.attempts) * 100) : 0;
-
-              var barWrapper = document.createElement("div");
-              barWrapper.style.marginBottom = "14px";
-
-              var meta = document.createElement("div");
-              meta.className = "progress-meta-row";
-              meta.innerHTML = '<span>' + sub + '</span><span>' + pct + '% (' + stat.attempts + ' attempts)</span>';
-
-              var track = document.createElement("div");
-              track.className = "progress-bar-track";
-
-              var fill = document.createElement("div");
-              fill.className = "progress-bar-fill";
-              fill.style.width = pct + "%";
-              if (pct < 50 && stat.attempts > 0) fill.style.background = "#ff453a";
-              else if (pct >= 80) fill.style.background = "#34c759";
-
-              track.appendChild(fill);
-              barWrapper.appendChild(meta);
-              barWrapper.appendChild(track);
-              subjectsContainer.appendChild(barWrapper);
-            });
+        // Sync storage footprint
+        var sizeEl = document.getElementById("set-storage-size");
+        var modEl = document.getElementById("set-last-modified-label");
+        if (sizeEl) {
+          try {
+            var kb = (new Blob([JSON.stringify(appData)]).size / 1024).toFixed(1);
+            sizeEl.textContent = kb + " KB";
+          } catch (e) {
+            sizeEl.textContent = "0 KB";
           }
         }
-
-        // 3. Render Test History
-        var historyContainer = document.getElementById("history-list-container");
-        if (historyContainer) {
-          while (historyContainer.firstChild) historyContainer.removeChild(historyContainer.firstChild);
-
-          var list = (appData.testHistory || []).filter(function (t) {
-            return t.category === selectedCat;
-          });
-
-          if (list.length === 0) {
-            var histEmpty = document.createElement("div");
-            histEmpty.className = "feature-placeholder";
-            histEmpty.textContent = "No completed tests recorded for this category yet.";
-            historyContainer.appendChild(histEmpty);
-          } else {
-            list.forEach(function (testItem) {
-              var card = document.createElement("div");
-              card.className = "history-card";
-
-              var d = new Date(testItem.date);
-              var dateStr = d.toLocaleDateString() + " " + d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-
-              var left = document.createElement("div");
-              left.innerHTML = '<div style="font-size: 13px; font-weight: 600;">Score: ' + testItem.score.toFixed(2) + ' / ' + testItem.total + '</div>' +
-                               '<div style="font-size: 11px; color: var(--text-secondary);">' + dateStr + '</div>';
-
-              var right = document.createElement("div");
-              var accPct = testItem.total > 0 ? Math.round((testItem.correct / testItem.total) * 100) : 0;
-              right.innerHTML = '<span class="badge-capsule">' + accPct + '% ACC</span>';
-
-              card.appendChild(left);
-              card.appendChild(right);
-              historyContainer.appendChild(card);
-            });
-          }
-        }
-      }
-      // === FEATURE: settings-backup-import ===
-      var pendingSettingsAction = null;
-
-      function updateSettingsInfo() {
-        var elLastSaved = document.getElementById("settings-last-saved");
-        var elStorageSize = document.getElementById("settings-storage-size");
-
-        if (appData) {
-          if (elLastSaved) {
-            var d = new Date(appData.lastModified || Date.now());
-            elLastSaved.textContent = "Last modified: " + d.toLocaleDateString() + " " + d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-          }
-          if (elStorageSize) {
-            try {
-              var str = JSON.stringify(appData);
-              var kb = (new Blob([str]).size / 1024).toFixed(1);
-              elStorageSize.textContent = kb + " KB";
-            } catch (e) {
-              elStorageSize.textContent = "0 KB";
-            }
-          }
+        if (modEl && appData.lastModified) {
+          var d = new Date(appData.lastModified);
+          modEl.textContent = "Last Saved: " + d.toLocaleDateString() + " " + d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
         }
       }
 
-      function showSettingsModal(title, msg, onConfirm) {
-        var modal = document.getElementById("settings-confirm-modal");
-        var titleEl = document.getElementById("settings-modal-title");
-        var msgEl = document.getElementById("settings-modal-msg");
+      function openSettingsConfirmModal(title, message, onConfirm) {
+        var modal = document.getElementById("settings-action-modal");
+        var tEl = document.getElementById("settings-action-title");
+        var mEl = document.getElementById("settings-action-msg");
         if (!modal) return;
-
-        if (titleEl) titleEl.textContent = title;
-        if (msgEl) msgEl.textContent = msg;
-        pendingSettingsAction = onConfirm;
+        if (tEl) tEl.textContent = title;
+        if (mEl) mEl.textContent = message;
+        pendingModalAction = onConfirm;
         modal.classList.add("open");
       }
 
-      var btnSettingsCancel = document.getElementById("btn-settings-cancel");
-      if (btnSettingsCancel) {
-        btnSettingsCancel.addEventListener("click", function () {
-          var modal = document.getElementById("settings-confirm-modal");
+      var btnActCancel = document.getElementById("btn-action-cancel");
+      if (btnActCancel) {
+        btnActCancel.addEventListener("click", function () {
+          var modal = document.getElementById("settings-action-modal");
           if (modal) modal.classList.remove("open");
-          pendingSettingsAction = null;
+          pendingModalAction = null;
         });
       }
 
-      var btnSettingsConfirm = document.getElementById("btn-settings-confirm");
-      if (btnSettingsConfirm) {
-        btnSettingsConfirm.addEventListener("click", function () {
-          var modal = document.getElementById("settings-confirm-modal");
+      var btnActConfirm = document.getElementById("btn-action-confirm");
+      if (btnActConfirm) {
+        btnActConfirm.addEventListener("click", function () {
+          var modal = document.getElementById("settings-action-modal");
           if (modal) modal.classList.remove("open");
-          if (typeof pendingSettingsAction === "function") {
-            pendingSettingsAction();
+          if (typeof pendingModalAction === "function") {
+            pendingModalAction();
           }
-          pendingSettingsAction = null;
+          pendingModalAction = null;
         });
       }
 
-      // Download Backup (.json)
-      var btnExport = document.getElementById("btn-export-backup");
+      // Theme Dropdown Listener
+      var themeDropdown = document.getElementById("settings-theme-dropdown");
+      if (themeDropdown) {
+        themeDropdown.addEventListener("change", function (e) {
+          if (appData) {
+            appData.theme = e.detail.value;
+            saveLocalData();
+            applyThemeAndAccent();
+          }
+        });
+      }
+
+      // Accent Swatches Listener
+      var swatchesBox = document.getElementById("accent-swatches-box");
+      if (swatchesBox) {
+        swatchesBox.addEventListener("click", function (e) {
+          var btn = e.target.closest(".accent-circle-btn");
+          if (!btn || !appData) return;
+          var colorKey = btn.getAttribute("data-color");
+          appData.accent = colorKey;
+          saveLocalData();
+          applyThemeAndAccent();
+          renderSettingsView();
+        });
+      }
+
+      // Export JSON Backup
+      var btnExport = document.getElementById("btn-export-json");
       if (btnExport) {
         btnExport.addEventListener("click", function () {
           if (!appData) return;
           if (window.DataSync && typeof window.DataSync.exportJSON === "function") {
             window.DataSync.exportJSON(appData, "prep-backup.json");
           } else {
-            // Local fallback
             var blob = new Blob([JSON.stringify(appData, null, 2)], { type: "application/json" });
             var url = URL.createObjectURL(blob);
             var a = document.createElement("a");
@@ -2572,11 +1756,11 @@
         });
       }
 
-      // Trigger Restore file input
-      var btnTriggerImport = document.getElementById("btn-trigger-import");
-      var fileInput = document.getElementById("backup-file-input");
-      if (btnTriggerImport && fileInput) {
-        btnTriggerImport.addEventListener("click", function () {
+      // Import JSON Backup
+      var btnImportTrig = document.getElementById("btn-import-trigger");
+      var fileInput = document.getElementById("import-json-file");
+      if (btnImportTrig && fileInput) {
+        btnImportTrig.addEventListener("click", function () {
           fileInput.value = "";
           fileInput.click();
         });
@@ -2585,40 +1769,35 @@
           var file = e.target.files && e.target.files[0];
           if (!file) return;
 
-          var handleData = function (imported) {
-            // Validate backup schema shape
-            if (!imported || typeof imported !== "object" || Array.isArray(imported)) {
-              alert("Invalid backup file: root must be a valid JSON object.");
-              return;
-            }
-            if (!imported.schemaVersion) {
-              alert("Invalid backup: missing schemaVersion.");
+          var handleImport = function (parsed) {
+            if (!parsed || typeof parsed !== "object" || Array.isArray(parsed) || !parsed.schemaVersion) {
+              alert("Invalid backup file: missing required database schema.");
               return;
             }
 
-            showSettingsModal(
+            openSettingsConfirmModal(
               "Restore Backup?",
-              "This will replace your existing practice records and test history with the imported backup.",
+              "This will replace your current practice history with the imported backup.",
               function () {
-                imported.lastModified = Date.now();
-                applyRemoteData(imported);
-                updateSettingsInfo();
+                parsed.lastModified = Date.now();
+                applyRemoteData(parsed);
+                renderSettingsView();
               }
             );
           };
 
           if (window.DataSync && typeof window.DataSync.importJSON === "function") {
-            window.DataSync.importJSON(file).then(handleData).catch(function (err) {
-              alert("Failed to parse JSON backup file.");
+            window.DataSync.importJSON(file).then(handleImport).catch(function () {
+              alert("Failed to parse JSON backup.");
             });
           } else {
             var reader = new FileReader();
             reader.onload = function (evt) {
               try {
-                var parsed = JSON.parse(evt.target.result);
-                handleData(parsed);
+                var json = JSON.parse(evt.target.result);
+                handleImport(json);
               } catch (err) {
-                alert("Failed to parse JSON backup file.");
+                alert("Failed to parse JSON backup.");
               }
             };
             reader.readAsText(file);
@@ -2626,38 +1805,979 @@
         });
       }
 
-      // Clear all local progress
-      var btnReset = document.getElementById("btn-reset-data");
-      if (btnReset) {
-        btnReset.addEventListener("click", function () {
-          showSettingsModal(
+      // Reset All Data
+      var btnClearAll = document.getElementById("btn-clear-all-progress");
+      if (btnClearAll) {
+        btnClearAll.addEventListener("click", function () {
+          openSettingsConfirmModal(
             "Clear All Progress?",
-            "All test history, mistakes, and bookmarks will be permanently deleted.",
+            "All test scores, attempts, and mistakes will be permanently erased.",
             function () {
               appData = getInitialData();
               saveLocalData(true);
+              applyThemeAndAccent();
               renderAll();
-              updateSettingsInfo();
+              renderSettingsView();
             }
           );
         });
       }
-      // === FEATURE: native-bridge ===
+      // === FEATURE: analytics-dashboard ===
+      function renderAnalyticsDashboard() {
+        if (!appData) return;
+        var allQuestions = getQuestions();
+        var attemptsMap = appData.attempts || {};
+        var history = appData.testHistory || [];
+
+        // Global counters
+        var totalAttempts = 0;
+        var totalCorrect = 0;
+        var totalIncorrect = 0;
+        var totalPenalty = 0;
+        var totalTimeSeconds = 0;
+        var resolvedCount = 0;
+        var failedTotal = 0;
+
+        // Subject & Sector maps
+        var subjectMap = {};
+        var topicMap = {};
+        var sectorMap = { government: { correct: 0, total: 0 }, bank: { correct: 0, total: 0 }, iba_mba: { correct: 0, total: 0 } };
+
+        allQuestions.forEach(function (q) {
+          var att = attemptsMap[q.id];
+          if (att && att.attempts > 0) {
+            totalAttempts += att.attempts;
+            totalCorrect += (att.correct || 0);
+            totalIncorrect += (att.incorrect || 0);
+
+            // Mistake resolution check
+            if (att.incorrect > 0) {
+              failedTotal++;
+              if (att.correct > 0) resolvedCount++;
+            }
+
+            // Subject mapping
+            var sub = q.subject || "General";
+            if (!subjectMap[sub]) subjectMap[sub] = { correct: 0, total: 0 };
+            subjectMap[sub].correct += (att.correct || 0);
+            subjectMap[sub].total += att.attempts;
+
+            // Topic mapping (for weak spots)
+            var top = q.topic || sub;
+            if (!topicMap[top]) topicMap[top] = { correct: 0, incorrect: 0, total: 0 };
+            topicMap[top].correct += (att.correct || 0);
+            topicMap[top].incorrect += (att.incorrect || 0);
+            topicMap[top].total += att.attempts;
+
+            // Sector mapping
+            var sec = q.examCategory || "government";
+            if (sectorMap[sec]) {
+              sectorMap[sec].correct += (att.correct || 0);
+              sectorMap[sec].total += att.attempts;
+            }
+          }
+        });
+
+        // Test history calculations
+        history.forEach(function (testItem) {
+          totalTimeSeconds += (testItem.timeTakenSeconds || 0);
+          totalPenalty += ((testItem.incorrect || 0) * (testItem.penalty || 0));
+        });
+
+        // 1. Readiness Score: 60% accuracy + 40% syllabus coverage
+        var accuracy = totalAttempts > 0 ? (totalCorrect / totalAttempts) : 0;
+        var attemptedUniqueCount = Object.keys(attemptsMap).filter(function (id) { return attemptsMap[id].attempts > 0; }).length;
+        var coverage = allQuestions.length > 0 ? (attemptedUniqueCount / allQuestions.length) : 0;
+        var readiness = totalAttempts > 0 ? Math.round((accuracy * 60) + (coverage * 40)) : 0;
+
+        // 5. Time Efficiency Pace
+        var avgPaceSeconds = totalAttempts > 0 ? Math.round(totalTimeSeconds / totalAttempts) : 0;
+
+        // 7. Score Trajectory (Last 5 tests vs all past tests)
+        var recent5 = history.slice(0, 5);
+        var recentAcc = 0;
+        if (recent5.length > 0) {
+          var rCorrect = recent5.reduce(function (sum, t) { return sum + (t.correct || 0); }, 0);
+          var rTotal = recent5.reduce(function (sum, t) { return sum + (t.total || 0); }, 0);
+          recentAcc = rTotal > 0 ? Math.round((rCorrect / rTotal) * 100) : 0;
+        }
+
+        // 9. Mistake Resolution Rate
+        var resolutionRate = failedTotal > 0 ? Math.round((resolvedCount / failedTotal) * 100) : 0;
+
+        // Render Summary Stats
+        var elReadiness = document.getElementById("ana-readiness");
+        var elSolved = document.getElementById("ana-questions-solved");
+        var elAccuracy = document.getElementById("ana-global-accuracy");
+        var elAvgTime = document.getElementById("ana-avg-time");
+        var elPenalty = document.getElementById("ana-penalty-loss");
+        var elTrajectory = document.getElementById("ana-trajectory");
+        var elResolution = document.getElementById("ana-resolution-rate");
+
+        if (elReadiness) elReadiness.textContent = readiness + "%";
+        if (elSolved) elSolved.textContent = totalAttempts;
+        if (elAccuracy) elAccuracy.textContent = (totalAttempts > 0 ? Math.round(accuracy * 100) : 0) + "%";
+        if (elAvgTime) elAvgTime.textContent = avgPaceSeconds > 0 ? (avgPaceSeconds + "s") : "—";
+        if (elPenalty) elPenalty.textContent = "-" + totalPenalty.toFixed(2);
+        if (elTrajectory) elTrajectory.textContent = recent5.length > 0 ? (recentAcc + "%") : "—";
+        if (elResolution) elResolution.textContent = resolutionRate + "%";
+
+        // Render 3. Subject-Wise Mastery Bars
+        var barContainer = document.getElementById("ana-subject-bars");
+        if (barContainer) {
+          while (barContainer.firstChild) barContainer.removeChild(barContainer.firstChild);
+          var subjectKeys = Object.keys(subjectMap);
+          if (subjectKeys.length === 0) {
+            var empty = document.createElement("div");
+            empty.className = "feature-placeholder";
+            empty.textContent = "Take tests to generate subject mastery bars.";
+            barContainer.appendChild(empty);
+          } else {
+            subjectKeys.sort().forEach(function (sub) {
+              var s = subjectMap[sub];
+              var pct = s.total > 0 ? Math.round((s.correct / s.total) * 100) : 0;
+
+              var row = document.createElement("div");
+              row.className = "bar-row";
+
+              var meta = document.createElement("div");
+              meta.className = "bar-meta";
+              meta.innerHTML = '<span>' + sub + '</span><span>' + pct + '% (' + s.total + ' attempts)</span>';
+
+              var track = document.createElement("div");
+              track.className = "bar-track";
+              var fill = document.createElement("div");
+              fill.className = "bar-fill";
+              fill.style.width = pct + "%";
+              if (pct < 50 && s.total > 0) fill.style.background = "#ff453a";
+              else if (pct >= 80) fill.style.background = "#34c759";
+
+              track.appendChild(fill);
+              row.appendChild(meta);
+              row.appendChild(track);
+              barContainer.appendChild(row);
+            });
+          }
+        }
+
+        // Render 4. Sector Performance
+        var elSecGovt = document.getElementById("ana-sector-govt");
+        var elSecBank = document.getElementById("ana-sector-bank");
+        var elSecIba = document.getElementById("ana-sector-iba");
+
+        if (elSecGovt) {
+          var g = sectorMap.government;
+          elSecGovt.textContent = g.total > 0 ? (Math.round((g.correct / g.total) * 100) + "%") : "0%";
+        }
+        if (elSecBank) {
+          var b = sectorMap.bank;
+          elSecBank.textContent = b.total > 0 ? (Math.round((b.correct / b.total) * 100) + "%") : "0%";
+        }
+        if (elSecIba) {
+          var i = sectorMap.iba_mba;
+          elSecIba.textContent = i.total > 0 ? (Math.round((i.correct / i.total) * 100) + "%") : "0%";
+        }
+
+        // Render 8. Critical Weak Spots (Error rate > 40%)
+        var weakContainer = document.getElementById("ana-weak-spots");
+        if (weakContainer) {
+          while (weakContainer.firstChild) weakContainer.removeChild(weakContainer.firstChild);
+          var weakList = [];
+          Object.keys(topicMap).forEach(function (top) {
+            var t = topicMap[top];
+            if (t.total >= 2) {
+              var errRate = (t.incorrect / t.total) * 100;
+              if (errRate >= 40) {
+                weakList.push({ name: top, err: Math.round(errRate) });
+              }
+            }
+          });
+
+          if (weakList.length === 0) {
+            var noWeak = document.createElement("div");
+            noWeak.className = "feature-placeholder";
+            noWeak.style.width = "100%";
+            noWeak.textContent = totalAttempts === 0 ? "No practice data recorded yet." : "No critical weak spots detected (all topic error rates < 40%).";
+            weakContainer.appendChild(noWeak);
+          } else {
+            weakList.forEach(function (w) {
+              var chip = document.createElement("div");
+              chip.className = "weak-chip";
+              chip.textContent = w.name + " (" + w.err + "% error)";
+              weakContainer.appendChild(chip);
+            });
+          }
+        }
+      }
+
+      // Initial Render
+      renderAnalyticsDashboard();
+      // === FEATURE: qbank-dynamic-filter ===
+      var qbankFilterExam = "all";
+      var qbankFilterSubject = "all";
+      var qbankFilterYear = "all";
+      var activeViewingSetKey = null;
+
+      // Group questions into Question Sets (Key: examName + "||" + year + "||" + subject)
+      function extractQuestionSets(questions) {
+        var setsMap = {};
+        questions.forEach(function (q) {
+          var eName = q.examName || "General Exam";
+          var yr = q.year ? String(q.year) : "General";
+          var sub = q.subject || "General";
+          var key = eName + "||" + yr + "||" + sub;
+
+          if (!setsMap[key]) {
+            setsMap[key] = {
+              key: key,
+              examName: eName,
+              year: yr,
+              subject: sub,
+              examCategory: q.examCategory || "government",
+              questions: []
+            };
+          }
+          setsMap[key].questions.push(q);
+        });
+
+        return Object.keys(setsMap).map(function (k) {
+          return setsMap[k];
+        });
+      }
+
+      // Dynamically populate custom dropdown options directly from source.js
+      function populateDynamicFilterDropdowns() {
+        var allQuestions = getQuestions();
+        var exams = {};
+        var subjects = {};
+        var years = {};
+
+        allQuestions.forEach(function (q) {
+          if (q.examName) exams[q.examName] = true;
+          if (q.subject) subjects[q.subject] = true;
+          if (q.year) years[q.year] = true;
+        });
+
+        // Helper to rebuild dropdown menus while preserving current selection
+        function rebuildMenu(menuId, itemsMap, activeVal, defaultLabel) {
+          var menu = document.getElementById(menuId);
+          if (!menu) return;
+          while (menu.children.length > 1) {
+            menu.removeChild(menu.lastChild);
+          }
+
+          Object.keys(itemsMap).sort().forEach(function (item) {
+            var opt = document.createElement("div");
+            opt.className = "dropdown-option" + (activeVal === item ? " selected" : "");
+            opt.setAttribute("data-value", item);
+            opt.textContent = item;
+            menu.appendChild(opt);
+          });
+        }
+
+        rebuildMenu("qbank-exam-menu", exams, qbankFilterExam, "All Exams");
+        rebuildMenu("qbank-subject-menu", subjects, qbankFilterSubject, "All Subjects");
+        rebuildMenu("qbank-year-menu", years, qbankFilterYear, "All Years");
+      }
+
+      function renderQuestionBankView() {
+        populateDynamicFilterDropdowns();
+
+        var setsContainer = document.getElementById("qbank-sets-container");
+        var detailView = document.getElementById("qbank-detail-view");
+        var statusLabel = document.getElementById("qbank-status-label");
+        if (!setsContainer) return;
+
+        // If viewing an expanded set, render detail view instead
+        if (activeViewingSetKey) {
+          setsContainer.style.display = "none";
+          if (detailView) detailView.style.display = "block";
+          renderActiveSetDetail();
+          return;
+        }
+
+        setsContainer.style.display = "block";
+        if (detailView) detailView.style.display = "none";
+
+        var allQuestions = getQuestions();
+        var allSets = extractQuestionSets(allQuestions);
+
+        // Check if any filter is active
+        var isFiltered = (qbankFilterExam !== "all") || (qbankFilterSubject !== "all") || (qbankFilterYear !== "all");
+
+        var displayedSets = [];
+        if (isFiltered) {
+          displayedSets = allSets.filter(function (set) {
+            if (qbankFilterExam !== "all" && set.examName !== qbankFilterExam) return false;
+            if (qbankFilterSubject !== "all" && set.subject !== qbankFilterSubject) return false;
+            if (qbankFilterYear !== "all" && set.year !== qbankFilterYear) return false;
+            return true;
+          });
+          if (statusLabel) statusLabel.textContent = "Matching Sets (" + displayedSets.length + ")";
+        } else {
+          // Rule 3: Display 10 last added question sets
+          displayedSets = allSets.slice(-10).reverse();
+          if (statusLabel) statusLabel.textContent = "10 Last Added Sets";
+        }
+
+        while (setsContainer.firstChild) {
+          setsContainer.removeChild(setsContainer.firstChild);
+        }
+
+        if (displayedSets.length === 0) {
+          var empty = document.createElement("div");
+          empty.className = "feature-placeholder";
+          empty.textContent = "No question sets match the selected filters.";
+          setsContainer.appendChild(empty);
+          return;
+        }
+
+        displayedSets.forEach(function (set) {
+          var card = document.createElement("div");
+          card.className = "qset-card";
+
+          var left = document.createElement("div");
+          var title = document.createElement("div");
+          title.className = "qset-title";
+          title.textContent = set.examName + (set.year !== "General" ? " (" + set.year + ")" : "");
+
+          var sub = document.createElement("div");
+          sub.className = "qset-subtitle";
+          sub.innerHTML = '<span>' + set.subject + '</span><span>•</span><span>' + set.questions.length + ' Questions</span>';
+
+          left.appendChild(title);
+          left.appendChild(sub);
+
+          var right = document.createElement("div");
+          right.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>';
+
+          card.appendChild(left);
+          card.appendChild(right);
+
+          card.addEventListener("click", function () {
+            activeViewingSetKey = set.key;
+            renderQuestionBankView();
+          });
+
+          setsContainer.appendChild(card);
+        });
+      }
+
+      function renderActiveSetDetail() {
+        var allQuestions = getQuestions();
+        var allSets = extractQuestionSets(allQuestions);
+        var currentSet = allSets.find(function (s) { return s.key === activeViewingSetKey; });
+        var container = document.getElementById("qbank-set-questions-container");
+        var titleEl = document.getElementById("qbank-active-set-title");
+
+        if (!currentSet || !container) return;
+        if (titleEl) titleEl.textContent = currentSet.examName + " — " + currentSet.subject;
+
+        while (container.firstChild) container.removeChild(container.firstChild);
+
+        currentSet.questions.forEach(function (q, index) {
+          var card = document.createElement("div");
+          card.className = "study-q-card";
+
+          var qTitle = document.createElement("div");
+          qTitle.className = "study-q-title";
+          qTitle.textContent = (index + 1) + ". " + q.question;
+          card.appendChild(qTitle);
+
+          var optsDiv = document.createElement("div");
+          (q.options || []).forEach(function (opt) {
+            var row = document.createElement("div");
+            row.className = "study-opt-row";
+            row.setAttribute("data-opt-id", opt.id);
+
+            var badge = document.createElement("span");
+            badge.className = "opt-badge";
+            badge.textContent = opt.id;
+
+            var txt = document.createElement("span");
+            txt.textContent = opt.text;
+
+            row.appendChild(badge);
+            row.appendChild(txt);
+            optsDiv.appendChild(row);
+          });
+          card.appendChild(optsDiv);
+
+          // Explanation Box
+          var expBox = document.createElement("div");
+          expBox.className = "study-exp-box";
+          expBox.textContent = q.explanation || "No explanation provided.";
+          card.appendChild(expBox);
+
+          // Action Button
+          var btnReveal = document.createElement("button");
+          btnReveal.type = "button";
+          btnReveal.className = "btn btn-secondary";
+          btnReveal.style.cssText = "margin-top: 10px; padding: 8px 14px; font-size: 12px; width: auto;";
+          btnReveal.textContent = "Show Answer & Explanation";
+
+          btnReveal.addEventListener("click", function () {
+            var isShown = expBox.classList.toggle("visible");
+            btnReveal.textContent = isShown ? "Hide Explanation" : "Show Answer & Explanation";
+            optsDiv.querySelectorAll(".study-opt-row").forEach(function (r) {
+              if (r.getAttribute("data-opt-id") === q.correctAnswer) {
+                if (isShown) r.classList.add("correct-reveal");
+                else r.classList.remove("correct-reveal");
+              }
+            });
+          });
+
+          card.appendChild(btnReveal);
+          container.appendChild(card);
+        });
+      }
+
+      // Filter Change Handlers
+      var ddExam = document.getElementById("qbank-exam-filter");
+      if (ddExam) {
+        ddExam.addEventListener("change", function (e) {
+          qbankFilterExam = e.detail.value;
+          activeViewingSetKey = null;
+          renderQuestionBankView();
+        });
+      }
+
+      var ddSubject = document.getElementById("qbank-subject-filter");
+      if (ddSubject) {
+        ddSubject.addEventListener("change", function (e) {
+          qbankFilterSubject = e.detail.value;
+          activeViewingSetKey = null;
+          renderQuestionBankView();
+        });
+      }
+
+      var ddYear = document.getElementById("qbank-year-filter");
+      if (ddYear) {
+        ddYear.addEventListener("change", function (e) {
+          qbankFilterYear = e.detail.value;
+          activeViewingSetKey = null;
+          renderQuestionBankView();
+        });
+      }
+
+      // Reset Filters Button
+      var btnResetFilters = document.getElementById("btn-qbank-reset-filters");
+      if (btnResetFilters) {
+        btnResetFilters.addEventListener("click", function () {
+          qbankFilterExam = "all";
+          qbankFilterSubject = "all";
+          qbankFilterYear = "all";
+          activeViewingSetKey = null;
+
+          // Reset trigger labels
+          var eL = document.querySelector("#qbank-exam-filter .trigger-label");
+          var sL = document.querySelector("#qbank-subject-filter .trigger-label");
+          var yL = document.querySelector("#qbank-year-filter .trigger-label");
+          if (eL) eL.textContent = "All Exams";
+          if (sL) sL.textContent = "All Subjects";
+          if (yL) yL.textContent = "All Years";
+
+          renderQuestionBankView();
+        });
+      }
+
+      // Back to Sets Button
+      var btnBackSets = document.getElementById("btn-back-to-sets");
+      if (btnBackSets) {
+        btnBackSets.addEventListener("click", function () {
+          activeViewingSetKey = null;
+          renderQuestionBankView();
+        });
+      }
+      // === FEATURE: test-engine ===
+      var examTimerInterval = null;
+
+      function renderTestTab() {
+        var configView = document.getElementById("test-config-view");
+        var runnerView = document.getElementById("test-runner-view");
+        var resultView = document.getElementById("test-result-view");
+        var summaryEl = document.getElementById("test-bank-summary");
+
+        if (summaryEl) {
+          var totalQ = getQuestions().length;
+          summaryEl.textContent = "Questions will be randomly picked across all " + totalQ + " available questions in source.js.";
+        }
+
+        // If an exam session is actively stored in local memory, resume it immediately
+        if (appData && appData.activeSession) {
+          if (configView) configView.style.display = "none";
+          if (resultView) resultView.style.display = "none";
+          if (runnerView) runnerView.style.display = "block";
+          resumeExamSession();
+        } else if (!resultView || resultView.style.display !== "block") {
+          if (configView) configView.style.display = "block";
+          if (runnerView) runnerView.style.display = "none";
+          if (resultView) resultView.style.display = "none";
+        }
+      }
+
+      function startRandomExamSession() {
+        var allQuestions = getQuestions();
+        if (allQuestions.length === 0) {
+          alert("No questions found in source.js to start an exam.");
+          return;
+        }
+
+        var countVal = document.getElementById("test-count-dropdown").getAttribute("data-value");
+        var timeVal = parseInt(document.getElementById("test-time-dropdown").getAttribute("data-value"), 10) || 10;
+        var penaltyVal = parseFloat(document.getElementById("test-penalty-dropdown").getAttribute("data-value")) || 0;
+
+        // Rule 4: Questions should be random, picked from any set
+        var shuffled = allQuestions.slice().sort(function () { return 0.5 - Math.random(); });
+        var targetCount = countVal === "all" ? shuffled.length : Math.min(parseInt(countVal, 10), shuffled.length);
+        var chosenQuestions = shuffled.slice(0, targetCount);
+
+        var durationMs = timeVal * 60 * 1000;
+        appData.activeSession = {
+          questions: chosenQuestions,
+          currentIndex: 0,
+          answers: {},      // qId -> selected option id
+          flagged: {},      // qId -> boolean
+          startTime: Date.now(),
+          targetEndTime: Date.now() + durationMs,
+          penalty: penaltyVal
+        };
+
+        saveLocalData(true);
+        renderTestTab();
+      }
+
+      function resumeExamSession() {
+        var session = appData ? appData.activeSession : null;
+        if (!session) return;
+
+        clearInterval(examTimerInterval);
+
+        function tick() {
+          var remaining = session.targetEndTime - Date.now();
+          if (remaining <= 0) {
+            clearInterval(examTimerInterval);
+            finishExamSubmission(true);
+            return;
+          }
+          var totalSec = Math.floor(remaining / 1000);
+          var m = Math.floor(totalSec / 60);
+          var s = totalSec % 60;
+          var str = (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s;
+          var clockText = document.getElementById("test-timer-text");
+          if (clockText) clockText.textContent = str;
+
+          var clockBox = document.getElementById("test-clock");
+          if (clockBox) {
+            clockBox.classList.toggle("timer-urgent", remaining < 60000);
+          }
+        }
+
+        tick();
+        examTimerInterval = setInterval(tick, 1000);
+        renderCurrentExamQuestion();
+      }
+
+      function renderCurrentExamQuestion() {
+        var session = appData ? appData.activeSession : null;
+        if (!session) return;
+
+        var q = session.questions[session.currentIndex];
+        var total = session.questions.length;
+
+        // Progress counter
+        var pText = document.getElementById("test-q-progress");
+        if (pText) pText.textContent = "Question " + (session.currentIndex + 1) + " of " + total;
+
+        // Palette
+        var palette = document.getElementById("test-palette-grid");
+        if (palette) {
+          while (palette.firstChild) palette.removeChild(palette.firstChild);
+          session.questions.forEach(function (ques, idx) {
+            var btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "palette-btn";
+            btn.textContent = idx + 1;
+            if (idx === session.currentIndex) btn.classList.add("current");
+            if (session.answers[ques.id]) btn.classList.add("answered");
+            if (session.flagged[ques.id]) btn.classList.add("flagged");
+            btn.addEventListener("click", function () {
+              session.currentIndex = idx;
+              renderCurrentExamQuestion();
+            });
+            palette.appendChild(btn);
+          });
+        }
+
+        // Rule 4: Subtitle mentioning Job, Subject, Year for each question
+        var subTitleEl = document.getElementById("test-question-subtitle");
+        if (subTitleEl) {
+          var job = q.examName || "General Exam";
+          var subj = q.subject || "General";
+          var yr = q.year ? String(q.year) : "General";
+          subTitleEl.textContent = job + " • " + subj + " • " + yr;
+        }
+
+        // Question Text
+        var qText = document.getElementById("test-question-text");
+        if (qText) qText.textContent = (session.currentIndex + 1) + ". " + q.question;
+
+        // Options List
+        var optsList = document.getElementById("test-options-list");
+        if (optsList) {
+          while (optsList.firstChild) optsList.removeChild(optsList.firstChild);
+          (q.options || []).forEach(function (opt) {
+            var row = document.createElement("div");
+            row.className = "test-opt-row" + (session.answers[q.id] === opt.id ? " selected" : "");
+
+            var badge = document.createElement("span");
+            badge.className = "opt-badge";
+            badge.textContent = opt.id;
+
+            var txt = document.createElement("span");
+            txt.textContent = opt.text;
+
+            row.appendChild(badge);
+            row.appendChild(txt);
+
+            row.addEventListener("click", function () {
+              if (session.answers[q.id] === opt.id) {
+                delete session.answers[q.id];
+              } else {
+                session.answers[q.id] = opt.id;
+              }
+              saveLocalData();
+              renderCurrentExamQuestion();
+            });
+
+            optsList.appendChild(row);
+          });
+        }
+
+        // Flag button highlight
+        var flagBtn = document.getElementById("btn-test-flag");
+        if (flagBtn) {
+          flagBtn.classList.toggle("btn-primary", !!session.flagged[q.id]);
+        }
+      }
+
+      function finishExamSubmission(isTimeUp) {
+        clearInterval(examTimerInterval);
+        var session = appData ? appData.activeSession : null;
+        if (!session) return;
+
+        var total = session.questions.length;
+        var correct = 0;
+        var incorrect = 0;
+        var unanswered = 0;
+
+        session.questions.forEach(function (q) {
+          var userAns = session.answers[q.id];
+          if (!appData.attempts[q.id]) {
+            appData.attempts[q.id] = { attempts: 0, correct: 0, incorrect: 0, lastAttempt: 0, flagged: false };
+          }
+
+          if (!userAns) {
+            unanswered++;
+          } else if (userAns === q.correctAnswer) {
+            correct++;
+            appData.attempts[q.id].attempts++;
+            appData.attempts[q.id].correct++;
+            appData.attempts[q.id].lastAttempt = Date.now();
+          } else {
+            incorrect++;
+            appData.attempts[q.id].attempts++;
+            appData.attempts[q.id].incorrect++;
+            appData.attempts[q.id].flagged = true; // Logged into mistake page!
+            appData.attempts[q.id].lastAttempt = Date.now();
+          }
+        });
+
+        var penalty = session.penalty || 0;
+        var score = Math.max(0, (correct * 1) - (incorrect * penalty));
+        var timeTaken = Math.max(1, Math.floor((Date.now() - session.startTime) / 1000));
+
+        var testRecord = {
+          id: "test_" + Date.now(),
+          date: Date.now(),
+          total: total,
+          correct: correct,
+          incorrect: incorrect,
+          unanswered: unanswered,
+          penalty: penalty,
+          score: parseFloat(score.toFixed(2)),
+          timeTakenSeconds: timeTaken,
+          answers: session.answers,
+          questions: session.questions
+        };
+
+        if (!appData.testHistory) appData.testHistory = [];
+        appData.testHistory.unshift(testRecord);
+        appData.activeSession = null;
+        saveLocalData(true);
+
+        // Show Post-Exam Results View
+        showTestResultsView(testRecord);
+        renderAll();
+      }
+
+      function showTestResultsView(record) {
+        var runnerView = document.getElementById("test-runner-view");
+        var configView = document.getElementById("test-config-view");
+        var resultView = document.getElementById("test-result-view");
+
+        if (runnerView) runnerView.style.display = "none";
+        if (configView) configView.style.display = "none";
+        if (resultView) resultView.style.display = "block";
+
+        var sScore = document.getElementById("res-score-display");
+        var sMeta = document.getElementById("res-meta-text");
+        var sCorrect = document.getElementById("res-correct-cnt");
+        var sWrong = document.getElementById("res-wrong-cnt");
+
+        if (sScore) sScore.textContent = record.score.toFixed(2);
+        if (sMeta) sMeta.textContent = "Completed in " + Math.floor(record.timeTakenSeconds / 60) + "m " + (record.timeTakenSeconds % 60) + "s";
+        if (sCorrect) sCorrect.textContent = record.correct;
+        if (sWrong) sWrong.textContent = record.incorrect;
+
+        // Render Question Breakdown with Right Answers and Explanations
+        var container = document.getElementById("test-result-review-list");
+        if (container) {
+          while (container.firstChild) container.removeChild(container.firstChild);
+
+          record.questions.forEach(function (q, idx) {
+            var card = document.createElement("div");
+            card.className = "review-card";
+
+            var userAns = record.answers[q.id];
+            var subBadge = document.createElement("div");
+            subBadge.className = "q-meta-subtitle";
+            subBadge.textContent = (q.examName || "Exam") + " • " + (q.subject || "Subject") + " • " + (q.year || "Year");
+
+            var qText = document.createElement("div");
+            qText.style.cssText = "font-size: 14px; font-weight: 600; margin-bottom: 8px;";
+            qText.textContent = (idx + 1) + ". " + q.question;
+
+            card.appendChild(subBadge);
+            card.appendChild(qText);
+
+            (q.options || []).forEach(function (opt) {
+              var row = document.createElement("div");
+              row.className = "review-opt-line";
+
+              if (opt.id === q.correctAnswer) {
+                row.classList.add("right-pick");
+              } else if (opt.id === userAns) {
+                row.classList.add("wrong-pick");
+              }
+
+              var badge = document.createElement("span");
+              badge.className = "opt-badge";
+              badge.textContent = opt.id;
+
+              var txt = document.createElement("span");
+              txt.textContent = opt.text;
+
+              row.appendChild(badge);
+              row.appendChild(txt);
+              card.appendChild(row);
+            });
+
+            // Detailed Explanation
+            var expBox = document.createElement("div");
+            expBox.style.cssText = "margin-top: 10px; padding: 10px; border-radius: 8px; background: rgba(var(--accent-rgb), 0.08); font-size: 12px; line-height: 1.5;";
+            expBox.innerHTML = '<strong>Explanation:</strong> ' + (q.explanation || 'No explanation recorded.');
+            card.appendChild(expBox);
+
+            container.appendChild(card);
+          });
+        }
+      }
+
+      // UI Listeners for Test Runner
+      var btnStartTest = document.getElementById("btn-start-random-test");
+      if (btnStartTest) {
+        btnStartTest.addEventListener("click", startRandomExamSession);
+      }
+
+      var btnPrev = document.getElementById("btn-test-prev");
+      if (btnPrev) {
+        btnPrev.addEventListener("click", function () {
+          if (appData && appData.activeSession && appData.activeSession.currentIndex > 0) {
+            appData.activeSession.currentIndex--;
+            renderCurrentExamQuestion();
+          }
+        });
+      }
+
+      var btnNext = document.getElementById("btn-test-next");
+      if (btnNext) {
+        btnNext.addEventListener("click", function () {
+          if (appData && appData.activeSession && appData.activeSession.currentIndex < appData.activeSession.questions.length - 1) {
+            appData.activeSession.currentIndex++;
+            renderCurrentExamQuestion();
+          }
+        });
+      }
+
+      var btnFlag = document.getElementById("btn-test-flag");
+      if (btnFlag) {
+        btnFlag.addEventListener("click", function () {
+          if (appData && appData.activeSession) {
+            var q = appData.activeSession.questions[appData.activeSession.currentIndex];
+            appData.activeSession.flagged[q.id] = !appData.activeSession.flagged[q.id];
+            saveLocalData();
+            renderCurrentExamQuestion();
+          }
+        });
+      }
+
+      // Modal Confirmation before Final Submit
+      var btnTriggerSubmit = document.getElementById("btn-trigger-test-submit");
+      var modalSubmit = document.getElementById("test-confirm-modal");
+      if (btnTriggerSubmit && modalSubmit) {
+        btnTriggerSubmit.addEventListener("click", function () {
+          if (!appData || !appData.activeSession) return;
+          var answered = Object.keys(appData.activeSession.answers).length;
+          var total = appData.activeSession.questions.length;
+          var summary = document.getElementById("test-modal-summary");
+          if (summary) {
+            summary.textContent = "You have answered " + answered + " of " + total + " questions.";
+          }
+          modalSubmit.classList.add("open");
+        });
+      }
+
+      var btnModalCancel = document.getElementById("btn-test-modal-cancel");
+      if (btnModalCancel && modalSubmit) {
+        btnModalCancel.addEventListener("click", function () {
+          modalSubmit.classList.remove("open");
+        });
+      }
+
+      var btnModalConfirm = document.getElementById("btn-test-modal-confirm");
+      if (btnModalConfirm && modalSubmit) {
+        btnModalConfirm.addEventListener("click", function () {
+          modalSubmit.classList.remove("open");
+          finishExamSubmission(false);
+        });
+      }
+
+      // Done Button on Results View
+      var btnFinishDone = document.getElementById("btn-test-finish-done");
+      if (btnFinishDone) {
+        btnFinishDone.addEventListener("click", function () {
+          var resultView = document.getElementById("test-result-view");
+          if (resultView) resultView.style.display = "none";
+          switchView("home");
+        });
+      }
+      // === FEATURE: mistake-notebook ===
+      function renderMistakesNotebook() {
+        var container = document.getElementById("mistakes-items-container");
+        var countBadge = document.getElementById("mistakes-count-badge");
+        if (!container) return;
+
+        var allQuestions = getQuestions();
+        var attemptsMap = (appData && appData.attempts) ? appData.attempts : {};
+
+        // Filter only questions where user made mistakes or flagged
+        var mistakeQuestions = allQuestions.filter(function (q) {
+          var att = attemptsMap[q.id];
+          return att && (att.incorrect > 0 || att.flagged);
+        });
+
+        if (countBadge) {
+          countBadge.textContent = mistakeQuestions.length + " Items";
+        }
+
+        while (container.firstChild) {
+          container.removeChild(container.firstChild);
+        }
+
+        if (mistakeQuestions.length === 0) {
+          var empty = document.createElement("div");
+          empty.className = "feature-placeholder";
+          empty.textContent = "Your notebook is clear. Any questions answered incorrectly during tests will appear here.";
+          container.appendChild(empty);
+          return;
+        }
+
+        mistakeQuestions.forEach(function (q, index) {
+          var card = document.createElement("div");
+          card.className = "mistake-only-card";
+
+          // Header with Metadata Subtitle + Dismiss / Resolved Button
+          var header = document.createElement("div");
+          header.className = "mistake-header-row";
+
+          var sub = document.createElement("span");
+          sub.className = "q-meta-subtitle";
+          sub.style.marginBottom = "0";
+          sub.textContent = (q.examName || "Exam") + " • " + (q.subject || "Subject") + " • " + (q.year || "Year");
+
+          var btnClear = document.createElement("button");
+          btnClear.type = "button";
+          btnClear.className = "btn btn-secondary";
+          btnClear.style.cssText = "width: auto; padding: 4px 10px; font-size: 11px;";
+          btnClear.textContent = "Mark Resolved";
+
+          btnClear.addEventListener("click", function () {
+            if (appData.attempts[q.id]) {
+              appData.attempts[q.id].incorrect = 0;
+              appData.attempts[q.id].flagged = false;
+              saveLocalData(true);
+              renderMistakesNotebook();
+              renderAnalyticsDashboard();
+            }
+          });
+
+          header.appendChild(sub);
+          header.appendChild(btnClear);
+
+          // 1. Question Text
+          var qTitle = document.createElement("div");
+          qTitle.style.cssText = "font-size: 15px; font-weight: 600; line-height: 1.45; color: var(--text); margin-top: 8px;";
+          qTitle.textContent = (index + 1) + ". " + q.question;
+
+          // 2. Right Answer
+          var correctOpt = (q.options || []).find(function (opt) { return opt.id === q.correctAnswer; });
+          var rightAnsDiv = document.createElement("div");
+          rightAnsDiv.className = "mistake-correct-badge";
+          rightAnsDiv.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>' +
+            '<span>Correct Answer: (' + q.correctAnswer + ') ' + (correctOpt ? correctOpt.text : '') + '</span>';
+
+          // 3. Explanation of the Answer
+          var expBox = document.createElement("div");
+          expBox.className = "mistake-exp-box";
+          expBox.innerHTML = '<strong>Explanation:</strong> ' + (q.explanation || 'No explanation provided.');
+
+          card.appendChild(header);
+          card.appendChild(qTitle);
+          card.appendChild(rightAnsDiv);
+          card.appendChild(expBox);
+
+          container.appendChild(card);
+        });
+      }
+      // === FEATURE: portal-bridge-sync ===
+
+      // Bridge Error Code Handler
       function handleBridgeError(err) {
         if (!err || !err.code) return;
         var msg = "";
         switch (err.code) {
           case "NOT_PERMITTED":
-            msg = "Portal Permission Error: Capability not permitted by registry.";
+            msg = "Portal Permission Error: Capability not permitted by app registry.";
             break;
           case "TIMEOUT":
-            msg = "Portal Bridge Timeout: Native request timed out.";
+            msg = "Portal Bridge Timeout: Native shell request timed out.";
             break;
           case "PROTOCOL_MISMATCH":
             msg = "Portal Bridge Protocol Mismatch: Version discrepancy detected.";
             break;
           case "INVALID_PAYLOAD":
-            msg = "Portal Bridge Error: Invalid payload supplied.";
+            msg = "Portal Bridge Error: Invalid parameters provided.";
             break;
           case "NATIVE_ERROR":
             msg = "Native System Error: " + (err.message || "Unknown internal error");
@@ -2668,6 +2788,7 @@
         console.warn(msg);
       }
 
+      // Haptic Tactile Feedback Helper
       function triggerHaptic(type) {
         if (window.PortalBridge && typeof window.PortalBridge.hasCapability === "function" && window.PortalBridge.hasCapability("haptics")) {
           try {
@@ -2677,7 +2798,7 @@
             handleBridgeError(e);
           }
         }
-        // Normal web fallback
+        // Fallback for standard browsers
         if (navigator.vibrate) {
           try {
             navigator.vibrate(15);
@@ -2685,7 +2806,8 @@
         }
       }
 
-      function triggerNativeNotification(title, bodyText) {
+      // Native Notification Helper
+      function triggerShellNotification(title, bodyText) {
         if (window.PortalBridge && typeof window.PortalBridge.hasCapability === "function" && window.PortalBridge.hasCapability("notifications")) {
           try {
             window.PortalBridge.notifications.send({
@@ -2697,7 +2819,7 @@
             handleBridgeError(e);
           }
         }
-        // Normal web fallback
+        // Fallback for standard browsers
         if ("Notification" in window && Notification.permission === "granted") {
           try {
             new Notification(title, { body: bodyText });
@@ -2705,19 +2827,19 @@
         }
       }
 
-      // Initialize Bridge on boot
-      async function initNativeBridge() {
+      // Initialize Bridge on Startup (Never executed in autosync mode)
+      async function initPortalBridge() {
         if (!window.PortalBridge || typeof window.PortalBridge.getCapabilities !== "function") return;
         try {
           await window.PortalBridge.getCapabilities();
         } catch (e) {
-          // Throws NOT_IN_SHELL in a normal browser; safely ignore
+          // Throws NOT_IN_SHELL in a standard browser; safely ignored
           return;
         }
 
-        var card = document.getElementById("native-capabilities-card");
+        var card = document.getElementById("settings-native-card");
         var rowHaptics = document.getElementById("row-cap-haptics");
-        var rowNotif = document.getElementById("row-cap-notifications");
+        var rowNotif = document.getElementById("row-cap-notif");
 
         var canHaptics = window.PortalBridge.hasCapability("haptics");
         var canNotif = window.PortalBridge.hasCapability("notifications");
@@ -2730,18 +2852,49 @@
       }
 
       if (!isAutoSync) {
-        initNativeBridge();
+        initPortalBridge();
       }
 
-      // Test Notification Button
-      var btnTestNotif = document.getElementById("btn-test-notification");
+      // Test Notification Button in Settings
+      var btnTestNotif = document.getElementById("btn-test-shell-notif");
       if (btnTestNotif) {
         btnTestNotif.addEventListener("click", function () {
           triggerHaptic("selection");
-          triggerNativeNotification("Prep Exam Alert", "Your study reminders and exam results are active.");
+          triggerShellNotification("Prep Notification", "Native notifications are linked and active.");
         });
       }
-      // === FEATURE: sync-contract ===
+
+      // Hook Haptics into Tab Bar Navigation
+      tabs.forEach(function (t) {
+        t.addEventListener("click", function () {
+          triggerHaptic("selection");
+        });
+      });
+
+      // Hook Haptics into Test Option Selection
+      var origRenderCurrentExamQuestion = renderCurrentExamQuestion;
+      renderCurrentExamQuestion = function () {
+        origRenderCurrentExamQuestion();
+        var opts = document.querySelectorAll(".test-opt-row");
+        opts.forEach(function (row) {
+          row.addEventListener("click", function () {
+            triggerHaptic("selection");
+          });
+        });
+      };
+
+      // Hook Haptics and Notification into Exam Submission
+      var origFinishExamSubmission = finishExamSubmission;
+      finishExamSubmission = function (isTimeUp) {
+        origFinishExamSubmission(isTimeUp);
+        triggerHaptic("impact_heavy");
+        var latest = appData.testHistory && appData.testHistory[0];
+        if (latest) {
+          triggerShellNotification("Test Completed", "Score: " + latest.score.toFixed(2) + " (" + latest.correct + " Correct)");
+        }
+      };
+
+      // Define Portal Sync Contract (window.onAutoSync)
       window.onAutoSync = async function (token) {
         try {
           history.replaceState(null, '', location.pathname);
@@ -2753,8 +2906,8 @@
           return DataSync.syncNow('prep', getLocalData, applyRemoteData, token);
         }
       };
-    })();
-    // Service Worker Registration (relative path for GitHub Pages subfolder)
+
+      // Service Worker Registration
       if ('serviceWorker' in navigator && !isAutoSync) {
         window.addEventListener('load', function () {
           navigator.serviceWorker.register('./sw.js').catch(function (err) {
@@ -2762,6 +2915,7 @@
           });
         });
       }
+    })();
   </script>
 </body>
 </html>
