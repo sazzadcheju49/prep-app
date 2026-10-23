@@ -1020,28 +1020,16 @@
           </div>
         </div>
 
-        <!-- Section Status Header -->
+        <!-- Reading Space Header -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-          <span id="qbank-status-label" style="font-size: 12px; font-weight: 600; color: var(--text-secondary);">10 Last Added Sets</span>
+          <span id="qbank-status-label" style="font-size: 12px; font-weight: 600; color: var(--text-secondary);">Reading Space</span>
           <button id="btn-qbank-reset-filters" class="btn btn-secondary" style="width: auto; padding: 4px 10px; font-size: 11px;" type="button">
             Reset Filters
           </button>
         </div>
 
-        <!-- Sets List View -->
-        <div id="qbank-sets-container"></div>
-
-        <!-- Single Set Detail View (Opens when a set is tapped) -->
-        <div id="qbank-detail-view" style="display: none;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-            <button id="btn-back-to-sets" class="btn btn-secondary" style="width: auto; padding: 6px 12px; font-size: 12px;" type="button">
-              <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
-              Back to Sets
-            </button>
-            <span id="qbank-active-set-title" style="font-size: 13px; font-weight: 600; color: var(--text);"></span>
-          </div>
-          <div id="qbank-set-questions-container"></div>
-        </div>
+        <!-- Direct Questions Reading Stream -->
+        <div id="qbank-questions-stream"></div>
       </div>
     </section>
 
@@ -2016,34 +2004,6 @@
       var qbankFilterExam = "all";
       var qbankFilterSubject = "all";
       var qbankFilterYear = "all";
-      var activeViewingSetKey = null;
-
-      // Group questions into Question Sets (Key: examName + "||" + year + "||" + subject)
-      function extractQuestionSets(questions) {
-        var setsMap = {};
-        questions.forEach(function (q) {
-          var eName = q.examName || "General Exam";
-          var yr = q.year ? String(q.year) : "General";
-          var sub = q.subject || "General";
-          var key = eName + "||" + yr + "||" + sub;
-
-          if (!setsMap[key]) {
-            setsMap[key] = {
-              key: key,
-              examName: eName,
-              year: yr,
-              subject: sub,
-              examCategory: q.examCategory || "government",
-              questions: []
-            };
-          }
-          setsMap[key].questions.push(q);
-        });
-
-        return Object.keys(setsMap).map(function (k) {
-          return setsMap[k];
-        });
-      }
 
       // Dynamically populate custom dropdown options directly from source.js
       function populateDynamicFilterDropdowns() {
@@ -2058,7 +2018,6 @@
           if (q.year) years[q.year] = true;
         });
 
-        // Helper to rebuild dropdown menus while preserving current selection
         function rebuildMenu(menuId, itemsMap, activeVal, defaultLabel) {
           var menu = document.getElementById(menuId);
           if (!menu) return;
@@ -2083,112 +2042,56 @@
       function renderQuestionBankView() {
         populateDynamicFilterDropdowns();
 
-        var setsContainer = document.getElementById("qbank-sets-container");
-        var detailView = document.getElementById("qbank-detail-view");
+        var stream = document.getElementById("qbank-questions-stream");
         var statusLabel = document.getElementById("qbank-status-label");
-        if (!setsContainer) return;
-
-        // If viewing an expanded set, render detail view instead
-        if (activeViewingSetKey) {
-          setsContainer.style.display = "none";
-          if (detailView) detailView.style.display = "block";
-          renderActiveSetDetail();
-          return;
-        }
-
-        setsContainer.style.display = "block";
-        if (detailView) detailView.style.display = "none";
+        if (!stream) return;
 
         var allQuestions = getQuestions();
-        var allSets = extractQuestionSets(allQuestions);
-
-        // Check if any filter is active
         var isFiltered = (qbankFilterExam !== "all") || (qbankFilterSubject !== "all") || (qbankFilterYear !== "all");
 
-        var displayedSets = [];
-        if (isFiltered) {
-          displayedSets = allSets.filter(function (set) {
-            if (qbankFilterExam !== "all" && set.examName !== qbankFilterExam) return false;
-            if (qbankFilterSubject !== "all" && set.subject !== qbankFilterSubject) return false;
-            if (qbankFilterYear !== "all" && set.year !== qbankFilterYear) return false;
-            return true;
-          });
-          if (statusLabel) statusLabel.textContent = "Matching Sets (" + displayedSets.length + ")";
-        } else {
-          // Rule 3: Display 10 last added question sets
-          displayedSets = allSets.slice(-10).reverse();
-          if (statusLabel) statusLabel.textContent = "10 Last Added Sets";
+        var displayedQuestions = allQuestions.filter(function (q) {
+          if (qbankFilterExam !== "all" && q.examName !== qbankFilterExam) return false;
+          if (qbankFilterSubject !== "all" && q.subject !== qbankFilterSubject) return false;
+          if (qbankFilterYear !== "all" && String(q.year) !== qbankFilterYear) return false;
+          return true;
+        });
+
+        if (statusLabel) {
+          statusLabel.textContent = isFiltered ? ("Showing " + displayedQuestions.length + " Filtered Questions") : ("Reading Space (" + allQuestions.length + " Questions)");
         }
 
-        while (setsContainer.firstChild) {
-          setsContainer.removeChild(setsContainer.firstChild);
+        while (stream.firstChild) {
+          stream.removeChild(stream.firstChild);
         }
 
-        if (displayedSets.length === 0) {
+        if (displayedQuestions.length === 0) {
           var empty = document.createElement("div");
           empty.className = "feature-placeholder";
-          empty.textContent = "No question sets match the selected filters.";
-          setsContainer.appendChild(empty);
+          empty.textContent = "No questions found matching your selected filters.";
+          stream.appendChild(empty);
           return;
         }
 
-        displayedSets.forEach(function (set) {
-          var card = document.createElement("div");
-          card.className = "qset-card";
-
-          var left = document.createElement("div");
-          var title = document.createElement("div");
-          title.className = "qset-title";
-          title.textContent = set.examName + (set.year !== "General" ? " (" + set.year + ")" : "");
-
-          var sub = document.createElement("div");
-          sub.className = "qset-subtitle";
-          sub.innerHTML = '<span>' + set.subject + '</span><span>•</span><span>' + set.questions.length + ' Questions</span>';
-
-          left.appendChild(title);
-          left.appendChild(sub);
-
-          var right = document.createElement("div");
-          right.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>';
-
-          card.appendChild(left);
-          card.appendChild(right);
-
-          card.addEventListener("click", function () {
-            activeViewingSetKey = set.key;
-            renderQuestionBankView();
-          });
-
-          setsContainer.appendChild(card);
-        });
-      }
-
-      function renderActiveSetDetail() {
-        var allQuestions = getQuestions();
-        var allSets = extractQuestionSets(allQuestions);
-        var currentSet = allSets.find(function (s) { return s.key === activeViewingSetKey; });
-        var container = document.getElementById("qbank-set-questions-container");
-        var titleEl = document.getElementById("qbank-active-set-title");
-
-        if (!currentSet || !container) return;
-        if (titleEl) titleEl.textContent = currentSet.examName + " — " + currentSet.subject;
-
-        while (container.firstChild) container.removeChild(container.firstChild);
-
-        currentSet.questions.forEach(function (q, index) {
+        displayedQuestions.forEach(function (q, index) {
           var card = document.createElement("div");
           card.className = "study-q-card";
+
+          var subBadge = document.createElement("div");
+          subBadge.className = "q-meta-subtitle";
+          subBadge.textContent = (q.examName || "Exam") + " • " + (q.subject || "Subject") + " • " + (q.year || "Year");
 
           var qTitle = document.createElement("div");
           qTitle.className = "study-q-title";
           qTitle.textContent = (index + 1) + ". " + q.question;
+
+          card.appendChild(subBadge);
           card.appendChild(qTitle);
 
+          // Options list with clean answer badge
           var optsDiv = document.createElement("div");
           (q.options || []).forEach(function (opt) {
             var row = document.createElement("div");
-            row.className = "study-opt-row";
-            row.setAttribute("data-opt-id", opt.id);
+            row.className = "study-opt-row" + (opt.id === q.correctAnswer ? " correct-reveal" : "");
 
             var badge = document.createElement("span");
             badge.className = "opt-badge";
@@ -2203,32 +2106,14 @@
           });
           card.appendChild(optsDiv);
 
-          // Explanation Box
+          // Always-accessible readable explanation panel
           var expBox = document.createElement("div");
-          expBox.className = "study-exp-box";
-          expBox.textContent = q.explanation || "No explanation provided.";
+          expBox.className = "study-exp-box visible";
+          expBox.style.display = "block";
+          expBox.innerHTML = '<strong>Explanation:</strong> ' + (q.explanation || 'No explanation provided.');
           card.appendChild(expBox);
 
-          // Action Button
-          var btnReveal = document.createElement("button");
-          btnReveal.type = "button";
-          btnReveal.className = "btn btn-secondary";
-          btnReveal.style.cssText = "margin-top: 10px; padding: 8px 14px; font-size: 12px; width: auto;";
-          btnReveal.textContent = "Show Answer & Explanation";
-
-          btnReveal.addEventListener("click", function () {
-            var isShown = expBox.classList.toggle("visible");
-            btnReveal.textContent = isShown ? "Hide Explanation" : "Show Answer & Explanation";
-            optsDiv.querySelectorAll(".study-opt-row").forEach(function (r) {
-              if (r.getAttribute("data-opt-id") === q.correctAnswer) {
-                if (isShown) r.classList.add("correct-reveal");
-                else r.classList.remove("correct-reveal");
-              }
-            });
-          });
-
-          card.appendChild(btnReveal);
-          container.appendChild(card);
+          stream.appendChild(card);
         });
       }
 
@@ -2237,7 +2122,6 @@
       if (ddExam) {
         ddExam.addEventListener("change", function (e) {
           qbankFilterExam = e.detail.value;
-          activeViewingSetKey = null;
           renderQuestionBankView();
         });
       }
@@ -2246,7 +2130,6 @@
       if (ddSubject) {
         ddSubject.addEventListener("change", function (e) {
           qbankFilterSubject = e.detail.value;
-          activeViewingSetKey = null;
           renderQuestionBankView();
         });
       }
@@ -2255,21 +2138,18 @@
       if (ddYear) {
         ddYear.addEventListener("change", function (e) {
           qbankFilterYear = e.detail.value;
-          activeViewingSetKey = null;
           renderQuestionBankView();
         });
       }
 
-      // Reset Filters Button
+      // Reset Filters
       var btnResetFilters = document.getElementById("btn-qbank-reset-filters");
       if (btnResetFilters) {
         btnResetFilters.addEventListener("click", function () {
           qbankFilterExam = "all";
           qbankFilterSubject = "all";
           qbankFilterYear = "all";
-          activeViewingSetKey = null;
 
-          // Reset trigger labels
           var eL = document.querySelector("#qbank-exam-filter .trigger-label");
           var sL = document.querySelector("#qbank-subject-filter .trigger-label");
           var yL = document.querySelector("#qbank-year-filter .trigger-label");
@@ -2277,15 +2157,6 @@
           if (sL) sL.textContent = "All Subjects";
           if (yL) yL.textContent = "All Years";
 
-          renderQuestionBankView();
-        });
-      }
-
-      // Back to Sets Button
-      var btnBackSets = document.getElementById("btn-back-to-sets");
-      if (btnBackSets) {
-        btnBackSets.addEventListener("click", function () {
-          activeViewingSetKey = null;
           renderQuestionBankView();
         });
       }
@@ -2488,7 +2359,8 @@
             incorrect++;
             appData.attempts[q.id].attempts++;
             appData.attempts[q.id].incorrect++;
-            appData.attempts[q.id].flagged = true; // Logged into mistake page!
+            appData.attempts[q.id].flagged = true;
+            appData.attempts[q.id].lastWrongAnswer = userAns; // Save your chosen wrong answer
             appData.attempts[q.id].lastAttempt = Date.now();
           }
         });
@@ -2681,7 +2553,6 @@
         var allQuestions = getQuestions();
         var attemptsMap = (appData && appData.attempts) ? appData.attempts : {};
 
-        // Filter only questions where user made mistakes or flagged
         var mistakeQuestions = allQuestions.filter(function (q) {
           var att = attemptsMap[q.id];
           return att && (att.incorrect > 0 || att.flagged);
@@ -2704,10 +2575,11 @@
         }
 
         mistakeQuestions.forEach(function (q, index) {
+          var att = attemptsMap[q.id] || {};
           var card = document.createElement("div");
           card.className = "mistake-only-card";
 
-          // Header with Metadata Subtitle + Dismiss / Resolved Button
+          // Header: Subtitle + Mark Resolved button
           var header = document.createElement("div");
           header.className = "mistake-header-row";
 
@@ -2735,27 +2607,76 @@
           header.appendChild(sub);
           header.appendChild(btnClear);
 
-          // 1. Question Text
+          // Question Title
           var qTitle = document.createElement("div");
           qTitle.style.cssText = "font-size: 15px; font-weight: 600; line-height: 1.45; color: var(--text); margin-top: 8px;";
           qTitle.textContent = (index + 1) + ". " + q.question;
 
-          // 2. Right Answer
+          // iOS-style Segmented Toggle between "Your Answer" and "Right Answer"
+          var toggleBar = document.createElement("div");
+          toggleBar.style.cssText = "display: flex; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 8px; padding: 2px; margin: 12px 0 8px; gap: 4px;";
+
+          var btnTabWrong = document.createElement("button");
+          btnTabWrong.type = "button";
+          btnTabWrong.style.cssText = "flex: 1; padding: 6px; font-size: 12px; font-weight: 600; border: none; border-radius: 6px; cursor: pointer; background: rgba(255, 69, 58, 0.15); color: #ff453a;";
+          btnTabWrong.textContent = "Your Answer";
+
+          var btnTabRight = document.createElement("button");
+          btnTabRight.type = "button";
+          btnTabRight.style.cssText = "flex: 1; padding: 6px; font-size: 12px; font-weight: 600; border: none; border-radius: 6px; cursor: pointer; background: transparent; color: var(--text-secondary);";
+          btnTabRight.textContent = "Right Answer";
+
+          toggleBar.appendChild(btnTabWrong);
+          toggleBar.appendChild(btnTabRight);
+
+          // Container 1: Your Chosen Wrong Answer
+          var wrongOpt = (q.options || []).find(function (opt) { return opt.id === att.lastWrongAnswer; });
+          var wrongBox = document.createElement("div");
+          wrongBox.style.cssText = "background: rgba(255, 69, 58, 0.1); border: 1px solid rgba(255, 69, 58, 0.25); color: #ff453a; font-size: 13px; font-weight: 600; padding: 10px 12px; border-radius: 8px; margin-bottom: 8px;";
+          wrongBox.textContent = "You selected: (" + (att.lastWrongAnswer || "?") + ") " + (wrongOpt ? wrongOpt.text : "Incorrect response recorded");
+
+          // Container 2: Correct Answer + Full Explanation
           var correctOpt = (q.options || []).find(function (opt) { return opt.id === q.correctAnswer; });
+          var rightBox = document.createElement("div");
+          rightBox.style.display = "none";
+
           var rightAnsDiv = document.createElement("div");
           rightAnsDiv.className = "mistake-correct-badge";
+          rightAnsDiv.style.margin = "0 0 8px 0";
           rightAnsDiv.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>' +
             '<span>Correct Answer: (' + q.correctAnswer + ') ' + (correctOpt ? correctOpt.text : '') + '</span>';
 
-          // 3. Explanation of the Answer
           var expBox = document.createElement("div");
           expBox.className = "mistake-exp-box";
           expBox.innerHTML = '<strong>Explanation:</strong> ' + (q.explanation || 'No explanation provided.');
 
+          rightBox.appendChild(rightAnsDiv);
+          rightBox.appendChild(expBox);
+
+          // Toggle event listener
+          btnTabWrong.addEventListener("click", function () {
+            btnTabWrong.style.background = "rgba(255, 69, 58, 0.15)";
+            btnTabWrong.style.color = "#ff453a";
+            btnTabRight.style.background = "transparent";
+            btnTabRight.style.color = "var(--text-secondary)";
+            wrongBox.style.display = "block";
+            rightBox.style.display = "none";
+          });
+
+          btnTabRight.addEventListener("click", function () {
+            btnTabRight.style.background = "rgba(52, 199, 89, 0.15)";
+            btnTabRight.style.color = "#34c759";
+            btnTabWrong.style.background = "transparent";
+            btnTabWrong.style.color = "var(--text-secondary)";
+            wrongBox.style.display = "none";
+            rightBox.style.display = "block";
+          });
+
           card.appendChild(header);
           card.appendChild(qTitle);
-          card.appendChild(rightAnsDiv);
-          card.appendChild(expBox);
+          card.appendChild(toggleBar);
+          card.appendChild(wrongBox);
+          card.appendChild(rightBox);
 
           container.appendChild(card);
         });
