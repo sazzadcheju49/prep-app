@@ -1225,7 +1225,7 @@
             <div style="font-size: 13px; color: var(--text-secondary);" id="res-meta-text">Completed in 0s</div>
           </div>
 
-          <div class="analytics-grid-2">
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px;">
             <div class="analytics-stat-card">
               <span class="stat-val" id="res-correct-cnt" style="color: #34c759;">0</span>
               <span class="stat-label">Correct</span>
@@ -1233,6 +1233,10 @@
             <div class="analytics-stat-card">
               <span class="stat-val" id="res-wrong-cnt" style="color: #ff453a;">0</span>
               <span class="stat-label">Incorrect</span>
+            </div>
+            <div class="analytics-stat-card">
+              <span class="stat-val" id="res-blank-cnt" style="color: #ff9500;">0</span>
+              <span class="stat-label">Blank</span>
             </div>
           </div>
 
@@ -2586,11 +2590,13 @@
         var sMeta = document.getElementById("res-meta-text");
         var sCorrect = document.getElementById("res-correct-cnt");
         var sWrong = document.getElementById("res-wrong-cnt");
+        var sBlank = document.getElementById("res-blank-cnt");
 
         if (sScore) sScore.textContent = record.score.toFixed(2);
         if (sMeta) sMeta.textContent = "Completed in " + Math.floor(record.timeTakenSeconds / 60) + "m " + (record.timeTakenSeconds % 60) + "s";
         if (sCorrect) sCorrect.textContent = record.correct;
         if (sWrong) sWrong.textContent = record.incorrect;
+        if (sBlank) sBlank.textContent = record.unanswered;
 
         var container = document.getElementById("test-result-review-list");
         if (container) {
@@ -2601,9 +2607,33 @@
             card.className = "review-card";
 
             var userAns = record.answers[q.id];
+
+            // Header Row: Subtitle + Status Badge (Correct / Incorrect / Blank)
+            var headRow = document.createElement("div");
+            headRow.style.cssText = "display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;";
+
             var subBadge = document.createElement("div");
             subBadge.className = "q-meta-subtitle";
+            subBadge.style.marginBottom = "0";
             subBadge.textContent = (q.examName || "Exam") + " • " + (q.subject || "Subject") + " • " + (q.year || "Year");
+
+            var statusBadge = document.createElement("span");
+            statusBadge.className = "badge-capsule";
+
+            if (!userAns) {
+              statusBadge.textContent = "Blank";
+              statusBadge.style.cssText = "background: rgba(255, 149, 0, 0.15); color: #ff9500; border-color: rgba(255, 149, 0, 0.3);";
+            } else if (userAns === q.correctAnswer) {
+              statusBadge.textContent = "Correct";
+              statusBadge.style.cssText = "background: rgba(52, 199, 89, 0.15); color: #34c759; border-color: rgba(52, 199, 89, 0.3);";
+            } else {
+              statusBadge.textContent = "Incorrect";
+              statusBadge.style.cssText = "background: rgba(255, 69, 58, 0.15); color: #ff453a; border-color: rgba(255, 69, 58, 0.3);";
+            }
+
+            headRow.appendChild(subBadge);
+            headRow.appendChild(statusBadge);
+            card.appendChild(headRow);
 
             var qText = document.createElement("div");
             qText.style.cssText = "font-size: 14px; font-weight: 600; margin-bottom: 8px;";
