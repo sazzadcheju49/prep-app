@@ -1108,94 +1108,6 @@
       ]
     }
     ,
-    // --- [GOVERNMENT] 43rd BCS Preliminary (2021) — English ---
-    {
-      exam: "43rd BCS Preliminary",
-      year: 2021,
-      category: "government",
-      subject: "English",
-      source: "verified_pyq",
-      questions: [
-        {
-          q: "The phrase 'dog days' means —",
-          o: ["hot weather", "cold shower", "rain-soaked streets", "ice storm"],
-          a: "A",
-          e: "'Dog days' refers idiomatically to the hottest and most sultry period of summer (associated historically with the rising of the Dog Star, Sirius)."
-        },
-        {
-          q: "Which gender is the word 'orphan'?",
-          o: ["neuter", "feminine", "common", "masculine"],
-          a: "C",
-          e: "The noun 'orphan' can refer to either a boy or a girl without parents, making it a noun of common gender."
-        },
-        {
-          q: "What is the antonym for the word 'deformation'?",
-          o: ["distortion", "contortion", "wholeness", "disfigurement"],
-          a: "C",
-          e: "'Deformation' means the action of distorting or disfiguring. Its true antonym is 'wholeness' (state of being intact and undamaged)."
-        },
-        {
-          q: "Words inscribed on a tomb is an —",
-          o: ["epitome", "epithet", "episode", "epitaph"],
-          a: "D",
-          e: "An 'epitaph' is an inscription on a tombstone in memory of the person buried there. An 'epitome' is a perfect example; an 'epithet' is an adjective characterizing a person."
-        },
-        {
-          q: "'Better to reign in Hell, than serve in Heav'n' — Who wrote this?",
-          o: ["Geoffrey Chaucer", "Christopher Marlowe", "John Milton", "P. B. Shelley"],
-          a: "C",
-          e: "This iconic line is spoken by Satan in Book I of John Milton's monumental epic poem 'Paradise Lost' (1667)."
-        },
-        {
-          q: "Who wrote the Restoration comedy 'The Way of the World'?",
-          o: ["William Shakespeare", "William Congreve", "Ben Jonson", "Oscar Wilde"],
-          a: "B",
-          e: "'The Way of the World' is a masterpiece of Restoration comedy of manners written by English playwright William Congreve in 1700."
-        },
-        {
-          q: "Which of the following novels is not written by an English writer?",
-          o: [
-            "A Passage to India",
-            "Sons and Lovers",
-            "One Hundred Years of Solitude",
-            "Pride and Prejudice"
-          ],
-          a: "C",
-          e: "'One Hundred Years of Solitude' was written by the Nobel laureate Colombian author Gabriel García Márquez. The others were written by E.M. Forster, D.H. Lawrence, and Jane Austen respectively."
-        },
-        {
-          q: "Who is the author of the Booker Prize-winning novel 'The God of Small Things'?",
-          o: ["Thomas Hardy", "Jhumpa Lahiri", "R. K. Narayan", "Arundhati Roy"],
-          a: "D",
-          e: "Indian author Arundhati Roy won the Man Booker Prize in 1997 for her debut novel 'The God of Small Things'."
-        },
-        {
-          q: "A speech full of too many words is —",
-          o: ["a big speech", "maiden speech", "a verbose speech", "an unimportant speech"],
-          a: "C",
-          e: "'Verbose' means using or expressed in more words than are needed (wordy or prolix). Hence, a speech full of excess words is 'a verbose speech'."
-        },
-        {
-          q: "The word 'to genuflect' means —",
-          o: ["to be genuine", "to reflect", "to bend the knee", "to be flexible"],
-          a: "C",
-          e: "'To genuflect' means to bend one's knee, typically to the ground in worship or as a sign of deep respect."
-        },
-        {
-          q: "Fill in the blank: 'She went to New Market _____.'",
-          o: ["on foot", "on feet", "by foot", "by walking"],
-          a: "A",
-          e: "The standard idiomatic English prepositional phrase denoting walking is 'on foot'."
-        },
-        {
-          q: "Identify the correct synonym for the word 'magnanimous':",
-          o: ["unkind", "friendly", "revengeful", "generous"],
-          a: "D",
-          e: "'Magnanimous' means very generous, noble, or forgiving, especially toward a rival or someone less powerful."
-        }
-      ]
-    }
-    ,
     // --- [GOVERNMENT] 43rd BCS Preliminary (2021) — Bangla ---
     {
       exam: "43rd BCS Preliminary",
@@ -1370,7 +1282,7 @@
           e: "x = 2 + √3। তাহলে 1/x = 1 / (2 + √3) = 2 - √3। সুতরাং x + 1/x = (2 + √3) + (2 - √3) = 4। অতএব x³ + 1/x³ = (x + 1/x)³ - 3(x + 1/x) = 4³ - 3(4) = 64 - 12 = 52।"
         }
       ]
-    }
+    },
     // --- [GOVERNMENT] 43rd BCS Preliminary (2021) — General Knowledge ---
     {
       exam: "43rd BCS Preliminary",
@@ -2708,7 +2620,7 @@
           e: "'Ephemeral' means lasting for a very short time; its antonym is 'Permanent' or everlasting."
         }
       ]
-    }
+    },
     // --- [BANK] Combined 8 Banks Officer (2023) — English (Set 32) ---
     {
       exam: "Combined 8 Banks Officer",
@@ -3945,17 +3857,17 @@
   // ==========================================================================
   var compiledBank = [];
 
-  QUESTION_SETS.forEach(function (set) {
+  QUESTION_SETS.forEach(function (set, setIdx) {
     if (!set || !Array.isArray(set.questions)) return;
 
     var examSlug = (set.exam || "exam").replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
     var yearSlug = String(set.year || "gen");
-    var subSlug = (set.subject || "gen").substring(0, 3).toLowerCase();
+    var subSlug = (set.subject || "gen").replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
 
     set.questions.forEach(function (item, qIdx) {
       if (!item || !item.q) return;
 
-      var qId = item.id || (examSlug + "-" + yearSlug + "-" + subSlug + "-" + (qIdx + 1));
+      var qId = item.id || (examSlug + "-" + yearSlug + "-" + subSlug + "-" + (setIdx + 1) + "-" + (qIdx + 1));
 
       var formattedOptions = (item.o || []).map(function (optText, optIdx) {
         return {
