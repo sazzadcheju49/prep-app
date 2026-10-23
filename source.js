@@ -1,31 +1,51 @@
 /**
- * PREP APP — COMPACT QUESTION BANK (source.js)
+ * ============================================================================
+ * PREP APP — MODULAR & COMPACT QUESTION BANK (source.js)
+ * ============================================================================
  * 
- * TEMPLATE TO ADD A SET:
- * {
- *   exam: "46th BCS Preliminary",
- *   year: 2024,
- *   category: "government", // "government" | "bank" | "iba_mba" | "private"
- *   subject: "English",
- *   source: "verified_pyq", // "verified_pyq" | "practice" | "unverified_historical"
- *   questions: [
- *     {
- *       q: "Question text here?",
- *       o: ["Option A", "Option B", "Option C", "Option D"],
- *       a: "A",
- *       e: "Detailed explanation here."
- *     }
- *   ]
- * }
+ * QUICK CHEAT-SHEET:
+ * 
+ * 1. TO ADD ONE QUESTION TO AN EXISTING SET:
+ *    Copy this block:
+        ,
+        {
+          q: "Write your question text here?",
+          o: ["Option A text", "Option B text", "Option C text", "Option D text"],
+          a: "A",
+          e: "Write the explanation here."
+        }
+ * 
+ * 2. TO ADD A WHOLE NEW EXAM / SUBJECT / YEAR SET:
+ *    Copy this block:
+        ,
+        {
+          exam: "Name of Exam (e.g. 46th BCS Preliminary)",
+          year: 2024,
+          category: "government", // "government" | "bank" | "iba_mba" | "private"
+          subject: "English",
+          source: "verified_pyq", // "verified_pyq" | "practice"
+          questions: [
+            {
+              q: "First question text?",
+              o: ["Option A", "Option B", "Option C", "Option D"],
+              a: "A",
+              e: "Explanation text."
+            }
+          ]
+        }
+ * ============================================================================
  */
 
 (function () {
   "use strict";
 
   var QUESTION_SETS = [
-    // ------------------------------------------------------------------------
-    // SET 1: 45th BCS Preliminary — English
-    // ------------------------------------------------------------------------
+
+    // ########################################################################
+    // TRACK 1: GOVERNMENT RECRUITMENT (BCS, PSC, Primary Teacher, etc.)
+    // ########################################################################
+
+    // --- [GOVERNMENT] 45th BCS Preliminary (2023) — English ---
     {
       exam: "45th BCS Preliminary",
       year: 2023,
@@ -37,14 +57,13 @@
           q: "He is devoid _____ common sense.",
           o: ["of", "from", "in", "with"],
           a: "A",
-          e: "The adjective 'devoid' takes the preposition 'of', meaning lacking."
+          e: "The adjective 'devoid' takes the preposition 'of', meaning entirely lacking."
         }
+        /* >>> PASTE MORE QUESTIONS FOR 45th BCS (ENGLISH 2023) ABOVE THIS LINE <<< */
       ]
     },
 
-    // ------------------------------------------------------------------------
-    // SET 2: 44th BCS Preliminary — Bangla
-    // ------------------------------------------------------------------------
+    // --- [GOVERNMENT] 44th BCS Preliminary (2022) — Bangla ---
     {
       exam: "44th BCS Preliminary",
       year: 2022,
@@ -58,12 +77,11 @@
           a: "A",
           e: "‘রক্তকরবী’ রবীন্দ্রনাথ ঠাকুরের রচিত বিখ্যাত সাংকেতিক নাটক (১৯২৬)।"
         }
+        /* >>> PASTE MORE QUESTIONS FOR 44th BCS (BANGLA 2022) ABOVE THIS LINE <<< */
       ]
     },
 
-    // ------------------------------------------------------------------------
-    // SET 3: 43rd BCS Preliminary — General Knowledge
-    // ------------------------------------------------------------------------
+    // --- [GOVERNMENT] 43rd BCS Preliminary (2021) — General Knowledge ---
     {
       exam: "43rd BCS Preliminary",
       year: 2021,
@@ -77,12 +95,22 @@
           a: "C",
           e: "গণপ্রজাতন্ত্রী বাংলাদেশের সংবিধানের অভিভাবক ও ব্যাখ্যাকারক সুপ্রিম কোর্ট।"
         }
+        /* >>> PASTE MORE QUESTIONS FOR 43rd BCS (GK 2021) ABOVE THIS LINE <<< */
       ]
-    },
+    }
 
-    // ------------------------------------------------------------------------
-    // SET 4: Bangladesh Bank AD — Mathematics
-    // ------------------------------------------------------------------------
+    /* ========================================================================
+       >>> PASTE ANY BRAND NEW GOVERNMENT EXAM SETS ABOVE THIS LINE <<<
+       ======================================================================== */
+
+
+
+    // ########################################################################
+    // TRACK 2: BANK RECRUITMENT (Bangladesh Bank, Combined Banks, Sonali, etc.)
+    // ########################################################################
+    ,
+
+    // --- [BANK] Bangladesh Bank AD (2022) — Mathematics ---
     {
       exam: "Bangladesh Bank AD",
       year: 2022,
@@ -94,14 +122,13 @@
           q: "If a product is sold at a 20% discount, the merchant still makes a 20% profit. What was the markup percentage above cost price?",
           o: ["40%", "44%", "50%", "60%"],
           a: "C",
-          e: "Let CP=100 => SP=120. With 20% discount, 0.8*MP = 120 => MP=150. Markup = 50%."
+          e: "Let CP=100 => SP=120. With 20% discount: 0.8*MP = 120 => MP=150. Markup = 50%."
         }
+        /* >>> PASTE MORE QUESTIONS FOR BANGLADESH BANK AD (MATH 2022) ABOVE THIS LINE <<< */
       ]
     },
 
-    // ------------------------------------------------------------------------
-    // SET 5: Combined 8 Banks Officer — English
-    // ------------------------------------------------------------------------
+    // --- [BANK] Combined 8 Banks Officer (2023) — English ---
     {
       exam: "Combined 8 Banks Officer",
       year: 2023,
@@ -113,14 +140,24 @@
           q: "What is the synonym of 'CANDID'?",
           o: ["Secretive", "Frank", "Dishonest", "Arrogant"],
           a: "B",
-          e: "'Candid' means truthful, frank and straightforward."
+          e: "'Candid' means truthful, frank, and straightforward."
         }
+        /* >>> PASTE MORE QUESTIONS FOR COMBINED 8 BANKS (ENGLISH 2023) ABOVE THIS LINE <<< */
       ]
-    },
+    }
 
-    // ------------------------------------------------------------------------
-    // SET 6: DU IBA MBA Admission — Analytical
-    // ------------------------------------------------------------------------
+    /* ========================================================================
+       >>> PASTE ANY BRAND NEW BANK EXAM SETS ABOVE THIS LINE <<<
+       ======================================================================== */
+
+
+
+    // ########################################################################
+    // TRACK 3: DU IBA MBA ADMISSION (English, Math, Analytical)
+    // ########################################################################
+    ,
+
+    // --- [IBA MBA] DU IBA MBA Admission Test (2023) — Analytical ---
     {
       exam: "DU IBA MBA Admission Test",
       year: 2023,
@@ -139,25 +176,64 @@
           a: "A",
           e: "If bus fares rise equally, the relative price advantage of metro stays intact."
         }
+        /* >>> PASTE MORE QUESTIONS FOR DU IBA MBA (ANALYTICAL 2023) ABOVE THIS LINE <<< */
       ]
     }
-  ];
+
+    /* ========================================================================
+       >>> PASTE ANY BRAND NEW DU IBA MBA EXAM SETS ABOVE THIS LINE <<<
+       ======================================================================== */
+
+
+
+    // ########################################################################
+    // TRACK 4: PRIVATE SECTOR & OTHER EXAMS (Telecom, MNC, NGOs, IT)
+    // ########################################################################
+    ,
+
+    // --- [PRIVATE] Sample Practice Set ---
+    {
+      exam: "General Model Test",
+      year: 2024,
+      category: "private",
+      subject: "General Knowledge",
+      source: "practice",
+      questions: [
+        {
+          q: "Which protocol provides encrypted communication over the internet?",
+          o: ["HTTP", "HTTPS", "FTP", "SMTP"],
+          a: "B",
+          e: "HTTPS (Hypertext Transfer Protocol Secure) encrypts communication using TLS/SSL."
+        }
+        /* >>> PASTE MORE QUESTIONS FOR THIS PRIVATE EXAM SET ABOVE THIS LINE <<< */
+      ]
+    }
+
+    /* ========================================================================
+       >>> PASTE ANY BRAND NEW PRIVATE / OTHER EXAM SETS ABOVE THIS LINE <<<
+       ======================================================================== */
+
+  ]; // <--- STOP! DO NOT PASTE ANYTHING BELOW THIS BRACKET! All questions must stay inside QUESTION_SETS = [ ... ];
+
+
 
   // ==========================================================================
-  // FAST AUTO-EXPANDER (Compiles compact sets into the full app schema)
+  // FAST AUTO-EXPANDER (Converts compact sets into full schema for index.html)
   // ==========================================================================
   var compiledBank = [];
 
-  QUESTION_SETS.forEach(function (set, setIdx) {
+  QUESTION_SETS.forEach(function (set) {
+    if (!set || !Array.isArray(set.questions)) return;
+
     var examSlug = (set.exam || "exam").replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
     var yearSlug = String(set.year || "gen");
     var subSlug = (set.subject || "gen").substring(0, 3).toLowerCase();
 
-    (set.questions || []).forEach(function (item, qIdx) {
-      // Auto-generate stable unique ID if not explicitly provided
+    set.questions.forEach(function (item, qIdx) {
+      if (!item || !item.q) return;
+
       var qId = item.id || (examSlug + "-" + yearSlug + "-" + subSlug + "-" + (qIdx + 1));
 
-      // Expand simple array ["A", "B", "C", "D"] into [{id: "A", text: "..."}, ...]
       var formattedOptions = (item.o || []).map(function (optText, optIdx) {
         return {
           id: String.fromCharCode(65 + optIdx),
@@ -181,6 +257,5 @@
     });
   });
 
-  // Expose to index.html with zero breaking changes
   window.QUESTION_BANK = Object.freeze(compiledBank);
 })();
