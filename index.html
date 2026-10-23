@@ -830,6 +830,47 @@
     .accent-circle-btn.selected svg {
       display: block;
     }
+    /* Single-Page Continuous Test & Actions */
+    .test-actions-bar {
+      display: flex;
+      gap: 8px;
+      margin-top: 18px;
+      position: sticky;
+      bottom: calc(64px + var(--safe-bottom));
+      background: var(--surface);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      padding: 10px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      box-shadow: var(--glass-shadow);
+      z-index: 50;
+    }
+
+    .test-single-q-card {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .test-pause-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .test-pause-overlay.open {
+      display: flex;
+    }
 
     /* SVG Icon Utility */
     .icon {
@@ -1034,6 +1075,7 @@
     </section>
 
     <!-- TAB 3: TEST (Randomized Questions with Job/Subject/Year Subtitles) -->
+    <!-- TAB 3: TEST -->
     <section id="view-test" class="view-container">
       <div class="glass-card">
         <h2 class="card-title">
@@ -1043,20 +1085,65 @@
           </svg>
           Examination
         </h2>
-        <!-- SUB-PANEL 1: TEST CONFIGURATION (Only shown before starting a test) -->
+
+        <!-- SUB-PANEL 1: TEST CONFIGURATION (With Dynamic Filters) -->
         <div id="test-config-view">
+          <!-- Dynamic Filter Bar for Test Generation -->
+          <div class="filter-grid-3">
+            <div class="dropdown-group" style="margin-bottom: 0;">
+              <span class="dropdown-label">Job / Exam</span>
+              <div class="custom-dropdown" id="test-exam-filter" data-value="all">
+                <button class="dropdown-trigger" type="button">
+                  <span class="trigger-label">All Exams</span>
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="dropdown-menu" id="test-exam-menu">
+                  <div class="dropdown-option selected" data-value="all">All Exams</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="dropdown-group" style="margin-bottom: 0;">
+              <span class="dropdown-label">Subject</span>
+              <div class="custom-dropdown" id="test-subject-filter" data-value="all">
+                <button class="dropdown-trigger" type="button">
+                  <span class="trigger-label">All Subjects</span>
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="dropdown-menu" id="test-subject-menu">
+                  <div class="dropdown-option selected" data-value="all">All Subjects</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="dropdown-group" style="margin-bottom: 0;">
+              <span class="dropdown-label">Year</span>
+              <div class="custom-dropdown" id="test-year-filter" data-value="all">
+                <button class="dropdown-trigger" type="button">
+                  <span class="trigger-label">All Years</span>
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="dropdown-menu" id="test-year-menu">
+                  <div class="dropdown-option selected" data-value="all">All Years</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="height: 10px;"></div>
+
           <div class="dropdown-group">
             <span class="dropdown-label">Question Count</span>
             <div class="custom-dropdown" id="test-count-dropdown" data-value="10">
               <button class="dropdown-trigger" type="button">
-                <span class="trigger-label">10 Random Questions</span>
+                <span class="trigger-label">10 Questions</span>
                 <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
               </button>
               <div class="dropdown-menu">
-                <div class="dropdown-option" data-value="5">5 Random Questions</div>
-                <div class="dropdown-option selected" data-value="10">10 Random Questions</div>
-                <div class="dropdown-option" data-value="20">20 Random Questions</div>
-                <div class="dropdown-option" data-value="all">All Available Questions</div>
+                <div class="dropdown-option" data-value="5">5 Questions</div>
+                <div class="dropdown-option selected" data-value="10">10 Questions</div>
+                <div class="dropdown-option" data-value="20">20 Questions</div>
+                <div class="dropdown-option" data-value="all">All Available in Filter</div>
               </div>
             </div>
           </div>
@@ -1093,45 +1180,41 @@
           </div>
 
           <p id="test-bank-summary" style="font-size: 12px; color: var(--text-secondary); margin: 14px 0 16px;">
-            Questions are randomly picked across all job categories, subjects, and years.
+            Filter selected: Completely random questions across all sets.
           </p>
 
           <button id="btn-start-random-test" class="btn btn-primary" type="button">
             <svg class="icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-            Start Randomized Test
+            Start Test
           </button>
         </div>
 
-        <!-- SUB-PANEL 2: ACTIVE EXAMINATION RUNNER -->
+        <!-- SUB-PANEL 2: ALL QUESTIONS ON ONE SCROLLABLE PAGE -->
         <div id="test-runner-view" style="display: none;">
-          <div class="test-timer-bar">
-            <span id="test-q-progress" style="font-size: 13px; font-weight: 600;">Question 1 of 10</span>
+          <!-- Timer Bar -->
+          <div class="test-timer-bar" style="position: sticky; top: max(var(--safe-top), 10px); z-index: 40; box-shadow: var(--glass-shadow);">
+            <span id="test-q-progress" style="font-size: 13px; font-weight: 600;">10 Questions</span>
             <div class="timer-pill" id="test-clock">
               <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
               <span id="test-timer-text">00:00</span>
             </div>
           </div>
 
-          <!-- Question Palette Grid -->
-          <div class="palette-grid" id="test-palette-grid"></div>
+          <!-- All Questions Stream Container -->
+          <div id="test-all-questions-container"></div>
 
-          <!-- Question Subtitle: Job • Subject • Year -->
-          <div id="test-question-subtitle" class="q-meta-subtitle">General • Subject • Year</div>
-
-          <!-- Question Text & Options -->
-          <div id="test-question-text" style="font-size: 15px; font-weight: 600; line-height: 1.45; margin-bottom: 14px;"></div>
-          <div id="test-options-list"></div>
-
-          <!-- Navigation Controls -->
-          <div style="display: flex; justify-content: space-between; gap: 8px; margin-top: 16px;">
-            <button id="btn-test-prev" class="btn btn-secondary" style="width: auto; padding: 10px 16px;" type="button">Prev</button>
-            <button id="btn-test-flag" class="btn btn-secondary" style="width: auto; padding: 10px 16px;" type="button">Review</button>
-            <button id="btn-test-next" class="btn btn-secondary" style="width: auto; padding: 10px 16px;" type="button">Next</button>
+          <!-- Bottom Actions: Discard, Pause, Submit -->
+          <div class="test-actions-bar">
+            <button id="btn-test-discard" class="btn btn-secondary" style="flex: 1; color: #ff453a; border-color: rgba(255, 69, 58, 0.3);" type="button">
+              Discard
+            </button>
+            <button id="btn-test-pause" class="btn btn-secondary" style="flex: 1;" type="button">
+              Pause
+            </button>
+            <button id="btn-trigger-test-submit" class="btn btn-primary" style="flex: 1.5;" type="button">
+              Submit
+            </button>
           </div>
-
-          <button id="btn-trigger-test-submit" class="btn btn-primary" style="margin-top: 14px;" type="button">
-            Submit Examination
-          </button>
         </div>
 
         <!-- SUB-PANEL 3: POST-EXAM RESULTS SCREEN -->
@@ -1161,7 +1244,7 @@
           </button>
         </div>
 
-        <!-- Confirmation Modal -->
+        <!-- Submit Confirmation Modal -->
         <div id="test-confirm-modal" class="native-modal-overlay">
           <div class="native-modal-box">
             <h3 style="font-size: 17px; margin-bottom: 8px;">Submit Exam?</h3>
@@ -1174,6 +1257,34 @@
             </div>
           </div>
         </div>
+
+        <!-- Discard Confirmation Modal -->
+        <div id="test-discard-modal" class="native-modal-overlay">
+          <div class="native-modal-box">
+            <h3 style="font-size: 17px; margin-bottom: 8px; color: #ff453a;">Discard Test?</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px;">
+              Your test progress and answers will be discarded without saving.
+            </p>
+            <div style="display: flex; gap: 10px;">
+              <button id="btn-discard-cancel" class="btn btn-secondary" type="button">Keep Taking Test</button>
+              <button id="btn-discard-confirm" class="btn btn-primary" style="background: #ff453a;" type="button">Discard</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pause Overlay -->
+        <div id="test-pause-overlay" class="test-pause-overlay">
+          <div class="native-modal-box">
+            <h3 style="font-size: 18px; margin-bottom: 8px;">Test Paused</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px;">
+              Timer is stopped. Tap resume when you are ready to continue.
+            </p>
+            <button id="btn-resume-test" class="btn btn-primary" type="button">
+              Resume Test
+            </button>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -2162,19 +2273,74 @@
       }
       // === FEATURE: test-engine ===
       var examTimerInterval = null;
+      var testFilterExam = "all";
+      var testFilterSubject = "all";
+      var testFilterYear = "all";
+
+      // Populate Dynamic Filters on the Test Setup Page
+      function populateTestFilterDropdowns() {
+        var allQuestions = getQuestions();
+        var exams = {};
+        var subjects = {};
+        var years = {};
+
+        allQuestions.forEach(function (q) {
+          if (q.examName) exams[q.examName] = true;
+          if (q.subject) subjects[q.subject] = true;
+          if (q.year) years[q.year] = true;
+        });
+
+        function rebuildMenu(menuId, itemsMap, activeVal, defaultLabel) {
+          var menu = document.getElementById(menuId);
+          if (!menu) return;
+          while (menu.children.length > 1) {
+            menu.removeChild(menu.lastChild);
+          }
+
+          Object.keys(itemsMap).sort().forEach(function (item) {
+            var opt = document.createElement("div");
+            opt.className = "dropdown-option" + (activeVal === item ? " selected" : "");
+            opt.setAttribute("data-value", item);
+            opt.textContent = item;
+            menu.appendChild(opt);
+          });
+        }
+
+        rebuildMenu("test-exam-menu", exams, testFilterExam, "All Exams");
+        rebuildMenu("test-subject-menu", subjects, testFilterSubject, "All Subjects");
+        rebuildMenu("test-year-menu", years, testFilterYear, "All Years");
+      }
+
+      function updateTestSummaryText() {
+        var summaryEl = document.getElementById("test-bank-summary");
+        if (!summaryEl) return;
+
+        var allQuestions = getQuestions();
+        var isFiltered = (testFilterExam !== "all") || (testFilterSubject !== "all") || (testFilterYear !== "all");
+
+        if (!isFiltered) {
+          summaryEl.textContent = "No filter applied: Questions will be completely random from all " + allQuestions.length + " questions.";
+          return;
+        }
+
+        var matching = allQuestions.filter(function (q) {
+          if (testFilterExam !== "all" && q.examName !== testFilterExam) return false;
+          if (testFilterSubject !== "all" && q.subject !== testFilterSubject) return false;
+          if (testFilterYear !== "all" && String(q.year) !== testFilterYear) return false;
+          return true;
+        });
+
+        summaryEl.textContent = "Filtered pool: " + matching.length + " matching questions available for this test.";
+      }
 
       function renderTestTab() {
+        populateTestFilterDropdowns();
+        updateTestSummaryText();
+
         var configView = document.getElementById("test-config-view");
         var runnerView = document.getElementById("test-runner-view");
         var resultView = document.getElementById("test-result-view");
-        var summaryEl = document.getElementById("test-bank-summary");
 
-        if (summaryEl) {
-          var totalQ = getQuestions().length;
-          summaryEl.textContent = "Questions will be randomly picked across all " + totalQ + " available questions in source.js.";
-        }
-
-        // If an exam session is actively stored in local memory, resume it immediately
         if (appData && appData.activeSession) {
           if (configView) configView.style.display = "none";
           if (resultView) resultView.style.display = "none";
@@ -2194,24 +2360,38 @@
           return;
         }
 
+        // Apply Job, Subject, and Year filters
+        var isFiltered = (testFilterExam !== "all") || (testFilterSubject !== "all") || (testFilterYear !== "all");
+        var pool = isFiltered ? allQuestions.filter(function (q) {
+          if (testFilterExam !== "all" && q.examName !== testFilterExam) return false;
+          if (testFilterSubject !== "all" && q.subject !== testFilterSubject) return false;
+          if (testFilterYear !== "all" && String(q.year) !== testFilterYear) return false;
+          return true;
+        }) : allQuestions.slice();
+
+        if (pool.length === 0) {
+          alert("No questions match your selected filter combination.");
+          return;
+        }
+
         var countVal = document.getElementById("test-count-dropdown").getAttribute("data-value");
         var timeVal = parseInt(document.getElementById("test-time-dropdown").getAttribute("data-value"), 10) || 10;
         var penaltyVal = parseFloat(document.getElementById("test-penalty-dropdown").getAttribute("data-value")) || 0;
 
-        // Rule 4: Questions should be random, picked from any set
-        var shuffled = allQuestions.slice().sort(function () { return 0.5 - Math.random(); });
+        // Shuffle questions
+        var shuffled = pool.slice().sort(function () { return 0.5 - Math.random(); });
         var targetCount = countVal === "all" ? shuffled.length : Math.min(parseInt(countVal, 10), shuffled.length);
         var chosenQuestions = shuffled.slice(0, targetCount);
 
         var durationMs = timeVal * 60 * 1000;
         appData.activeSession = {
           questions: chosenQuestions,
-          currentIndex: 0,
           answers: {},      // qId -> selected option id
-          flagged: {},      // qId -> boolean
           startTime: Date.now(),
           targetEndTime: Date.now() + durationMs,
-          penalty: penaltyVal
+          penalty: penaltyVal,
+          isPaused: false,
+          pausedAt: null
         };
 
         saveLocalData(true);
@@ -2225,12 +2405,15 @@
         clearInterval(examTimerInterval);
 
         function tick() {
+          if (session.isPaused) return;
+
           var remaining = session.targetEndTime - Date.now();
           if (remaining <= 0) {
             clearInterval(examTimerInterval);
             finishExamSubmission(true);
             return;
           }
+
           var totalSec = Math.floor(remaining / 1000);
           var m = Math.floor(totalSec / 60);
           var s = totalSec % 60;
@@ -2246,57 +2429,48 @@
 
         tick();
         examTimerInterval = setInterval(tick, 1000);
-        renderCurrentExamQuestion();
+
+        renderAllExamQuestions();
+
+        // Check if resumed while paused
+        var pauseModal = document.getElementById("test-pause-overlay");
+        if (pauseModal) {
+          pauseModal.classList.toggle("open", !!session.isPaused);
+        }
       }
 
-      function renderCurrentExamQuestion() {
+      // Render ALL questions on one scrollable test page with serial numbers
+      function renderAllExamQuestions() {
         var session = appData ? appData.activeSession : null;
-        if (!session) return;
+        var container = document.getElementById("test-all-questions-container");
+        var progressEl = document.getElementById("test-q-progress");
 
-        var q = session.questions[session.currentIndex];
+        if (!session || !container) return;
+
         var total = session.questions.length;
+        var answeredCount = Object.keys(session.answers).length;
+        if (progressEl) progressEl.textContent = answeredCount + " of " + total + " Answered";
 
-        // Progress counter
-        var pText = document.getElementById("test-q-progress");
-        if (pText) pText.textContent = "Question " + (session.currentIndex + 1) + " of " + total;
-
-        // Palette
-        var palette = document.getElementById("test-palette-grid");
-        if (palette) {
-          while (palette.firstChild) palette.removeChild(palette.firstChild);
-          session.questions.forEach(function (ques, idx) {
-            var btn = document.createElement("button");
-            btn.type = "button";
-            btn.className = "palette-btn";
-            btn.textContent = idx + 1;
-            if (idx === session.currentIndex) btn.classList.add("current");
-            if (session.answers[ques.id]) btn.classList.add("answered");
-            if (session.flagged[ques.id]) btn.classList.add("flagged");
-            btn.addEventListener("click", function () {
-              session.currentIndex = idx;
-              renderCurrentExamQuestion();
-            });
-            palette.appendChild(btn);
-          });
+        while (container.firstChild) {
+          container.removeChild(container.firstChild);
         }
 
-        // Rule 4: Subtitle mentioning Job, Subject, Year for each question
-        var subTitleEl = document.getElementById("test-question-subtitle");
-        if (subTitleEl) {
-          var job = q.examName || "General Exam";
-          var subj = q.subject || "General";
-          var yr = q.year ? String(q.year) : "General";
-          subTitleEl.textContent = job + " • " + subj + " • " + yr;
-        }
+        session.questions.forEach(function (q, index) {
+          var card = document.createElement("div");
+          card.className = "test-single-q-card";
 
-        // Question Text
-        var qText = document.getElementById("test-question-text");
-        if (qText) qText.textContent = (session.currentIndex + 1) + ". " + q.question;
+          var subBadge = document.createElement("div");
+          subBadge.className = "q-meta-subtitle";
+          subBadge.textContent = (q.examName || "Exam") + " • " + (q.subject || "Subject") + " • " + (q.year || "Year");
 
-        // Options List
-        var optsList = document.getElementById("test-options-list");
-        if (optsList) {
-          while (optsList.firstChild) optsList.removeChild(optsList.firstChild);
+          var qTitle = document.createElement("div");
+          qTitle.style.cssText = "font-size: 15px; font-weight: 600; line-height: 1.45; margin-bottom: 12px; color: var(--text);";
+          qTitle.textContent = (index + 1) + ". " + q.question;
+
+          card.appendChild(subBadge);
+          card.appendChild(qTitle);
+
+          var optsList = document.createElement("div");
           (q.options || []).forEach(function (opt) {
             var row = document.createElement("div");
             row.className = "test-opt-row" + (session.answers[q.id] === opt.id ? " selected" : "");
@@ -2312,24 +2486,31 @@
             row.appendChild(txt);
 
             row.addEventListener("click", function () {
+              if (session.isPaused) return;
+
               if (session.answers[q.id] === opt.id) {
                 delete session.answers[q.id];
               } else {
                 session.answers[q.id] = opt.id;
               }
               saveLocalData();
-              renderCurrentExamQuestion();
+
+              // Update this card's options highlight
+              optsList.querySelectorAll(".test-opt-row").forEach(function (r, rIdx) {
+                var oId = String.fromCharCode(65 + rIdx);
+                r.classList.toggle("selected", session.answers[q.id] === oId);
+              });
+
+              var ansCnt = Object.keys(session.answers).length;
+              if (progressEl) progressEl.textContent = ansCnt + " of " + total + " Answered";
             });
 
             optsList.appendChild(row);
           });
-        }
 
-        // Flag button highlight
-        var flagBtn = document.getElementById("btn-test-flag");
-        if (flagBtn) {
-          flagBtn.classList.toggle("btn-primary", !!session.flagged[q.id]);
-        }
+          card.appendChild(optsList);
+          container.appendChild(card);
+        });
       }
 
       function finishExamSubmission(isTimeUp) {
@@ -2360,7 +2541,7 @@
             appData.attempts[q.id].attempts++;
             appData.attempts[q.id].incorrect++;
             appData.attempts[q.id].flagged = true;
-            appData.attempts[q.id].lastWrongAnswer = userAns; // Save your chosen wrong answer
+            appData.attempts[q.id].lastWrongAnswer = userAns;
             appData.attempts[q.id].lastAttempt = Date.now();
           }
         });
@@ -2388,7 +2569,6 @@
         appData.activeSession = null;
         saveLocalData(true);
 
-        // Show Post-Exam Results View
         showTestResultsView(testRecord);
         renderAll();
       }
@@ -2412,7 +2592,6 @@
         if (sCorrect) sCorrect.textContent = record.correct;
         if (sWrong) sWrong.textContent = record.incorrect;
 
-        // Render Question Breakdown with Right Answers and Explanations
         var container = document.getElementById("test-result-review-list");
         if (container) {
           while (container.firstChild) container.removeChild(container.firstChild);
@@ -2455,7 +2634,6 @@
               card.appendChild(row);
             });
 
-            // Detailed Explanation
             var expBox = document.createElement("div");
             expBox.style.cssText = "margin-top: 10px; padding: 10px; border-radius: 8px; background: rgba(var(--accent-rgb), 0.08); font-size: 12px; line-height: 1.5;";
             expBox.innerHTML = '<strong>Explanation:</strong> ' + (q.explanation || 'No explanation recorded.');
@@ -2466,45 +2644,92 @@
         }
       }
 
-      // UI Listeners for Test Runner
+      // Filter Change Listeners for Test Configuration
+      var tDdExam = document.getElementById("test-exam-filter");
+      if (tDdExam) {
+        tDdExam.addEventListener("change", function (e) {
+          testFilterExam = e.detail.value;
+          updateTestSummaryText();
+        });
+      }
+
+      var tDdSubject = document.getElementById("test-subject-filter");
+      if (tDdSubject) {
+        tDdSubject.addEventListener("change", function (e) {
+          testFilterSubject = e.detail.value;
+          updateTestSummaryText();
+        });
+      }
+
+      var tDdYear = document.getElementById("test-year-filter");
+      if (tDdYear) {
+        tDdYear.addEventListener("change", function (e) {
+          testFilterYear = e.detail.value;
+          updateTestSummaryText();
+        });
+      }
+
       var btnStartTest = document.getElementById("btn-start-random-test");
       if (btnStartTest) {
         btnStartTest.addEventListener("click", startRandomExamSession);
       }
 
-      var btnPrev = document.getElementById("btn-test-prev");
-      if (btnPrev) {
-        btnPrev.addEventListener("click", function () {
-          if (appData && appData.activeSession && appData.activeSession.currentIndex > 0) {
-            appData.activeSession.currentIndex--;
-            renderCurrentExamQuestion();
-          }
+      // Pause and Resume Handlers
+      var btnPause = document.getElementById("btn-test-pause");
+      var pauseModal = document.getElementById("test-pause-overlay");
+      var btnResume = document.getElementById("btn-resume-test");
+
+      if (btnPause && pauseModal) {
+        btnPause.addEventListener("click", function () {
+          if (!appData || !appData.activeSession || appData.activeSession.isPaused) return;
+          appData.activeSession.isPaused = true;
+          appData.activeSession.pausedAt = Date.now();
+          saveLocalData(true);
+          pauseModal.classList.add("open");
         });
       }
 
-      var btnNext = document.getElementById("btn-test-next");
-      if (btnNext) {
-        btnNext.addEventListener("click", function () {
-          if (appData && appData.activeSession && appData.activeSession.currentIndex < appData.activeSession.questions.length - 1) {
-            appData.activeSession.currentIndex++;
-            renderCurrentExamQuestion();
-          }
+      if (btnResume && pauseModal) {
+        btnResume.addEventListener("click", function () {
+          if (!appData || !appData.activeSession) return;
+          var pauseDuration = Date.now() - (appData.activeSession.pausedAt || Date.now());
+          appData.activeSession.targetEndTime += pauseDuration;
+          appData.activeSession.isPaused = false;
+          appData.activeSession.pausedAt = null;
+          saveLocalData(true);
+          pauseModal.classList.remove("open");
         });
       }
 
-      var btnFlag = document.getElementById("btn-test-flag");
-      if (btnFlag) {
-        btnFlag.addEventListener("click", function () {
-          if (appData && appData.activeSession) {
-            var q = appData.activeSession.questions[appData.activeSession.currentIndex];
-            appData.activeSession.flagged[q.id] = !appData.activeSession.flagged[q.id];
-            saveLocalData();
-            renderCurrentExamQuestion();
-          }
+      // Discard Test Handlers
+      var btnDiscard = document.getElementById("btn-test-discard");
+      var discardModal = document.getElementById("test-discard-modal");
+      var btnDiscardCancel = document.getElementById("btn-discard-cancel");
+      var btnDiscardConfirm = document.getElementById("btn-discard-confirm");
+
+      if (btnDiscard && discardModal) {
+        btnDiscard.addEventListener("click", function () {
+          discardModal.classList.add("open");
         });
       }
 
-      // Modal Confirmation before Final Submit
+      if (btnDiscardCancel && discardModal) {
+        btnDiscardCancel.addEventListener("click", function () {
+          discardModal.classList.remove("open");
+        });
+      }
+
+      if (btnDiscardConfirm && discardModal) {
+        btnDiscardConfirm.addEventListener("click", function () {
+          discardModal.classList.remove("open");
+          clearInterval(examTimerInterval);
+          appData.activeSession = null;
+          saveLocalData(true);
+          renderTestTab();
+        });
+      }
+
+      // Submit Confirmation Handlers
       var btnTriggerSubmit = document.getElementById("btn-trigger-test-submit");
       var modalSubmit = document.getElementById("test-confirm-modal");
       if (btnTriggerSubmit && modalSubmit) {
@@ -2535,7 +2760,6 @@
         });
       }
 
-      // Done Button on Results View
       var btnFinishDone = document.getElementById("btn-test-finish-done");
       if (btnFinishDone) {
         btnFinishDone.addEventListener("click", function () {
