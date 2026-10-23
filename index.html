@@ -871,6 +871,136 @@
     .test-pause-overlay.open {
       display: flex;
     }
+    /* Q.Bank Nested Menu & Submenu */
+    .qbank-menu-group {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .qbank-menu-header {
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      background: var(--surface-elevated);
+    }
+
+    .qbank-menu-header:active {
+      background: rgba(var(--accent-rgb), 0.08);
+    }
+
+    .qbank-submenu-list {
+      display: none;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+
+    .qbank-submenu-list.open {
+      display: block;
+    }
+
+    .qbank-submenu-item {
+      padding: 12px 18px 12px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .qbank-submenu-item:last-child {
+      border-bottom: none;
+    }
+
+    .qbank-submenu-item:active {
+      background: rgba(var(--accent-rgb), 0.12);
+      color: var(--accent);
+    }
+
+    /* Readable PDF-Style Question Sheet */
+    .pdf-document-sheet {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 24px 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      margin-top: 10px;
+    }
+
+    .pdf-header-title {
+      text-align: center;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--border-strong);
+      margin-bottom: 20px;
+    }
+
+    .pdf-q-block {
+      padding-bottom: 16px;
+      margin-bottom: 16px;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .pdf-q-block:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .pdf-q-text {
+      font-size: 14.5px;
+      font-weight: 600;
+      line-height: 1.5;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .pdf-options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px 12px;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 500px) {
+      .pdf-options-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .pdf-opt-item {
+      font-size: 13px;
+      color: var(--text);
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      padding: 3px 0;
+    }
+
+    .pdf-opt-item.is-correct-target {
+      color: #34c759;
+      font-weight: 700;
+    }
+
+    .pdf-exp-box {
+      font-size: 12px;
+      line-height: 1.45;
+      color: var(--text-secondary);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      margin-top: 6px;
+    }
 
     /* SVG Icon Utility */
     .icon {
@@ -1014,63 +1144,36 @@
           <svg class="icon" viewBox="0 0 24 24">
             <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
           </svg>
-          Question Sets
+          Question Bank Library
         </h2>
-        <!-- Dynamic Filter Bar (Populated on the fly from source.js) -->
-        <div class="filter-grid-3">
-          <!-- Filter 1: Exam / Job -->
-          <div class="dropdown-group" style="margin-bottom: 0;">
-            <span class="dropdown-label">Job / Exam</span>
-            <div class="custom-dropdown" id="qbank-exam-filter" data-value="all">
-              <button class="dropdown-trigger" type="button">
-                <span class="trigger-label">All Exams</span>
-                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              </button>
-              <div class="dropdown-menu" id="qbank-exam-menu">
-                <div class="dropdown-option selected" data-value="all">All Exams</div>
-              </div>
-            </div>
+
+        <!-- LEVEL 1: MENUS & SUBMENUS (Job Name -> Year & Subject) -->
+        <div id="qbank-menu-view">
+          <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 14px;">
+            Select a Job Exam to view available years and subjects, then tap to read the complete question paper.
+          </p>
+          <div id="qbank-accordion-container"></div>
+        </div>
+
+        <!-- LEVEL 2: READABLE PDF-STYLE QUESTION PAGE -->
+        <div id="qbank-pdf-view" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+            <button id="btn-qbank-back-to-menu" class="btn btn-secondary" style="width: auto; padding: 6px 12px; font-size: 12px;" type="button">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+              Back to Menu
+            </button>
+            <span id="qbank-pdf-count-badge" class="badge-capsule">0 Questions</span>
           </div>
 
-          <!-- Filter 2: Subject -->
-          <div class="dropdown-group" style="margin-bottom: 0;">
-            <span class="dropdown-label">Subject</span>
-            <div class="custom-dropdown" id="qbank-subject-filter" data-value="all">
-              <button class="dropdown-trigger" type="button">
-                <span class="trigger-label">All Subjects</span>
-                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              </button>
-              <div class="dropdown-menu" id="qbank-subject-menu">
-                <div class="dropdown-option selected" data-value="all">All Subjects</div>
-              </div>
+          <div class="pdf-document-sheet">
+            <div class="pdf-header-title">
+              <h3 id="pdf-doc-exam-title" style="font-size: 17px; font-weight: 700; margin-bottom: 4px;"></h3>
+              <div id="pdf-doc-meta-subtitle" style="font-size: 13px; color: var(--text-secondary);"></div>
             </div>
-          </div>
-
-          <!-- Filter 3: Year -->
-          <div class="dropdown-group" style="margin-bottom: 0;">
-            <span class="dropdown-label">Year</span>
-            <div class="custom-dropdown" id="qbank-year-filter" data-value="all">
-              <button class="dropdown-trigger" type="button">
-                <span class="trigger-label">All Years</span>
-                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              </button>
-              <div class="dropdown-menu" id="qbank-year-menu">
-                <div class="dropdown-option selected" data-value="all">All Years</div>
-              </div>
-            </div>
+            <div id="pdf-doc-questions-list"></div>
           </div>
         </div>
 
-        <!-- Reading Space Header -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-          <span id="qbank-status-label" style="font-size: 12px; font-weight: 600; color: var(--text-secondary);">Reading Space</span>
-          <button id="btn-qbank-reset-filters" class="btn btn-secondary" style="width: auto; padding: 4px 10px; font-size: 11px;" type="button">
-            Reset Filters
-          </button>
-        </div>
-
-        <!-- Direct Questions Reading Stream -->
-        <div id="qbank-questions-stream"></div>
       </div>
     </section>
 
@@ -1310,6 +1413,11 @@
 
         <!-- Strictly Question + Right Answer + Explanation -->
         <div id="mistakes-items-container"></div>
+
+        <!-- Clear Page Button -->
+        <button id="btn-clear-all-mistakes" class="btn btn-secondary" style="color: #ff453a; border-color: rgba(255, 69, 58, 0.3); margin-top: 16px;" type="button">
+          Clear Mistake Notebook
+        </button>
       </div>
     </section>
 
@@ -2116,162 +2224,172 @@
       // Initial Render
       renderAnalyticsDashboard();
       // === FEATURE: qbank-dynamic-filter ===
-      var qbankFilterExam = "all";
-      var qbankFilterSubject = "all";
-      var qbankFilterYear = "all";
-
-      // Dynamically populate custom dropdown options directly from source.js
-      function populateDynamicFilterDropdowns() {
-        var allQuestions = getQuestions();
-        var exams = {};
-        var subjects = {};
-        var years = {};
-
-        allQuestions.forEach(function (q) {
-          if (q.examName) exams[q.examName] = true;
-          if (q.subject) subjects[q.subject] = true;
-          if (q.year) years[q.year] = true;
-        });
-
-        function rebuildMenu(menuId, itemsMap, activeVal, defaultLabel) {
-          var menu = document.getElementById(menuId);
-          if (!menu) return;
-          while (menu.children.length > 1) {
-            menu.removeChild(menu.lastChild);
-          }
-
-          Object.keys(itemsMap).sort().forEach(function (item) {
-            var opt = document.createElement("div");
-            opt.className = "dropdown-option" + (activeVal === item ? " selected" : "");
-            opt.setAttribute("data-value", item);
-            opt.textContent = item;
-            menu.appendChild(opt);
-          });
-        }
-
-        rebuildMenu("qbank-exam-menu", exams, qbankFilterExam, "All Exams");
-        rebuildMenu("qbank-subject-menu", subjects, qbankFilterSubject, "All Subjects");
-        rebuildMenu("qbank-year-menu", years, qbankFilterYear, "All Years");
-      }
+      var activeSelectedSetKey = null;
 
       function renderQuestionBankView() {
-        populateDynamicFilterDropdowns();
+        var menuView = document.getElementById("qbank-menu-view");
+        var pdfView = document.getElementById("qbank-pdf-view");
+        var container = document.getElementById("qbank-accordion-container");
+        if (!container) return;
 
-        var stream = document.getElementById("qbank-questions-stream");
-        var statusLabel = document.getElementById("qbank-status-label");
-        if (!stream) return;
-
-        var allQuestions = getQuestions();
-        var isFiltered = (qbankFilterExam !== "all") || (qbankFilterSubject !== "all") || (qbankFilterYear !== "all");
-
-        var displayedQuestions = allQuestions.filter(function (q) {
-          if (qbankFilterExam !== "all" && q.examName !== qbankFilterExam) return false;
-          if (qbankFilterSubject !== "all" && q.subject !== qbankFilterSubject) return false;
-          if (qbankFilterYear !== "all" && String(q.year) !== qbankFilterYear) return false;
-          return true;
-        });
-
-        if (statusLabel) {
-          statusLabel.textContent = isFiltered ? ("Showing " + displayedQuestions.length + " Filtered Questions") : ("Reading Space (" + allQuestions.length + " Questions)");
-        }
-
-        while (stream.firstChild) {
-          stream.removeChild(stream.firstChild);
-        }
-
-        if (displayedQuestions.length === 0) {
-          var empty = document.createElement("div");
-          empty.className = "feature-placeholder";
-          empty.textContent = "No questions found matching your selected filters.";
-          stream.appendChild(empty);
+        // If viewing an active question paper, render PDF view
+        if (activeSelectedSetKey) {
+          if (menuView) menuView.style.display = "none";
+          if (pdfView) pdfView.style.display = "block";
+          renderPdfDocumentPage();
           return;
         }
 
-        displayedQuestions.forEach(function (q, index) {
-          var card = document.createElement("div");
-          card.className = "study-q-card";
+        if (menuView) menuView.style.display = "block";
+        if (pdfView) pdfView.style.display = "none";
 
-          var subBadge = document.createElement("div");
-          subBadge.className = "q-meta-subtitle";
-          subBadge.textContent = (q.examName || "Exam") + " • " + (q.subject || "Subject") + " • " + (q.year || "Year");
+        var allQuestions = getQuestions();
 
-          var qTitle = document.createElement("div");
-          qTitle.className = "study-q-title";
-          qTitle.textContent = (index + 1) + ". " + q.question;
+        // Group questions by Exam Name -> Array of Sets (Year + Subject)
+        var groupedExams = {};
+        allQuestions.forEach(function (q) {
+          var eName = q.examName || "General Exam";
+          var yr = q.year ? String(q.year) : "General";
+          var sub = q.subject || "General";
+          var setKey = eName + "||" + yr + "||" + sub;
 
-          card.appendChild(subBadge);
-          card.appendChild(qTitle);
+          if (!groupedExams[eName]) {
+            groupedExams[eName] = {};
+          }
+          if (!groupedExams[eName][setKey]) {
+            groupedExams[eName][setKey] = {
+              key: setKey,
+              exam: eName,
+              year: yr,
+              subject: sub,
+              questions: []
+            };
+          }
+          groupedExams[eName][setKey].questions.push(q);
+        });
 
-          // Options list with clean answer badge
-          var optsDiv = document.createElement("div");
-          (q.options || []).forEach(function (opt) {
-            var row = document.createElement("div");
-            row.className = "study-opt-row" + (opt.id === q.correctAnswer ? " correct-reveal" : "");
+        while (container.firstChild) {
+          container.removeChild(container.firstChild);
+        }
 
-            var badge = document.createElement("span");
-            badge.className = "opt-badge";
-            badge.textContent = opt.id;
+        var examNames = Object.keys(groupedExams);
+        if (examNames.length === 0) {
+          var empty = document.createElement("div");
+          empty.className = "feature-placeholder";
+          empty.textContent = "No question sets found in source.js.";
+          container.appendChild(empty);
+          return;
+        }
 
-            var txt = document.createElement("span");
-            txt.textContent = opt.text;
+        examNames.forEach(function (examName) {
+          var groupCard = document.createElement("div");
+          groupCard.className = "qbank-menu-group";
 
-            row.appendChild(badge);
-            row.appendChild(txt);
-            optsDiv.appendChild(row);
+          // Menu Header (Job Name)
+          var header = document.createElement("div");
+          header.className = "qbank-menu-header";
+          header.innerHTML = '<span>' + examName + '</span>' +
+            '<svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>';
+
+          // Submenu Container (Year & Subject Sets)
+          var submenu = document.createElement("div");
+          submenu.className = "qbank-submenu-list";
+
+          var setKeys = Object.keys(groupedExams[examName]);
+          setKeys.forEach(function (sKey) {
+            var setObj = groupedExams[examName][sKey];
+            var subItem = document.createElement("div");
+            subItem.className = "qbank-submenu-item";
+            subItem.innerHTML = '<span>' + setObj.subject + ' (' + setObj.year + ')</span>' +
+              '<span class="badge-capsule">' + setObj.questions.length + ' Qs</span>';
+
+            subItem.addEventListener("click", function (e) {
+              e.stopPropagation();
+              activeSelectedSetKey = setObj.key;
+              renderQuestionBankView();
+            });
+
+            submenu.appendChild(subItem);
           });
-          card.appendChild(optsDiv);
 
-          // Always-accessible readable explanation panel
+          // Toggle Submenu Open / Closed
+          header.addEventListener("click", function () {
+            var isOpen = submenu.classList.contains("open");
+            document.querySelectorAll(".qbank-submenu-list").forEach(function (m) { m.classList.remove("open"); });
+            if (!isOpen) submenu.classList.add("open");
+          });
+
+          groupCard.appendChild(header);
+          groupCard.appendChild(submenu);
+          container.appendChild(groupCard);
+        });
+      }
+
+      // Render the Full Set as a Clean, Readable PDF-Style Page
+      function renderPdfDocumentPage() {
+        var allQuestions = getQuestions();
+        var questionsInSet = allQuestions.filter(function (q) {
+          var eName = q.examName || "General Exam";
+          var yr = q.year ? String(q.year) : "General";
+          var sub = q.subject || "General";
+          return (eName + "||" + yr + "||" + sub) === activeSelectedSetKey;
+        });
+
+        var titleEl = document.getElementById("pdf-doc-exam-title");
+        var metaEl = document.getElementById("pdf-doc-meta-subtitle");
+        var badgeEl = document.getElementById("pdf-qbank-count-badge") || document.getElementById("qbank-pdf-count-badge");
+        var listContainer = document.getElementById("pdf-doc-questions-list");
+
+        if (questionsInSet.length === 0 || !listContainer) return;
+
+        var firstQ = questionsInSet[0];
+        if (titleEl) titleEl.textContent = firstQ.examName;
+        if (metaEl) metaEl.textContent = "Subject: " + firstQ.subject + "  |  Year: " + firstQ.year;
+        if (badgeEl) badgeEl.textContent = questionsInSet.length + " Questions";
+
+        while (listContainer.firstChild) {
+          listContainer.removeChild(listContainer.firstChild);
+        }
+
+        questionsInSet.forEach(function (q, index) {
+          var qBlock = document.createElement("div");
+          qBlock.className = "pdf-q-block";
+
+          var qText = document.createElement("div");
+          qText.className = "pdf-q-text";
+          qText.textContent = (index + 1) + ". " + q.question;
+          qBlock.appendChild(qText);
+
+          // 2x2 Options Layout
+          var optGrid = document.createElement("div");
+          optGrid.className = "pdf-options-grid";
+
+          (q.options || []).forEach(function (opt) {
+            var optItem = document.createElement("div");
+            optItem.className = "pdf-opt-item";
+            if (opt.id === q.correctAnswer) {
+              optItem.classList.add("is-correct-target");
+            }
+            optItem.innerHTML = '<strong>(' + opt.id + ')</strong> <span>' + opt.text + (opt.id === q.correctAnswer ? ' ✓' : '') + '</span>';
+            optGrid.appendChild(optItem);
+          });
+          qBlock.appendChild(optGrid);
+
+          // Explanation Note
           var expBox = document.createElement("div");
-          expBox.className = "study-exp-box visible";
-          expBox.style.display = "block";
-          expBox.innerHTML = '<strong>Explanation:</strong> ' + (q.explanation || 'No explanation provided.');
-          card.appendChild(expBox);
+          expBox.className = "pdf-exp-box";
+          expBox.innerHTML = '<strong>Answer &amp; Explanation:</strong> (' + q.correctAnswer + ') ' + (q.explanation || 'No explanation provided.');
+          qBlock.appendChild(expBox);
 
-          stream.appendChild(card);
+          listContainer.appendChild(qBlock);
         });
       }
 
-      // Filter Change Handlers
-      var ddExam = document.getElementById("qbank-exam-filter");
-      if (ddExam) {
-        ddExam.addEventListener("change", function (e) {
-          qbankFilterExam = e.detail.value;
-          renderQuestionBankView();
-        });
-      }
-
-      var ddSubject = document.getElementById("qbank-subject-filter");
-      if (ddSubject) {
-        ddSubject.addEventListener("change", function (e) {
-          qbankFilterSubject = e.detail.value;
-          renderQuestionBankView();
-        });
-      }
-
-      var ddYear = document.getElementById("qbank-year-filter");
-      if (ddYear) {
-        ddYear.addEventListener("change", function (e) {
-          qbankFilterYear = e.detail.value;
-          renderQuestionBankView();
-        });
-      }
-
-      // Reset Filters
-      var btnResetFilters = document.getElementById("btn-qbank-reset-filters");
-      if (btnResetFilters) {
-        btnResetFilters.addEventListener("click", function () {
-          qbankFilterExam = "all";
-          qbankFilterSubject = "all";
-          qbankFilterYear = "all";
-
-          var eL = document.querySelector("#qbank-exam-filter .trigger-label");
-          var sL = document.querySelector("#qbank-subject-filter .trigger-label");
-          var yL = document.querySelector("#qbank-year-filter .trigger-label");
-          if (eL) eL.textContent = "All Exams";
-          if (sL) sL.textContent = "All Subjects";
-          if (yL) yL.textContent = "All Years";
-
+      // Back to Menu Button
+      var btnBackMenu = document.getElementById("btn-qbank-back-to-menu");
+      if (btnBackMenu) {
+        btnBackMenu.addEventListener("click", function () {
+          activeSelectedSetKey = null;
           renderQuestionBankView();
         });
       }
@@ -2535,16 +2653,22 @@
 
           if (!userAns) {
             unanswered++;
+            appData.attempts[q.id].flagged = true; // Log blank questions to mistake page!
+            appData.attempts[q.id].wasBlank = true;
+            appData.attempts[q.id].lastWrongAnswer = null;
+            appData.attempts[q.id].lastAttempt = Date.now();
           } else if (userAns === q.correctAnswer) {
             correct++;
             appData.attempts[q.id].attempts++;
             appData.attempts[q.id].correct++;
+            appData.attempts[q.id].wasBlank = false;
             appData.attempts[q.id].lastAttempt = Date.now();
           } else {
             incorrect++;
             appData.attempts[q.id].attempts++;
             appData.attempts[q.id].incorrect++;
-            appData.attempts[q.id].flagged = true;
+            appData.attempts[q.id].flagged = true; // Log incorrect questions to mistake page!
+            appData.attempts[q.id].wasBlank = false;
             appData.attempts[q.id].lastWrongAnswer = userAns;
             appData.attempts[q.id].lastAttempt = Date.now();
           }
@@ -2807,9 +2931,10 @@
         var allQuestions = getQuestions();
         var attemptsMap = (appData && appData.attempts) ? appData.attempts : {};
 
+        // Include both incorrect AND blank questions
         var mistakeQuestions = allQuestions.filter(function (q) {
           var att = attemptsMap[q.id];
-          return att && (att.incorrect > 0 || att.flagged);
+          return att && (att.incorrect > 0 || att.flagged || att.wasBlank);
         });
 
         if (countBadge) {
@@ -2823,7 +2948,7 @@
         if (mistakeQuestions.length === 0) {
           var empty = document.createElement("div");
           empty.className = "feature-placeholder";
-          empty.textContent = "Your notebook is clear. Any questions answered incorrectly during tests will appear here.";
+          empty.textContent = "Your notebook is clear. Any questions answered incorrectly or left blank during tests will appear here.";
           container.appendChild(empty);
           return;
         }
@@ -2833,7 +2958,7 @@
           var card = document.createElement("div");
           card.className = "mistake-only-card";
 
-          // Header: Subtitle + Mark Resolved button
+          // Header: Subtitle + Status Pill + Dismiss Button
           var header = document.createElement("div");
           header.className = "mistake-header-row";
 
@@ -2852,6 +2977,7 @@
             if (appData.attempts[q.id]) {
               appData.attempts[q.id].incorrect = 0;
               appData.attempts[q.id].flagged = false;
+              appData.attempts[q.id].wasBlank = false;
               saveLocalData(true);
               renderMistakesNotebook();
               renderAnalyticsDashboard();
@@ -2866,33 +2992,27 @@
           qTitle.style.cssText = "font-size: 15px; font-weight: 600; line-height: 1.45; color: var(--text); margin-top: 8px;";
           qTitle.textContent = (index + 1) + ". " + q.question;
 
-          // iOS-style Segmented Toggle between "Your Answer" and "Right Answer"
+          // Segmented Toggle between "Right Answer" (ACTIVE BY DEFAULT) and "Your Answer"
           var toggleBar = document.createElement("div");
           toggleBar.style.cssText = "display: flex; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 8px; padding: 2px; margin: 12px 0 8px; gap: 4px;";
 
-          var btnTabWrong = document.createElement("button");
-          btnTabWrong.type = "button";
-          btnTabWrong.style.cssText = "flex: 1; padding: 6px; font-size: 12px; font-weight: 600; border: none; border-radius: 6px; cursor: pointer; background: rgba(255, 69, 58, 0.15); color: #ff453a;";
-          btnTabWrong.textContent = "Your Answer";
-
           var btnTabRight = document.createElement("button");
           btnTabRight.type = "button";
-          btnTabRight.style.cssText = "flex: 1; padding: 6px; font-size: 12px; font-weight: 600; border: none; border-radius: 6px; cursor: pointer; background: transparent; color: var(--text-secondary);";
+          btnTabRight.style.cssText = "flex: 1; padding: 6px; font-size: 12px; font-weight: 600; border: none; border-radius: 6px; cursor: pointer; background: rgba(52, 199, 89, 0.15); color: #34c759;";
           btnTabRight.textContent = "Right Answer";
 
-          toggleBar.appendChild(btnTabWrong);
+          var btnTabWrong = document.createElement("button");
+          btnTabWrong.type = "button";
+          btnTabWrong.style.cssText = "flex: 1; padding: 6px; font-size: 12px; font-weight: 600; border: none; border-radius: 6px; cursor: pointer; background: transparent; color: var(--text-secondary);";
+          btnTabWrong.textContent = "Your Answer";
+
           toggleBar.appendChild(btnTabRight);
+          toggleBar.appendChild(btnTabWrong);
 
-          // Container 1: Your Chosen Wrong Answer
-          var wrongOpt = (q.options || []).find(function (opt) { return opt.id === att.lastWrongAnswer; });
-          var wrongBox = document.createElement("div");
-          wrongBox.style.cssText = "background: rgba(255, 69, 58, 0.1); border: 1px solid rgba(255, 69, 58, 0.25); color: #ff453a; font-size: 13px; font-weight: 600; padding: 10px 12px; border-radius: 8px; margin-bottom: 8px;";
-          wrongBox.textContent = "You selected: (" + (att.lastWrongAnswer || "?") + ") " + (wrongOpt ? wrongOpt.text : "Incorrect response recorded");
-
-          // Container 2: Correct Answer + Full Explanation
+          // Container 1: Right Answer + Full Explanation (DISPLAYED BY DEFAULT)
           var correctOpt = (q.options || []).find(function (opt) { return opt.id === q.correctAnswer; });
           var rightBox = document.createElement("div");
-          rightBox.style.display = "none";
+          rightBox.style.display = "block";
 
           var rightAnsDiv = document.createElement("div");
           rightAnsDiv.className = "mistake-correct-badge";
@@ -2907,32 +3027,62 @@
           rightBox.appendChild(rightAnsDiv);
           rightBox.appendChild(expBox);
 
+          // Container 2: Your Answer / Blank Status (HIDDEN BY DEFAULT)
+          var wrongBox = document.createElement("div");
+          wrongBox.style.display = "none";
+
+          if (att.wasBlank || !att.lastWrongAnswer) {
+            wrongBox.style.cssText = "display: none; background: rgba(255, 149, 0, 0.12); border: 1px solid rgba(255, 149, 0, 0.3); color: #ff9500; font-size: 13px; font-weight: 600; padding: 10px 12px; border-radius: 8px; margin-bottom: 8px;";
+            wrongBox.textContent = "Status: You left this question blank (Unanswered).";
+          } else {
+            var wrongOpt = (q.options || []).find(function (opt) { return opt.id === att.lastWrongAnswer; });
+            wrongBox.style.cssText = "display: none; background: rgba(255, 69, 58, 0.1); border: 1px solid rgba(255, 69, 58, 0.25); color: #ff453a; font-size: 13px; font-weight: 600; padding: 10px 12px; border-radius: 8px; margin-bottom: 8px;";
+            wrongBox.textContent = "You selected: (" + att.lastWrongAnswer + ") " + (wrongOpt ? wrongOpt.text : "Incorrect choice");
+          }
+
           // Toggle event listener
+          btnTabRight.addEventListener("click", function () {
+            btnTabRight.style.background = "rgba(52, 199, 89, 0.15)";
+            btnTabRight.style.color = "#34c759";
+            btnTabWrong.style.background = "transparent";
+            btnTabWrong.style.color = "var(--text-secondary)";
+            rightBox.style.display = "block";
+            wrongBox.style.display = "none";
+          });
+
           btnTabWrong.addEventListener("click", function () {
-            btnTabWrong.style.background = "rgba(255, 69, 58, 0.15)";
-            btnTabWrong.style.color = "#ff453a";
+            btnTabWrong.style.background = (att.wasBlank || !att.lastWrongAnswer) ? "rgba(255, 149, 0, 0.15)" : "rgba(255, 69, 58, 0.15)";
+            btnTabWrong.style.color = (att.wasBlank || !att.lastWrongAnswer) ? "#ff9500" : "#ff453a";
             btnTabRight.style.background = "transparent";
             btnTabRight.style.color = "var(--text-secondary)";
             wrongBox.style.display = "block";
             rightBox.style.display = "none";
           });
 
-          btnTabRight.addEventListener("click", function () {
-            btnTabRight.style.background = "rgba(52, 199, 89, 0.15)";
-            btnTabRight.style.color = "#34c759";
-            btnTabWrong.style.background = "transparent";
-            btnTabWrong.style.color = "var(--text-secondary)";
-            wrongBox.style.display = "none";
-            rightBox.style.display = "block";
-          });
-
           card.appendChild(header);
           card.appendChild(qTitle);
           card.appendChild(toggleBar);
-          card.appendChild(wrongBox);
           card.appendChild(rightBox);
+          card.appendChild(wrongBox);
 
           container.appendChild(card);
+        });
+      }
+
+      // Clear Mistake Notebook Button
+      var btnClearMistakes = document.getElementById("btn-clear-all-mistakes");
+      if (btnClearMistakes) {
+        btnClearMistakes.addEventListener("click", function () {
+          if (confirm("Are you sure you want to clear your entire Mistake Notebook?")) {
+            Object.keys(appData.attempts || {}).forEach(function (id) {
+              appData.attempts[id].flagged = false;
+              appData.attempts[id].wasBlank = false;
+              appData.attempts[id].incorrect = 0;
+            });
+            saveLocalData(true);
+            renderMistakesNotebook();
+            renderAnalyticsDashboard();
+          }
         });
       }
       // === FEATURE: portal-bridge-sync ===
